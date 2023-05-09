@@ -1,2 +1,3 @@
 # Big-project
-Forebears duplication
+Forebears duplicate
+
