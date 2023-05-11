@@ -1,19 +1,42 @@
-import {useState} from 'react';
-import { Link } from "react-router-dom";
+
+import { Link , useNavigate} from "react-router-dom";
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 const Login = () => {
+  const new_cookies = new Cookies();
+  const currentDate = new Date();
+  const expiresDate = new Date(currentDate.getTime() + (24 * 60 * 60 * 1000));
+  const navigate = useNavigate();
+  const token = new_cookies.get('token');
+  if(token){
+    axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/get_user/', {
+      'token': token
+    })
+    .then((response)=>{
+      console.log('response', response)
+      if(!response.data.valid){
+        new_cookies.remove('token', {path: '/'});
+      } else {
+       navigate('/home');
+      }
+    })
+    .catch((error)=>console.log(error))
+  }
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
     const {username, password} = e.target.elements;
-    console.log(username.value, password.value);
+    // console.log(username.value, password.value);
     axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/login/', {
         'gurjar_id': username.value,
         'password': password.value
     })
     .then((response)=>{
-      alert(`Token: ${response.data.token} \n User: ${response.data.user.name} \n ID: ${response.data.user.gurjar_id} \n checked console for more info`)
-      console.log(response.data)
+      console.log('response', response)
+      
+      const token = response.data.token;
+      new_cookies.set('token', token, {path: '/', expires: expiresDate});
+      navigate('/home');
     })
     .catch((error)=>alert(error))
   }

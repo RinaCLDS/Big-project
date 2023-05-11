@@ -1,22 +1,101 @@
-import React from 'react';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Cookies from "universal-cookie";
 const Register = () => {
+  const navigate = useNavigate();
+  const new_cookies = new Cookies();
+  const token = new_cookies.get('token');
+  if(token){
+    axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/get_user/', {
+      'token': token
+    })
+    .then((response)=>{
+      console.log('response', response)
+      if(!response.data.valid){
+        new_cookies.remove('token', {path: '/'});
+      } else {
+       navigate('/home');
+      }
+    })
+    .catch((error)=>console.log(error))
+  }
+  const registerForm = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const gender = e.target.gender.value;
+    const dateBirth = e.target.dateBirth.value;
+    const religion = e.target.religion.value;
+    const gotra = e.target.gotra.value;
+    const bloodgroup = e.target.bloodgroup.value;
+    const nationality = e.target.nationality.value
+    const state = e.target.state.value;
+    const city = e.target.city.value;
+    const village = e.target.village.value;
+    const mobileCode = e.target.mobileCode.value;
+    const mobileNumber = e.target.mobileNumber.value;
+    const email = e.target.email.value;
+    const education = e.target.education.value;
+    const profession = e.target.profession.value;
+    // console.log('Name:', name);
+    // console.log('Gender:', gender);
+    // console.log('Date of Birth:', dateBirth);
+    // console.log('Religion:', religion);
+    // console.log('Gotra:', gotra);
+    // console.log('Blood Group:', bloodgroup);
+    // console.log('Nationality:', nationality);
+    // console.log('State:', state);
+    // console.log('City:', city);
+    // console.log('Village:', village);
+    // console.log('Mobile Code:', mobileCode);
+    // console.log('Mobile Number:', mobileNumber);
+    // console.log('Email:', email);
+    // console.log('Education:', education);
+    // console.log('Profession:', profession);
+
+    axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/create_user/', {
+      'nationality': nationality,
+      'religion': religion,
+      'gender':gender,
+      'language': 'NA',
+      'name': name,
+      'state': state,
+      'city': city,
+      'village': village,
+      'gotra': gotra,
+      'blood_group': bloodgroup,
+      'date_of_birth': dateBirth,
+      'mobile_number': `${mobileCode}${mobileNumber}`,
+      'email': email,
+      'education': education,
+      'profession': profession,
+
+    })
+    .then((response) => {
+      console.log(response);
+      alert(`username: ${response.data.user} password: ${response.data.password}`)
+      navigate('/');
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
   return (
     <section className='flex lg:justify-center sm:justify-center md:justify-center xl:justify-center' id='Register'>
-    <form class="w-full max-w-sm mt-20">
+    <form onSubmit={registerForm} class="w-full max-w-sm mt-20">
     <div class="flex flex-wrap -mx-20 mb-6">
       <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
           Full Name
         </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Name"/>
+        <input name='name' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Name"/>
       </div>
       <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
           Gender
         </label>
         <div class="relative">
-          <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select name='gender' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
             <option>Choose</option>
             <option>Male</option>
             <option>Female</option>
@@ -30,7 +109,7 @@ const Register = () => {
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
           Date of Birth
         </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Date"/>
+        <input name='dateBirth' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="" placeholder="Date"/>
       </div>
     </div>
     <div class="flex flex-wrap -mx-20 mb-6">
@@ -39,7 +118,7 @@ const Register = () => {
           Religion
         </label>
         <div class="relative">
-          <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select name='religion' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
           <option>Choose</option>
           <option>Hindu</option>
           <option>Muslim</option>
@@ -58,7 +137,7 @@ const Register = () => {
           Gotra
         </label>
         <div class="relative">
-          <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select name='gotra' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
             <option>Choose</option>
             <option>Male</option>
             <option>Female</option>
@@ -73,7 +152,7 @@ const Register = () => {
           Blood group
         </label>
         <div class="relative">
-          <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select name='bloodgroup' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
             <option>Choose</option>
             <option>A+</option>
             <option>A-</option>
@@ -97,7 +176,7 @@ const Register = () => {
           Nationality
         </label>
         <div class="relative">
-          <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select name='nationality' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
           <option>Choose</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -110,7 +189,7 @@ const Register = () => {
           State
         </label>
         <div class="relative">
-          <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select name='state' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
           <option>Choose</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -123,7 +202,7 @@ const Register = () => {
           City
         </label>
         <div class="relative">
-          <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select name='city' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
             <option>Choose</option>
            
           </select>
@@ -137,7 +216,7 @@ const Register = () => {
           Village
         </label>
         <div class="relative">
-          <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select name='village' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
             <option>Choose</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -152,7 +231,7 @@ const Register = () => {
           Mobile 
         </label>
         <div class="relative">
-          <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select name='mobileCode' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
             <option>+63</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -164,7 +243,7 @@ const Register = () => {
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
           Number
         </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="9666972501"/>
+        <input name='mobileNumber' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="9666972501"/>
       </div>
     </div>
     <div class="flex flex-wrap -mx-20 mb-6">
@@ -172,7 +251,7 @@ const Register = () => {
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
           Email  Address
         </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="GurjarIndia@gmail.com"/>
+        <input name='email' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="GurjarIndia@gmail.com"/>
       </div>
     </div>
     <div class="flex flex-wrap -mx-20 mb-6">
@@ -181,7 +260,7 @@ const Register = () => {
           Education 
         </label>
         <div class="relative">
-          <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select name='education' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
             <option>Choose</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -194,7 +273,7 @@ const Register = () => {
           Profession 
         </label>
         <div class="relative">
-          <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select name='profession' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
             <option>Choose</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
