@@ -203,7 +203,8 @@ const Register = () => {
         </div>
       </div>
     </div>
-    <button className='btn btn-sm place-items-end'>Login</button>
+    <button className='btn btn-sm place-items-end'>Register</button>
+    <Link className='text-gray-700 border-2 border-black rounded ml-3 p-3 hover:bg-sky-700 hover:text-white' to='/'>Login</Link>
   </form>
   </section>
   );
