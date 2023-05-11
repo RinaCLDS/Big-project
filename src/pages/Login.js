@@ -7,10 +7,13 @@ const Login = () => {
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
-    const authObject = {'Project-ID': "b0b6b6a0-4b0a-4b0e-9b0a-4b0a4b0a4b0a", 'User-Name': username, 'User-Secret': password};
+    const bodyData = {
+      'gurjar_id': username,
+      'password': password
+    }
     try {
-      await axios.get('https://api.chatengine.io/chats', {headers: authObject});
-      localStorage.setItem('username', username);
+      const response = await axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/login', bodyData);
+      console.log(response)
     }
     catch (error) {
       console.log(error);
@@ -27,7 +30,7 @@ const Login = () => {
         <input className='bg-transparent border-b py-3 outline-none
          w-full placeholder:text-black focus:border-accent transition-all' type='text' placeholder='Password'/>
       
-         <button className='btn btn-sm'>Login</button>
+         <button onClick={handleSubmit} className='btn btn-sm'>Login</button>
          <span className=' text-black'>
             New to Chatify? click here <Link to="/register">Create Account</Link>
           </span>
