@@ -33,10 +33,14 @@ const Login = () => {
     })
     .then((response)=>{
       console.log('response', response)
+      if (response.data.valid){
+        const token = response.data.token;
+        new_cookies.set('token', token, {path: '/', expires: expiresDate});
+        navigate('/home');
+      } else {
+        alert('Invalid Credentials');
+      }
       
-      const token = response.data.token;
-      new_cookies.set('token', token, {path: '/', expires: expiresDate});
-      navigate('/home');
     })
     .catch((error)=>alert(error))
   }
