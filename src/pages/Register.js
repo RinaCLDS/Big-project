@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 const Register = () => {
+  const get = (element)=> document.querySelector(element);
   const navigate = useNavigate();
   const new_cookies = new Cookies();
   const token = new_cookies.get('token');
@@ -20,7 +21,26 @@ const Register = () => {
     })
     .catch((error)=>console.log(error))
   }
-  const registerForm = (e) => {
+  const check_otp = async (otp, mobile_number)=>{
+    return await axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/check_otp/', {
+      'mobile_number': mobile_number,
+      'otp': otp
+    })
+    // .then((response)=>{
+    //   if (!response.data.valid){
+    //     console.log('otp is not valid')
+    //     return false;
+    //   } else {
+    //     console.log('otp is valid')
+    //     return true;
+    //   }
+    // })
+    // .catch((error)=>{
+    //   console.log(error)
+    //   return false
+    // })
+  }
+  const registerForm = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const gender = e.target.gender.value;
@@ -37,22 +57,11 @@ const Register = () => {
     const email = e.target.email.value;
     const education = e.target.education.value;
     const profession = e.target.profession.value;
-    // console.log('Name:', name);
-    // console.log('Gender:', gender);
-    // console.log('Date of Birth:', dateBirth);
-    // console.log('Religion:', religion);
-    // console.log('Gotra:', gotra);
-    // console.log('Blood Group:', bloodgroup);
-    // console.log('Nationality:', nationality);
-    // console.log('State:', state);
-    // console.log('City:', city);
-    // console.log('Village:', village);
-    // console.log('Mobile Code:', mobileCode);
-    // console.log('Mobile Number:', mobileNumber);
-    // console.log('Email:', email);
-    // console.log('Education:', education);
-    // console.log('Profession:', profession);
-
+    const response = await check_otp(get('#otp').value, mobileCode+mobileNumber)
+    if (!response.data.valid){
+      alert('OTP is not valid')
+      return;
+    }
     axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/create_user/', {
       'nationality': nationality,
       'religion': religion,
@@ -79,6 +88,20 @@ const Register = () => {
     .catch((error) => {
       console.log(error);
     })
+  }
+  const send_otp = ()=>{
+    const mobile_number = get('#mobileCode').value+get('#mobileNumber').value;
+    axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/gurjar_otp/', {
+      'mobile_number': mobile_number
+    })
+    .then((response)=>{
+      console.log(response)
+      alert('OTP sent')
+    })
+    .then((error)=>{
+      console.log(error)
+    })
+    console.log(mobile_number)
   }
   return (
     <section className='flex lg:justify-center sm:justify-center md:justify-center xl:justify-center' id='Register'>
@@ -226,12 +249,13 @@ const Register = () => {
       </div>
     </div>
     <div class="flex flex-wrap -mx-20 mb-6">
+      
     <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
           Mobile 
         </label>
         <div class="relative">
-          <select name='mobileCode' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <select id="mobileCode" required  name='mobileCode' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
             <option>+63</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -243,7 +267,14 @@ const Register = () => {
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
           Number
         </label>
-        <input name='mobileNumber' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="9666972501"/>
+        <input required id='mobileNumber' name='mobileNumber' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"  type="text" placeholder="9666972501"/>
+        <a href="#!" onClick={send_otp} className="text-gray-700 border-2 border-black rounded ml-3 p-3 hover:bg-sky-700 hover:text-white">Send</a>
+      </div>
+      <div class="w-full md:w-2/4 px-3 mb-6 md:mb-0">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+          OTP
+        </label>
+        <input required id='otp' name='otp' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"  type="text" placeholder="6 digit number"/>
       </div>
     </div>
     <div class="flex flex-wrap -mx-20 mb-6">
@@ -251,7 +282,7 @@ const Register = () => {
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
           Email  Address
         </label>
-        <input name='email' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="GurjarIndia@gmail.com"/>
+        <input required name='email' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="GurjarIndia@gmail.com"/>
       </div>
     </div>
     <div class="flex flex-wrap -mx-20 mb-6">
