@@ -120,9 +120,6 @@ const Register = () => {
   const cityChange = (e)=>{
     setCity(state.states[e.target.selectedIndex])
   }
-  console.log(city)
-  axios.get('https://restcountries.com/v3.1/all')
-  .then((response)=>{console.log(response.data)})
   return (
     <section className='flex lg:justify-center sm:justify-center md:justify-center xl:justify-center' id='Register'>
     <form onSubmit={registerForm} class="w-full max-w-sm mt-20">
