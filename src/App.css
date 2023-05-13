@@ -1,7 +1,8 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 
 .main{
   background: #fefefe;
   color: #111;
+  font-family: 'Roboto', sans-serif;
 }
