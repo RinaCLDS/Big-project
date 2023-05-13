@@ -2,6 +2,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { useState, useEffect } from "react";
+import data from '../data/dataset.json';
 const Register = () => {
   const get = (element)=> document.querySelector(element);
   const navigate = useNavigate();
@@ -103,6 +105,22 @@ const Register = () => {
     })
     console.log(mobile_number)
   }
+  const [state, setState] = useState([])
+  const [city, setCity] = useState([])
+  useEffect (()=>{
+    if(Object.keys(state).length ===0){
+      setState(data[0])
+      setCity(data[0].states[0])
+    }
+  }, [state])
+  const stateChange = (e)=>{
+    setState(data[e.target.selectedIndex])
+    
+  }
+  const cityChange = (e)=>{
+    setCity(state.states[e.target.selectedIndex])
+  }
+  console.log(city)
   return (
     <section className='flex lg:justify-center sm:justify-center md:justify-center xl:justify-center' id='Register'>
     <form onSubmit={registerForm} class="w-full max-w-sm mt-20">
@@ -199,8 +217,14 @@ const Register = () => {
           Nationality
         </label>
         <div class="relative">
-          <select name='nationality' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-          <option>Choose</option>
+          <select name='nationality' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
+          onChange={stateChange}
+          >
+          {
+            data.map((item, index)=>(
+              <option key={index}>{item.name}</option>
+            ))
+          }
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -212,8 +236,18 @@ const Register = () => {
           State
         </label>
         <div class="relative">
-          <select name='state' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-          <option>Choose</option>
+          <select name='state' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
+          onChange={cityChange}
+          >
+          {
+            Object.keys(state).length ===0 ? 
+              data[0].states.map((item, index)=>(
+                <option key={index}>{item.name}</option>
+              ))
+             : state.states.map((item, index)=>(
+              <option key={index}>{item.name}</option>
+            ))
+          }
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -225,9 +259,16 @@ const Register = () => {
           City
         </label>
         <div class="relative">
-          <select name='city' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-            <option>Choose</option>
-           
+          <select name='city' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
+          
+          >
+          {
+            Object.keys(state).length ===0 ?
+            ''
+           : city.cities.map((item, index)=>(
+              <option key={index}>{item.name}</option>
+           ))
+          }
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
