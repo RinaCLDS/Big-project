@@ -112,26 +112,28 @@ const Register = () => {
   const cityChange = (e)=>{
     setCity(state.states[e.target.selectedIndex])
   }
+  const [gurjar, setGurjar] = useState(false)
+  const gurjarChange = ()=>setGurjar(!gurjar)
   return (
 
     <div class="min-h-screen bg-gray-200 flex flex-col justify-center py-3 px-4 lg:px-8 space-x-[-6]">
     <div class="mt-8 sm:mx-auto lg:w-full lg:max-w-md">
-
     
-      
-    <div className='container mx-auto max-w-sm'>
-    <div className='flex flex-col'> 
-      <form className='flex-1 place-self-center flex flex-col gap-y-6 pb-24 p-6 mt-4 '>
-      <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <h2 class="mt-2 text-center text-2xl font-extrabold text-gray-900">Are you a gurjar?</h2>
-    </div> 
-         <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Yes</button>
-         <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">No</button>
-      </form>
-    </div>
-  </div>
-
-    <div class="bg-white py-5 px-3 shadow rounded-lg sm:px-4">
+      {
+        !gurjar ? (
+          <div className='container mx-auto max-w-sm'>
+          <div className='flex flex-col'> 
+            <form className='flex-1 place-self-center flex flex-col gap-y-6 pb-24 p-6 mt-4 '>
+            <div class="sm:mx-auto sm:w-full sm:max-w-md">
+          <h2 class="mt-2 text-center text-2xl font-extrabold text-gray-900">Are you a gurjar?</h2>
+          </div> 
+              <button onClick={gurjarChange} class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Yes</button>
+              <Link to={'/'} class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">No</Link>
+            </form>
+          </div>
+        </div>
+        ): (
+          <div class="bg-white py-5 px-3 shadow rounded-lg sm:px-4">
     <form onSubmit={registerForm} class="mb-0 space-y-6 ">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
     <h2 class="mt-2 text-center text-3xl font-extrabold text-gray-900">Create gurjar account</h2>
@@ -1503,6 +1505,11 @@ const Register = () => {
         </div>
   </form>
   </div>
+        )
+      }
+    
+
+    
   </div>
   </div>
   );
