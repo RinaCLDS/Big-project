@@ -1,10 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { Container } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Cookies from "universal-cookie";
-
+import { useState, useEffect } from "react";
+import data from '../data/dataset.json';
 
 const Register = () => {
   const get = (element)=> document.querySelector(element);
@@ -30,7 +28,6 @@ const Register = () => {
       'mobile_number': mobile_number,
       'otp': otp
     })
-
   }
   const registerForm = async (e) => {
     e.preventDefault();
@@ -83,6 +80,11 @@ const Register = () => {
   }
   const send_otp = ()=>{
     const mobile_number = get('#mobileCode').value+get('#mobileNumber').value;
+    console.log(mobile_number.length)
+    if(mobile_number.length <= 4){
+      alert('Please enter valid mobile number')
+      return;
+    }
     axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/gurjar_otp/', {
       'mobile_number': mobile_number
     })
@@ -95,26 +97,61 @@ const Register = () => {
     })
     console.log(mobile_number)
   }
-
+  const [state, setState] = useState([])
+  const [city, setCity] = useState([])
+  useEffect (()=>{
+    if(Object.keys(state).length ===0){
+      setState(data[0])
+      setCity(data[0].states[0])
+    }
+  }, [state])
+  const stateChange = (e)=>{
+    setState(data[e.target.selectedIndex])
+    
+  }
+  const cityChange = (e)=>{
+    setCity(state.states[e.target.selectedIndex])
+  }
   return (
-    <section className='flex lg:justify-center sm:justify-center md:justify-center xl:justify-center' id='Register'>
-    <form onSubmit={registerForm} class="w-full max-w-sm mt-20">
-    <div class="flex flex-wrap -mx-20 mb-6">
-      <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0 ">
-        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-          Full Name
+
+    <div class="min-h-screen bg-gray-200 flex flex-col justify-center py-3 px-4 lg:px-8 space-x-[-6]">
+    <div class="mt-8 sm:mx-auto lg:w-full lg:max-w-md">
+
+    
+      
+    <div className='container mx-auto max-w-sm'>
+    <div className='flex flex-col'> 
+      <form className='flex-1 place-self-center flex flex-col gap-y-6 pb-24 p-6 mt-4 '>
+      <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-2 text-center text-2xl font-extrabold text-gray-900">Are you a gurjar?</h2>
+    </div> 
+         <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Yes</button>
+         <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">No</button>
+      </form>
+    </div>
+  </div>
+
+    <div class="bg-white py-5 px-3 shadow rounded-lg sm:px-4">
+    <form onSubmit={registerForm} class="mb-0 space-y-6 ">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-2 text-center text-3xl font-extrabold text-gray-900">Create gurjar account</h2>
+    </div>
+    <div class="flex lg -mx-4 ">
+      <div class="w-full px-3 mb-6 md:mb-0">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-name">
+          Name
         </label>
-        <input name='name' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Name"/>
+        <input required  name='name' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"  type="text" placeholder="Full Name"/>
       </div>
-      <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+      <div class="w-full  px-3 mb-6 md:mb-0">
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-gender">
           Gender
         </label>
         <div class="relative">
-          <select name='gender' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-            <option>Choose</option>
-            <option>Male</option>
-            <option>Female</option>
+          <select name='religion' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+          <option>Choose</option>
+          <option>Male</option>
+          <option>Female</option>
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -122,13 +159,13 @@ const Register = () => {
         </div>
       </div>
       <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
           Date of Birth
         </label>
         <input name='dateBirth' class=" form-control appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="date" placeholder="MM-DD-YYYY" />
       </div>
     </div>
-    <div class="flex flex-wrap -mx-20 mb-6">
+    <div class="flex lg -mx-4">
     <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
           Religion
@@ -231,7 +268,7 @@ const Register = () => {
             <option value="">aawana</option>
             <option value="">Ahiwal</option>
             <option value="">Amerwal</option>
-            <option value="">Amarwal </option>
+            <option value="">Amarwal</option>
             <option value="">Atkiya</option>
             <option value="">Aswar</option>
             <option value="">Almicha</option>
@@ -254,7 +291,7 @@ const Register = () => {
                <option value="">Baben</option> 
                <option value="">Badaankhail</option> 
                <option value="">Badaanzaiin</option> 
-               <option value="">Badi </option> 
+               <option value="">Badi</option> 
                <option value="">Badiyawal</option> 
                <option value="">Bag</option> 
                <option value="">Bagada</option> 
@@ -466,7 +503,7 @@ const Register = () => {
                <option value="">Chechi</option> 
                <option value="">Chelarwal</option> 
                <option value="">Chetrana</option> 
-               <option value="">Chhachhiyaa</option> r
+               <option value="">Chhachhiyaar</option> 
                <option value="">Chhalay</option> 
                <option value="">Chhali</option> 
                <option value="">Chhalotte</option> 
@@ -801,7 +838,7 @@ const Register = () => {
                <option value="">Katheria</option> 
                <option value="">Katra</option> 
                <option value="">Kaura</option> 
-               <option value="">Kawakalmoha</option> ya
+               <option value="">Kawakalmohaya</option> 
                <option value="">Kayosar</option> 
                <option value="">Kazar</option> 
                <option value="">Kechhabro</option> 
@@ -944,7 +981,7 @@ const Register = () => {
                <option value="">Mana</option> 
                <option value="">Mangria</option> 
                <option value="">Manihar</option> 
-               <option value="">Mankas-Mand</option> hari
+               <option value="">Mankas-Mandhari</option> 
                <option value="">Maradi</option> 
                <option value="">Mareeda</option> 
                <option value="">Mari</option> 
@@ -1071,7 +1108,7 @@ const Register = () => {
                <option value="">Phambra</option> 
                <option value="">Pholarra</option> 
                <option value="">Phoolra</option> 
-               <option value="">Pipalnari</option> a
+               <option value="">Pipalnaria</option>
                <option value="">Piswal</option> 
                <option value="">Podat</option> 
                <option value="">Pojay</option> 
@@ -1154,7 +1191,7 @@ const Register = () => {
                <option value="">Seagal</option> 
                <option value="">Sehar</option> 
                <option value="">Serada</option> 
-               <option value="">SetarSury</option> avansh
+               <option value="">SetarSuryavansh</option> 
                <option value="">Shahwla</option> 
                <option value="">Sharimal</option> 
                <option value="">ShukalSi</option> 
@@ -1173,7 +1210,7 @@ const Register = () => {
                <option value="">Solanki</option> 
                <option value="">Sonigar</option> 
                <option value="">Sood</option> 
-               <option value="">Sooderpur</option> iay
+               <option value="">Sooderpuriay</option> 
                <option value="">Sooja</option> 
                <option value="">Sorath</option> 
                <option value="">Sradhana</option> 
@@ -1181,7 +1218,7 @@ const Register = () => {
                <option value="">Suddhan</option> 
                <option value="">Suhoos</option> 
                <option value="">Sundhal</option> 
-               <option value="">SurkiSurw</option> ale
+               <option value="">SurkiSurwale</option> 
                <option value="">Suthan</option> 
                <option value="">Saramdana</option> 
                <option value="">Sorathh</option> 
@@ -1263,7 +1300,7 @@ const Register = () => {
                <option value="">Varma</option> 
                <option value="">Vasoya</option> 
                <option value="">Vasth</option> 
-               <option value="">Veergurja</option> r
+               <option value="">Veergurjar</option> 
                <option value="">Vihun</option> 
                <option value="">Vikal</option> 
                <option value="">Virana</option> 
@@ -1303,14 +1340,20 @@ const Register = () => {
       </div>
       
     </div>
-    <div class="flex flex-wrap -mx-20 mb-6">
-    <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+    <div class="flex lg -mx-4">
+    <div class="w-full md:w-1/4 sm:w-2/4 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
           Nationality
         </label>
         <div class="relative">
-          <select name='nationality' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-          <option>Choose</option>
+          <select name='nationality' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
+          onChange={stateChange}
+          >
+          {
+            data.map((item, index)=>(
+              <option key={index}>{item.name}</option>
+            ))
+          }
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -1322,8 +1365,18 @@ const Register = () => {
           State
         </label>
         <div class="relative">
-          <select name='state' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-          <option>Choose</option>
+          <select name='state' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state"
+          onChange={cityChange}
+          >
+          {
+            Object.keys(state).length ===0 ? 
+              data[0].states.map((item, index)=>(
+                <option key={index}>{item.name}</option>
+              ))
+             : state.states.map((item, index)=>(
+              <option key={index}>{item.name}</option>
+            ))
+          }
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -1336,15 +1389,20 @@ const Register = () => {
         </label>
         <div class="relative">
           <select name='city' class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-            <option>Choose</option>
-           
+          {
+            Object.keys(state).length ===0 ?
+            ''
+           : city.cities.map((item, index)=>(
+              <option key={index}>{item.name}</option>
+           ))
+          }
           </select>
           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
           </div>
         </div>
       </div>
-      <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+      <div class="w-full md:w-1/4 px-3 mb-3 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
           Village
         </label>
@@ -1358,8 +1416,8 @@ const Register = () => {
         </div>
       </div>
     </div>
-    <div class="flex flex-wrap -mx-20 mb-6">
-    <div class="w-full md:w-1/5 px-3 mb-6 md:mb-0">
+    <div class="flex lg -mx-4">
+    <div class="w-full lg:w-1/3 md:w-1/3 sm:w-1/3 px-3 mb-3 sm:mb-0 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
           Mobile 
         </label>
@@ -1384,35 +1442,31 @@ const Register = () => {
           </div>
         </div>
       </div>
-      <div class="w-full md:w-2/4 px-3 mb-6 md:mb-0">
+      <div class="w-full lg:w-2/3 md:w-2/3 sm:w-2/3  px-3 mb-3 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
           Number
         </label>
         <div class="relative">
         <input required id='mobileNumber' name='mobileNumber' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"  type="text" placeholder="9666972501"/>
-        <button  href="#!" onClick={send_otp} class="text-white absolute right-2.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">OTP</button>
+        <a  href="#!" onClick={send_otp} class="text-white absolute right-2.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">OTP</a>
         </div>
         </div> 
-        </div> 
-   
-
-    <div class="flex flex-wrap -mx-20 mb-6">
-    <div class="w-full md:w-3/4 px-3 mb-6 md:mb-0">
+        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
           OTP
         </label>
         <input required id='otp' name='otp' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"  type="text" placeholder="6 digit number"/>
       </div>
-      </div>
-    <div class="flex flex-wrap -mx-20 mb-6">
-      <div class="w-full md:w-3/4 px-3 mb-6 md:mb-0">
+        </div> 
+    <div class="flex lg -mx-4">
+      <div class="w-full md:w-2/4 sm:2/4 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
           Email  Address
         </label>
-        <input required name='email' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="GurjarIndia@gmail.com"/>
+        <input required name='email' class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-3 mb-1 leading-tight focus:outline-none focus:bg-white" type="text" placeholder="GurjarIndia@gmail.com"/>
       </div>
     </div>
-    <div class="flex flex-wrap -mx-20 mb-6">
+    <div class="flex lg -mx-4">
     <div class="w-full md:w-2/4 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
           Education 
@@ -1426,7 +1480,7 @@ const Register = () => {
           </div>
         </div>
       </div>
-      <div class="w-full md:w-2/4 px-3 mb-6 md:mb-0">
+      <div class="w-full  md:w-2/4 px-3 mb-6 md:mb-0">
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
           Profession 
         </label>
@@ -1440,12 +1494,17 @@ const Register = () => {
         </div>
       </div>
     </div>
-    <div className='relative  left-0 '>
-    <button className='btn btn-sm mr-4'>Register</button>
-    <button className='btn btn-sm ' to='/'>Login</button>
-    </div>
+    <div>
+          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Register</button>
+          <p class="mt-2 text-center text-sm text-gray-600 max-w">
+      Already registered?
+      <Link to='/' class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">Login</Link>
+    </p>
+        </div>
   </form>
-  </section>
+  </div>
+  </div>
+  </div>
   );
 };
 

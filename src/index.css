@@ -3,8 +3,10 @@
 @tailwind utilities;
 
 .btn {
+  
   background: rgb(42,238,255);
   background: radial-gradient(circle, rgba(42,238,255,1) 0%, rgba(85,128,235,1) 100%);
+  
 }
 
 
@@ -24,8 +26,6 @@ background: linear-gradient(90deg, rgba(63,94,251,1) 11%, rgba(164,173,180,1) 99
 .backg{
   background: rgb(0,0,0);
   background: radial-gradient(circle, rgba(0,0,0,1) 20%, rgba(245,245,245,1) 100%);
-
-  
 }
 
 .active {

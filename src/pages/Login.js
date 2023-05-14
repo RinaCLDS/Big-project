@@ -17,7 +17,7 @@ const Login = () => {
       if(!response.data.valid){
         new_cookies.remove('token', {path: '/'});
       } else {
-       navigate('/Dashboard');
+       navigate('/home');
       }
     })
     .catch((error)=>console.log(error))
@@ -36,7 +36,7 @@ const Login = () => {
       if (response.data.valid){
         const token = response.data.token;
         new_cookies.set('token', token, {path: '/', expires: expiresDate});
-        navigate('/Dashboard');
+        navigate('/home');
       } else {
         alert('Invalid Credentials');
       }
@@ -46,18 +46,21 @@ const Login = () => {
   }
 
   return (
-  <section className='max-w-xs ' id='contact'>
-  <div className='container mx-auto'>
-    <div className='flex flex-col lg:flex-row '> 
-      <form onSubmit={handleSubmit} className='flex-1 flex sm:justify-center  border rounded-lg flex flex-col gap-y-6 pb-24 p-6 mt-4 '>
-        <input className='bg-transparent border-b py-3 outline-none 
+    
+  <section className='sm:p-25 sm:section' id='contact'>
+  <div className='container mx-auto max-w-sm'>
+    <div className='flex flex-col'> 
+      <form onSubmit={handleSubmit} className='flex-1 place-self-center border border-4 rounded-lg flex flex-col gap-y-6 pb-24 p-6 mt-4 '>
+      <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-2 text-center text-2xl font-extrabold text-gray-900">Login your Gurjar Account</h2>
+    </div> 
+        <input className='bg-transparent  text-black border-b py-3 outline-none 
         w-full placeholder:text-black focus:border-accent transition-all' type='text' name='username' placeholder='Username'/>
-        <input className='bg-transparent border-b py-3 outline-none
+        <input className='bg-transparent  text-black border-b py-3 outline-none
          w-full placeholder:text-black focus:border-accent transition-all' type='text' name='password' placeholder='Password'/>
-      
-         <button className='btn btn-sm'>Login</button>
+         <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Register</button>
          <span className=' text-black'>
-            New to Chatify? click here <Link to="/register">Create Account</Link>
+            New to Gurjar? click here to <Link className="text-accent" to="/register">Sign up</Link>
           </span>
       </form>
     </div>
