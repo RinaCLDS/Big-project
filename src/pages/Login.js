@@ -17,7 +17,7 @@ const Login = () => {
       if(!response.data.valid){
         new_cookies.remove('token', {path: '/'});
       } else {
-       navigate('/home');
+       navigate('/dashboard');
       }
     })
     .catch((error)=>console.log(error))
@@ -36,7 +36,7 @@ const Login = () => {
       if (response.data.valid){
         const token = response.data.token;
         new_cookies.set('token', token, {path: '/', expires: expiresDate});
-        navigate('/home');
+        navigate('/dashboard');
       } else {
         alert('Invalid Credentials');
       }
@@ -56,8 +56,8 @@ const Login = () => {
     </div> 
         <input className='bg-transparent  text-black border-b py-3 outline-none 
         w-full placeholder:text-black focus:border-accent transition-all' type='text' name='username' placeholder='Username'/>
-        <input className='bg-transparent  text-black border-b py-3 outline-none
-         w-full placeholder:text-black focus:border-accent transition-all' type='text' name='password' placeholder='Password'/>
+        <input  className='bg-transparent  text-black border-b py-3 outline-none
+         w-full placeholder:text-black focus:border-accent transition-all' type='password' name='password' placeholder='Password'/>
          <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Register</button>
          <span className=' text-black'>
             New to Gurjar? click here to <Link className="text-accent" to="/register">Sign up</Link>
