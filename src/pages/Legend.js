@@ -1,13 +1,13 @@
 import React from 'react';
 
-const Legend = ({ populationData, colors }) => {
+const Legend = ({ populationData, opacity }) => {
   return (
     <div className="legend">
-      {colors.map((color, index) => (
+      {opacity.map((opacity, index) => (
         <div key={index}>
-          <span className="legend-color" style={{ backgroundColor: color }}></span>
+          <span className="legend-color" style={{ backgroundColor: 'orange', opacity: opacity }}></span>
           <span className="legend-label">
-            {populationData[index]} - {populationData[index + 1]}
+            {populationData[index]}
           </span>
         </div>
       ))}

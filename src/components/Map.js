@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "./../App.css";
 import Loading from "../pages/Loading";
@@ -11,34 +11,38 @@ import {
   TileLayer,
   GeoJSON,
   useMapEvents,
+  useMap,
 } from "react-leaflet"; //import react-leaflet packages
+import { getColorOpacity } from "../functions/getColorOpacity";
 
-function Map({ mapData }) {
+function Map({ mergedData }) {
   // Legends
-  const legendColors = ["#FF0000", "#FFA500", "#FFFF00", "#00FF00"]; // Example colors
-  const populationRanges = [1000, 10000, 50000, 100000]; // Example population ranges
-  const populationData = [0, 1000, 5000, 20000, 80000];
+  const opacity = [0, 0.2, 0.4, 0.6, 1]; // Example colors
+  const populationRanges = [0, 100, 1000, 2000, "2001+"]; // Example population ranges
 
   const maxBounds = L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180));
 
   const [countryData, setCountryData] = useState(["Philippines"]); //country data will go here
-  const locationStyle = {
-    weight: 1,
-    color: "rgb(107, 114, 128)",
-    fillColor: "orange",
-    fillOpacity: 1,
+  const locationStyle = (feature) => {
+    return {
+      fillColor: "orange",
+      weight: 1,
+      color: "black",
+      dashArray: "3",
+      fillOpacity: getColorOpacity(feature.properties.population),
+    };
   };
 
   const countryMouseOver = (event) => {
     event.target.setStyle({
-      fillColor: "rgba(125, 211, 252, 0.5)",
+      weight: 5,
     });
     event.target.openPopup();
   };
 
   const countryMouseOut = (event) => {
     event.target.setStyle({
-      fillColor: "white",
+      weight: 1,
     });
     event.target.closePopup();
   };
@@ -52,10 +56,18 @@ function Map({ mapData }) {
     }
   };
 
+  const initialBounds = [0, -0]
+  const mapRef = useRef();
+
+  const featureClicked = (event) => {
+    mapRef.current.fitBounds(event.target.getBounds());
+  };
+
+
   const onEachCountry = (country, layer) => {
     const countryName = country.properties.ADMIN;
-    const population = "'s (population data will go here)"; //Population Data
-    layer.bindPopup(`${countryName}${population}`, {
+    const population = country.properties.population; //Population Data
+    layer.bindPopup(`${countryName}: ${population}`, {
       closeButton: false,
       autoPan: false,
     });
@@ -63,6 +75,7 @@ function Map({ mapData }) {
       mouseover: countryMouseOver,
       mouseout: countryMouseOut,
       mousemove: movePopup, // Call the movePopup function on mousemove event
+      click: featureClicked,
     });
   };
 
@@ -111,9 +124,10 @@ function Map({ mapData }) {
       <div className="my-2 shadow">
         {/* Map Container, where all map the customizing goes... */}
         <MapContainer
-          center={[0, -0]}
+          center={initialBounds}
+          ref={mapRef}
           zoom={2}
-          scrollWheelZoom={false}
+          // scrollWheelZoom={false}
           style={{ height: "70vh", zIndex: 0 }}
           maxBounds={maxBounds} // Set the maxBounds option
           maxBoundsViscosity={1.0} // Adjust the viscosity as needed
@@ -128,12 +142,11 @@ function Map({ mapData }) {
                   url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
                   zIndex={0}
                   minZoom={2}
-                  style={{backgroundColor: 'orange'}}
                 />
 
                 <GeoJSON
                   style={locationStyle}
-                  data={mapData.features}
+                  data={mergedData.features}
                   onEachFeature={onEachCountry}
                 />
 
@@ -149,8 +162,8 @@ function Map({ mapData }) {
           {/* Here as you can see, I put a different tile layer (Carto maps) to continue customizing panes*/}
         </MapContainer>
         <Legend
-          populationData={populationData}
-          colors={legendColors}
+          populationData={populationRanges}
+          opacity={opacity}
           zIndex={10}
         />
       </div>

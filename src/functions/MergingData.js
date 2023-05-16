@@ -1,37 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import Map from '../components/Map';
 import jsonData from '../data/countries.json';
 import sampleDatabase from '../data/SampleDatabase';
+// import { getColorOpacity } from './getColorOpacity';
 
 const MyComponent = () => {
-  const [mergedData, setMergedData] = useState([]);
+  const [mergedData, setMergedData] = useState({type: "FeatureCollection", features: []});
+  const [isLoading, setIsLoading] = useState(true);
 
-  const getColorOpacity = (value) => {
-    let opacity = 1;
-  
-    if (value === 0) {
-      opacity = 0;
-    } else if (value >= 1 && value <= 100) {
-      opacity = 0.2;
-    } else if (value >= 101 && value <= 1000) {
-      opacity = 0.4;
-    } else if (value >= 1001 && value <= 2000) {
-      opacity = 0.6;
-    } else {
-      opacity = 1;
-    }    
-  
-    return opacity;
-  };
-
-  // Fetch or using axios
   const fetchPopulationData = async () => {
     try {
-      // Use axios or fetch the database here...
+      // Fetch or use axios to get the database here...
       // Code here...
 
-
-
-      // Merging the data in database with the json
+      // Merging the data in the database with the JSON
       const mergedData = jsonData.features.map((feature) => {
         const population = sampleDatabase.find(
           (data) => data.ADMIN === feature.properties.ADMIN
@@ -46,8 +28,12 @@ const MyComponent = () => {
         };
       });
 
-      setMergedData(mergedData);
-      console.log(mergedData);
+      const updatedMergedData = {
+        type: jsonData.type,
+        features: mergedData,
+      };
+      setMergedData(updatedMergedData);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching population data:', error);
     }
@@ -57,8 +43,14 @@ const MyComponent = () => {
     fetchPopulationData();
   }, []);
 
-  return mergedData;
-    
+  if (isLoading) {
+    return <div>Loading...</div>; // Display a loading state while data is being fetched
+  }
+
+  // Render the desired component with the merged data
+  return (
+    <button onClick={() => console.log(mergedData)}>look</button>
+  )
 };
 
 export default MyComponent;
