@@ -8,7 +8,7 @@ import Register from './pages/Register';
 function App() {
   return (
     <div className='main'>
-    <Dashboard />
+    <MapComponent />
     <div className='h-[700px]'></div>
   </div>
   );

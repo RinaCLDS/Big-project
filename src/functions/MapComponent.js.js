@@ -4,17 +4,14 @@ const getColorOpacity = (value) => {
   let opacity = 1;
 
   switch (true) {
-    case value < 100:
+    case value <= 100:
       opacity = 0.2;
       break;
-    case value < 1000:
+    case value >= 101 && value <= 1000:
       opacity = 0.4;
       break;
-    case value < 10000:
+    case value >= 1001 && value <= 2000:
       opacity = 0.6;
-      break;
-    case value < 100000:
-      opacity = 0.8;
       break;
     default:
       opacity = 1;
@@ -26,11 +23,11 @@ const getColorOpacity = (value) => {
 
 const MapComponent = () => {
   const casesData = [
-    { country: 'China', cases: 100000 },
+    { country: 'China', cases: 10000000 },
     { country: 'America', cases: 20 },
-    { country: 'Philippines', cases: 1000 },
-    { country: 'Brazil', cases: 300 },
-    { country: 'Korea', cases: 5000 },
+    { country: 'Philippines', cases: 1023 },
+    { country: 'Brazil', cases: 2003 },
+    { country: 'Korea', cases: 200 },
     // Add more cases data for other countries
   ];
 
@@ -40,7 +37,7 @@ const MapComponent = () => {
         <div
           key={data.country}
           style={{
-            backgroundColor: 'red',
+            backgroundColor: 'orange',
             opacity: getColorOpacity(data.cases),
             width: '100px',
             height: '100px',
@@ -50,6 +47,46 @@ const MapComponent = () => {
           {data.country}
         </div>
       ))}
+
+      <div style={{ marginTop: '20px' }}>
+        <h3>Legend:</h3>
+        <div>
+          <span
+            style={{
+              display: 'inline-block',
+              width: '20px',
+              height: '20px',
+              backgroundColor: 'orange',
+              opacity: 0.2,
+            }}
+          ></span>{' '}
+          Lighter Orange (Population &lt; 10,000)
+        </div>
+        <div>
+          <span
+            style={{
+              display: 'inline-block',
+              width: '20px',
+              height: '20px',
+              backgroundColor: 'orange',
+              opacity: 0.4,
+            }}
+          ></span>{' '}
+          Orange (10,000 &lt; Population &lt; 20,000)
+        </div>
+        <div>
+          <span
+            style={{
+              display: 'inline-block',
+              width: '20px',
+              height: '20px',
+              backgroundColor: 'orange',
+              opacity: 0.6,
+            }}
+          ></span>{' '}
+          Heavier Orange (20,000 &lt; Population &lt; 30,000)
+        </div>
+      </div>
     </div>
   );
 };
