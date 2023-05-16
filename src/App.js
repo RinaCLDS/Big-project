@@ -6,9 +6,10 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 function App() {
+  console.log(<MergingData/>);
   return (
     <div className='main'>
-    <MapComponent />
+    <MergingData />
     <div className='h-[700px]'></div>
   </div>
   );

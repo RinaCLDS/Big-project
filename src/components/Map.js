@@ -25,7 +25,7 @@ function Map({ mapData }) {
   const locationStyle = {
     weight: 1,
     color: "rgb(107, 114, 128)",
-    fillColor: "white",
+    fillColor: "orange",
     fillOpacity: 1,
   };
 
@@ -128,6 +128,7 @@ function Map({ mapData }) {
                   url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
                   zIndex={0}
                   minZoom={2}
+                  style={{backgroundColor: 'orange'}}
                 />
 
                 <GeoJSON
