@@ -4,8 +4,8 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { Tab, initTE } from "tw-elements";
-
-
+import { GrDocumentUpdate } from "react-icons/gr";
+import { ImProfile } from "react-icons/im";
 
 const Profile = () => {
   const get = (element) => document.querySelector(element);
@@ -17,21 +17,21 @@ const Profile = () => {
   const [user, setUser] = useState({});
   const new_cookies = new Cookies();
   const navigate = useNavigate();
-  
+
   const updateProfile = () => {
     const formData = new FormData();
-    const appendIfValid = (formData, key, selector)=> {
+    const appendIfValid = (formData, key, selector) => {
       const value = get(selector).value;
       if (value.split(" ").join("").length > 0) {
         formData.append(key, value);
       }
-    }
-    
+    };
+
     formData.append("token", token);
-    if (get("#profile").files[0] !== undefined){
+    if (get("#profile").files[0] !== undefined) {
       formData.append("profile_pic", get("#profile").files[0]);
     }
-    
+
     appendIfValid(formData, "name", "#name");
     appendIfValid(formData, "religion", "#religion");
     appendIfValid(formData, "state", "#state");
@@ -46,8 +46,11 @@ const Profile = () => {
     appendIfValid(formData, "email", "#email");
     appendIfValid(formData, "mobile_number", "#number");
 
-
-    console.log(get("#profile").files[0] === undefined, 'test', get("#religion").value.split(" ").join("").length);
+    console.log(
+      get("#profile").files[0] === undefined,
+      "test",
+      get("#religion").value.split(" ").join("").length
+    );
     axios
       .put(
         "https://gurjar-xndl7.ondigitalocean.app/gurjar/update_profile/",
@@ -59,26 +62,29 @@ const Profile = () => {
         }
       )
       .then((response) => {
-        if(response.data.valid){
+        if (response.data.valid) {
           alert("Profile Updated Successfully");
-          get("#profileImg").src = "https://gurjar-xndl7.ondigitalocean.app" + response.data.user.profile_pic;
-          get('#profileImg1').src = "https://gurjar-xndl7.ondigitalocean.app" + response.data.user.profile_pic;
-          get('#headName').innerHTML = response.data.user.name;
-          get('#profile').value = '';
-          get('#name').value = '';
-          get('#religion').value = '';
-          get('#state').value = '';
-          get('#city').value = '';
-          get('#village').value = '';
-          get('#nationality').value = '';
-          get('#gender').value = '';
-          get('#gotra').value = '';
-          get('#blood_group').value = '';
-          get('#date_of_birth').value = '';
-          get('#password').value = '';
-          get('#email').value = '';
-          get('#number').value = '';
-
+          get("#profileImg").src =
+            "https://gurjar-xndl7.ondigitalocean.app" +
+            response.data.user.profile_pic;
+          get("#profileImg1").src =
+            "https://gurjar-xndl7.ondigitalocean.app" +
+            response.data.user.profile_pic;
+          get("#headName").innerHTML = response.data.user.name;
+          get("#profile").value = "";
+          get("#name").value = "";
+          get("#religion").value = "";
+          get("#state").value = "";
+          get("#city").value = "";
+          get("#village").value = "";
+          get("#nationality").value = "";
+          get("#gender").value = "";
+          get("#gotra").value = "";
+          get("#blood_group").value = "";
+          get("#date_of_birth").value = "";
+          get("#password").value = "";
+          get("#email").value = "";
+          get("#number").value = "";
         }
         console.log(response);
       })
@@ -124,8 +130,8 @@ const Profile = () => {
           className="inline-block h-9 w-9 rounded-full ring-4 ring-transparent hover:ring-slate-800 cursor-pointer active:ring-transparent"
         >
           <img
-            id='profileImg1'
-            className="overflow-hidden rounded-full"
+            id="profileImg1"
+            className="border-2 border-indigo-500/75  overflow-hidden rounded-full"
             src={avatar}
             alt="avatar"
           />
@@ -201,7 +207,11 @@ const Profile = () => {
         <div class="min-h-screen mx-auto my-auto bg-white justify-center py-5 px-3 shadow rounded-lg xsm:px-4 sm:px-4">
           <form className="grid grid-rows-3 grid-cols-4 gap-4" method>
             <div className="row-span-3 col-span-1 ">
-              <img id='profileImg' src={avatar} class="w-56 h-56 rounded-full mx-auto"></img>
+              <img
+                id="profileImg"
+                src={avatar}
+                class="border-4 border-indigo-500/75 w-56 h-56 rounded-full mx-auto"
+              ></img>
               <tr>
                 <td class="px-2 py-2  xsm:px-0 text-gray-500 font-semibold">
                   Profile
@@ -213,7 +223,7 @@ const Profile = () => {
             </div>
 
             <div className="row-span-3 col-span-2">
-              <td id='headName' class="px-2 py-1 xsm:px-0 font-bold text-5xl">
+              <td id="headName" class="px-2 py-1 xsm:px-0 font-bold text-5xl">
                 {user.name}
               </td>
               <h6 className="text-gray-500">Gurjar ID</h6>
@@ -227,7 +237,7 @@ const Profile = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                 >
-                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                  <GrDocumentUpdate />
                 </svg>
                 <span onClick={updateProfile} href="#!">
                   Update
@@ -239,7 +249,7 @@ const Profile = () => {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                 >
-                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                  <ImProfile />
                 </svg>
                 <span>Card</span>
               </button>
@@ -298,11 +308,7 @@ const Profile = () => {
                             Name:
                           </td>
                           <td class="px-7 py-7  xsm:px-0 text-black mb-5 ">
-                            <input
-                              id="name"
-                              type="text"
-                              placeholder="Name"
-                            />
+                            <input id="name" type="text" placeholder="Name" />
                           </td>
                         </tr>
 
