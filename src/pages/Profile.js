@@ -307,6 +307,7 @@ const Profile = () => {
                         </tr>
                       </tbody>
                     </table>
+
                     <table class="text-2xl  col-span-1 row-span-2">
                       <tbody className="">
                         <tr>
