@@ -6,6 +6,7 @@ import { fadeIn } from "../variants";
 import { BiArrowBack } from "react-icons/bi";
 
 const Login = () => {
+  const get = (element) => document.querySelector(element) 
   const new_cookies = new Cookies();
   const currentDate = new Date();
   const expiresDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
@@ -48,6 +49,22 @@ const Login = () => {
       })
       .catch((error) => alert(error));
   };
+
+  const handleReset = async (e) => {
+    e.preventDefault()
+    const email = get('#ResetEmail').value
+    await axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/change_password/', {
+      'email': email
+    })
+    .then((response)=>{
+      if(response.data.valid){
+        alert('Password has been sent to your email')
+      } else {
+        alert('Email does not exist in Gurjar')
+      }
+    })
+    .catch((error)=>alert(error))
+  }
 
   return (
     <section
@@ -126,7 +143,7 @@ const Login = () => {
               <label for="email">
                 <p class="font-medium text-slate-700 pb-2">Email address</p>
                 <input
-                  id="email"
+                  id="ResetEmail"
                   name="email"
                   type="email"
                   class="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
@@ -134,7 +151,9 @@ const Login = () => {
                 />
               </label>
 
-              <button class="w-full py-3 font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg border-indigo-500 hover:shadow inline-flex space-x-2 items-center justify-center">
+              <button 
+              onClick={handleReset}
+              class="w-full py-3 font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg border-indigo-500 hover:shadow inline-flex space-x-2 items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
