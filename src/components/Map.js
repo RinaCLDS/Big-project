@@ -15,6 +15,8 @@ import {
 } from "react-leaflet"; //import react-leaflet packages
 import { getColorOpacity } from "../functions/getColorOpacity";
 
+
+
 function Map({ mergedData }) {
   // Legends
   const opacity = [0, 0.2, 0.4, 0.6, 1]; // Example colors
@@ -25,10 +27,9 @@ function Map({ mergedData }) {
   const [countryData, setCountryData] = useState(["Philippines"]); //country data will go here
   const locationStyle = (feature) => {
     return {
-      fillColor: "orange",
+      fillColor: "maroon",
       weight: 1,
-      color: "black",
-      dashArray: "3",
+      color: "#555",
       fillOpacity: getColorOpacity(feature.properties.population),
     };
   };
@@ -36,6 +37,7 @@ function Map({ mergedData }) {
   const countryMouseOver = (event) => {
     event.target.setStyle({
       weight: 5,
+      color: "#111",
     });
     event.target.openPopup();
   };
@@ -43,6 +45,7 @@ function Map({ mergedData }) {
   const countryMouseOut = (event) => {
     event.target.setStyle({
       weight: 1,
+      color: "#555",
     });
     event.target.closePopup();
   };
@@ -137,12 +140,15 @@ function Map({ mergedData }) {
               <Loading />
             ) : (
               <div>
+
                 <TileLayer
                   attribution='&copy; <a href="https://carto.com/">Carto</a> contributors'
                   url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
                   zIndex={0}
                   minZoom={2}
                 />
+
+              <Legend />
 
                 <GeoJSON
                   style={locationStyle}
@@ -161,11 +167,6 @@ function Map({ mergedData }) {
 
           {/* Here as you can see, I put a different tile layer (Carto maps) to continue customizing panes*/}
         </MapContainer>
-        <Legend
-          populationData={populationRanges}
-          opacity={opacity}
-          zIndex={10}
-        />
       </div>
 
       <button

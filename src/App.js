@@ -5,6 +5,7 @@ import MergingData from './functions/MergingData';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Legend from './pages/Legend';
 function App() {
   return (
     <div className='main'>
@@ -15,3 +16,6 @@ function App() {
 }
 
 export default App;
+
+
+
