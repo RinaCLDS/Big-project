@@ -1,19 +1,25 @@
-import {useRef} from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
 import html2canvas from "html2canvas";
-import { saveAs } from 'file-saver';
+import jsPDF from 'jspdf';
 
 export default function GurjarCard({avatar,data, visible, onClose }) {
   const get = (element) => document.querySelector(element);
   
   const downloadCard = () => {
     const gurjarCardUser = get('#gurjarCard');
-    html2canvas(gurjarCardUser, {allowTaint: true, useCORS: true})
-    .then(canvas => {
-
-      canvas.toBlob(blob => saveAs(blob, 'GurjarCard.png'))
-    })
+    // eslint-disable-next-line no-restricted-globals
+    print(gurjarCardUser);
+    // html2canvas(gurjarCardUser, {allowTaint: true, useCORS: true})
+    // .then(canvas => {
+    //   const imgData = canvas.toDataURL('image/png');
+    //   const pdf = new jsPDF();
+    //   const prop = pdf.getImageProperties(imgData);
+    //   const pdfWidth = pdf.internal.pageSize.getWidth();
+    //   const pdfHeight = (prop.height * pdfWidth) / prop.width;
+    //   pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    //   pdf.save(`${data.gurjar_id}-Card.pdf`);
+    // })
   }
 
   if (!visible) return null;
