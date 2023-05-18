@@ -1,8 +1,20 @@
-import React from "react";
+import {useRef} from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
+import html2canvas from "html2canvas";
+import { saveAs } from 'file-saver';
 
 export default function GurjarCard({avatar,data, visible, onClose }) {
+  const get = (element) => document.querySelector(element);
+  const gurjarCardUser = get('#gurjarCard');
+  const downloadCard = () => {
+    html2canvas(gurjarCardUser, {allowTaint: true, useCORS: true})
+    .then(canvas => {
+
+      canvas.toBlob(blob => saveAs(blob, 'GurjarCard.png'))
+    })
+  }
+
   if (!visible) return null;
 
   const handleOnClose = () => {
@@ -10,14 +22,14 @@ export default function GurjarCard({avatar,data, visible, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center ">
+    <div id='gurjarCard' className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center ">
       <div className="flex flex-col  w-89 h-50 justify-center p-6 shadow-md rounded-xl sm:px-12 border backg ">
-        <div className="lg:flex justify-end">
+        <div id='closeCard' className="lg:flex justify-end">
           <button onClick={handleOnClose}>
             <AiFillCloseCircle />{" "}
           </button>
         </div>
-        <img src={avatar} alt="No Image" className="w-32 h-32 mx-auto rounded-full bg-white aspect-square" />
+        <img src={avatar} alt="NoImage" className="w-32 h-32 mx-auto rounded-full bg-white aspect-square" />
         <div className="w-89 h-50 space-y-4 text-center divide-y divide-gray-700">
           <div className="my-2 space-y-1">
             <h2 id="name" className=" text-xl font-semibold sm:text-2xl">
@@ -58,7 +70,7 @@ export default function GurjarCard({avatar,data, visible, onClose }) {
               </p>
             </div>
           </div>
-          <div className="flex justify-end">
+          <div id="downloadCard" onClick={downloadCard} className="flex justify-end">
             <button>
               <FiDownload />
             </button>
