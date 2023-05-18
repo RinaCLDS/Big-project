@@ -11,23 +11,23 @@ function Legend() {
       div.innerHTML = `
   <h4 class="text-black">Legend Population</h4>
   <div class="legend-item">
-    <span class="legend-color" style="background-color: #3C6E27; opacity: 0"></span>
+    <span class="legend-color" style="background-color: #a52a2a; opacity: 0"></span>
     <span class="legend-label">0</span>
   </div>
   <div class="legend-item">
-    <span class="legend-color" style="background-color: #3C6E27; opacity: 0.2"></span>
+    <span class="legend-color" style="background-color: #a52a2a; opacity: 0.3"></span>
     <span class="legend-label">1 - 100</span>
   </div>
   <div class="legend-item">
-    <span class="legend-color" style="background-color: #3C6E27; opacity: 0.4"></span>
+    <span class="legend-color" style="background-color: #a52a2a; opacity: 0.4"></span>
     <span class="legend-label">101 - 1000</span>
   </div>
   <div class="legend-item">
-    <span class="legend-color" style="background-color: #3C6E27; opacity: 0.6"></span>
+    <span class="legend-color" style="background-color: #a52a2a; opacity: 0.6"></span>
     <span class="legend-label">1001 - 2000</span>
   </div>
   <div class="legend-item">
-    <span class="legend-color" style="background-color: #3C6E27; opacity: 0.8"></span>
+    <span class="legend-color" style="background-color: #a52a2a; opacity: 0.8"></span>
     <span class="legend-label">2000+</span>
   </div>
 `;

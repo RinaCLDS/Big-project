@@ -21,7 +21,7 @@ function Map({ mergedData }) {
   const [countryData, setCountryData] = useState(false); //country data will go here
   const locationStyle = (feature) => {
     return {
-      fillColor: "#3C6E27",
+      fillColor: "#a52a2acc",
       weight: 1,
       color: "#555",
       fillOpacity: getColorOpacity(feature.properties.population),
@@ -198,8 +198,8 @@ function Map({ mergedData }) {
             {countryData && (
               <div>
                 <TileLayer
-                  attribution='&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
-                  url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+                  url="https://api.maptiler.com/maps/basic-v2/{z}/{x}/{y}.png?key=FV1r2QcIKUsCze0nuxUg"
                   zIndex={0}
                   minZoom={2}
                 />
