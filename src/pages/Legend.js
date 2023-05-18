@@ -27,7 +27,7 @@ function Legend() {
     <span class="legend-label">1001 - 2000</span>
   </div>
   <div class="legend-item">
-    <span class="legend-color" style="background-color: #3C6E27; opacity: 1"></span>
+    <span class="legend-color" style="background-color: #3C6E27; opacity: 0.8"></span>
     <span class="legend-label">2000+</span>
   </div>
 `;

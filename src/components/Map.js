@@ -50,7 +50,7 @@ function Map({ mergedData }) {
       onAdd: function () {
         const container = L.DomUtil.create(
           "div",
-          "containerInfo bg-white shadow rounded-lg"
+          "containerInfo bg-white shadow-md rounded-lg"
         );
         L.DomUtil.create(
           "div",
@@ -126,10 +126,11 @@ function Map({ mergedData }) {
   };
 
   const onEachCountry = (country, layer) => {
-    // const countryName = country.properties.ADMIN;
+    // const countryUser = JSON.stringify(country);
+    // console.log(countryUser);
     // const population = country.properties.population; //Population Data
 
-    // layer.bindPopup(`${countryName} ${lookPopulation(population)}`, {
+    // layer.bindPopup(``, {
     //   closeButton: false,
     //   autoPan: false,
     // });
@@ -197,11 +198,45 @@ function Map({ mergedData }) {
             {countryData && (
               <div>
                 <TileLayer
-                  attribution='&copy; <a href="https://carto.com/">Carto</a> contributors'
-                  url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
+                  attribution='&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+                  url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   zIndex={0}
                   minZoom={2}
                 />
+                {mergedData.features.map((country) =>
+                  country.properties.users.map((user, key) => {
+                    // const [lng, lat] = country.geometry.coordinates[0][0]; // Get the first set of coordinates for the country const [lng, lat] = user.userCoordinates; // Access the coordinates correctly
+                    // const [lng, lat] = user.userCoordinates; // Access the coordinates correctly
+
+                    const { userName, userCoordinates, pictureSrc } = user; // Destructure the user object
+                   
+
+                    return (
+                      <Marker
+                        key={key}
+                        position={userCoordinates}
+                        icon={
+                          L.divIcon({
+                            className: "custom-icon",
+                            html: `<div></div><img class="rounded-full h-10 w-10 ring-white ring-2" src=${pictureSrc} />`,
+                        
+                            iconSize: [38, 95], // size of the icon
+                            shadowSize: [50, 64], // size of the shadow
+                            iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+                            shadowAnchor: [4, 62], // the same for the shadow
+                            popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+                          })
+                        }
+                      >
+                        <Popup className="custom-popup">
+                          <span>
+                            <b>{userName}</b>
+                          </span>
+                        </Popup>
+                      </Marker>
+                    );
+                  })
+                )}
 
                 <Legend />
                 <CountryNameControl />

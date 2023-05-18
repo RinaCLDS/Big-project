@@ -24,12 +24,14 @@ function Dashboard() {
         const population = sampleDatabase.find(
           (data) => data.ADMIN === feature.properties.ADMIN
         );
+        const users = population ? population.users : [];
 
         return {
           ...feature,
           properties: {
             ...feature.properties,
             population: population ? population.population : 0,
+            users: users
           },
         };
       });
