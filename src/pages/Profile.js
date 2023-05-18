@@ -8,6 +8,7 @@ import { GrDocumentUpdate } from "react-icons/gr";
 import { ImProfile } from "react-icons/im";
 
 const Profile = () => {
+  
   const get = (element) => document.querySelector(element);
   const [isOpen, setIsOpen] = useState(false);
   const [avatar, setAvatar] = useState(avatar_path);
@@ -48,11 +49,11 @@ const Profile = () => {
     appendIfValid(formData, "email", "#email");
     appendIfValid(formData, "mobile_number", "#number");
 
-    console.log(
-      get("#profile").files[0] === undefined,
-      "test",
-      get("#religion").value.split(" ").join("").length
-    );
+    // console.log(
+    //   get("#profile").files[0] === undefined,
+    //   "test",
+    //   get("#religion").value.split(" ").join("").length
+    // );
     axios
       .put(
         "https://gurjar-xndl7.ondigitalocean.app/gurjar/update_profile/",
@@ -76,7 +77,7 @@ const Profile = () => {
           get("#profile").value = "";
           get("#password").value = "";
         }
-        console.log(response);
+        // console.log(response);
       })
       .catch((error) => console.log(error));
   };
@@ -85,7 +86,6 @@ const Profile = () => {
     navigate("/");
   };
   const token = new_cookies.get("token");
-
   useEffect(() => {
     initTE({ Tab });
     if (token) {
@@ -94,7 +94,7 @@ const Profile = () => {
           token: token,
         })
         .then((response) => {
-          console.log("response", response);
+          // console.log("response", response);
           if (!response.data.valid) {
             new_cookies.remove("token", { path: "/" });
           } else {
@@ -245,8 +245,8 @@ const Profile = () => {
                 </button>
               </div>
 
-              <h6 className="text-gray-500">Gurjar ID</h6>
-              <h6 className="text-gray-500">Gurjar Points</h6>
+              <h6 className="text-gray-500">Gurjar ID: {user.gurjar_id}</h6>
+              <h6 className="text-gray-500">Gurjar Points: 1000</h6>
             </div>
 
             <div className="flex justify-end lg:items-end md:items-end space-x-2 lg:row-span-3 lg:col-span-1 md:row-span-3 md:col-span-1 row-span-4 col-span-3  "></div>
@@ -504,7 +504,7 @@ const Profile = () => {
                     className=" text-xl font-semibold sm:text-2xl"
                   ></h2>
                   <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                    Gurjar ID
+                    Gurjar ID: {user.gurjar_id}
                   </p>
                 </div>
                 <div className="pt-2 space-x-4 ">
@@ -516,25 +516,25 @@ const Profile = () => {
                   />
                   <div className="mb-4 space-y-3 grid grid-cols-2 grid-rows-2">
                     <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      State
+                      State: {user.state}
                     </p>
                     <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      Country
+                      Country: {user.nationality}
                     </p>
                     <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      City
+                      City: {user.city}
                     </p>
                     <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      Village
+                      Village: {user.village}
                     </p>
                     <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      Blood group
+                      Blood group: {user.blood_group}
                     </p>
                     <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      Birth date
+                      Birth date: {user.date_of_birth}
                     </p>
                     <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      Gotra
+                      Gotra: {user.gotra}
                     </p>
                   </div>
                 </div>
