@@ -6,8 +6,9 @@ import { saveAs } from 'file-saver';
 
 export default function GurjarCard({avatar,data, visible, onClose }) {
   const get = (element) => document.querySelector(element);
-  const gurjarCardUser = get('#gurjarCard');
+  
   const downloadCard = () => {
+    const gurjarCardUser = get('#gurjarCard');
     html2canvas(gurjarCardUser, {allowTaint: true, useCORS: true})
     .then(canvas => {
 
