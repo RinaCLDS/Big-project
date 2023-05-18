@@ -1,7 +1,7 @@
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
 import html2canvas from "html2canvas";
-import jsPDF from 'jspdf';
+// import jsPDF from 'jspdf';
 
 export default function GurjarCard({avatar,data, visible, onClose }) {
   const get = (element) => document.querySelector(element);
