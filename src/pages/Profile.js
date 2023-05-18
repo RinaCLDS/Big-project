@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { Tab, initTE } from "tw-elements";
 import { GrDocumentUpdate } from "react-icons/gr";
 import { ImProfile } from "react-icons/im";
+import GurjarCard from "./GurjarCard";
 
 const Profile = () => {
-  
   const get = (element) => document.querySelector(element);
   const [isOpen, setIsOpen] = useState(false);
   const [avatar, setAvatar] = useState(avatar_path);
@@ -49,11 +49,6 @@ const Profile = () => {
     appendIfValid(formData, "email", "#email");
     appendIfValid(formData, "mobile_number", "#number");
 
-    // console.log(
-    //   get("#profile").files[0] === undefined,
-    //   "test",
-    //   get("#religion").value.split(" ").join("").length
-    // );
     axios
       .put(
         "https://gurjar-xndl7.ondigitalocean.app/gurjar/update_profile/",
@@ -123,6 +118,10 @@ const Profile = () => {
       navigate("/");
     }
   }, [navigate]);
+
+  const [showGurjarCard, setGurjarCard] = useState(false);
+  const handleOnClose = () => setGurjarCard(false);
+
   return (
     <div className="min-h-screen backg mx-auto">
       <div className="flex justify-between items-center px-7 py-2 bg-gray-900 text-gray-50 shadow">
@@ -233,7 +232,10 @@ const Profile = () => {
                 <p id="headName" class="px-2 py-1 xsm:px-0 font-bold text-5xl">
                   {user.name}
                 </p>
-                <button class=" bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                <button
+                  onClick={() => setGurjarCard(true)}
+                  class=" bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+                >
                   <svg
                     class="fill-current w-4 h-4 mr-2"
                     xmlns="http://www.w3.org/2000/svg"
@@ -492,54 +494,7 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="flex flex-col  w-89 h-50 justify-center p-6 shadow-md rounded-xl sm:px-12  ">
-              <img
-                src={avatar}
-                className="w-32 h-32 mx-auto rounded-full bg-white aspect-square"
-              />
-              <div className="w-89 h-50 space-y-4 text-center divide-y divide-gray-700">
-                <div className="my-2 space-y-1">
-                  <h2
-                    id="name"
-                    className=" text-xl font-semibold sm:text-2xl"
-                  ></h2>
-                  <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                    Gurjar ID: {user.gurjar_id}
-                  </p>
-                </div>
-                <div className="pt-2 space-x-4 ">
-                  <a
-                    rel="noopener noreferrer"
-                    href="#"
-                    aria-label="GitHub"
-                    className="p-2 rounded-md text-white"
-                  />
-                  <div className="mb-4 space-y-3 grid grid-cols-2 grid-rows-2">
-                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      State: {user.state}
-                    </p>
-                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      Country: {user.nationality}
-                    </p>
-                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      City: {user.city}
-                    </p>
-                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      Village: {user.village}
-                    </p>
-                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      Blood group: {user.blood_group}
-                    </p>
-                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      Birth date: {user.date_of_birth}
-                    </p>
-                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                      Gotra: {user.gotra}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <GurjarCard onClose={handleOnClose} visible={showGurjarCard} />
           </form>
         </div>
       </div>
