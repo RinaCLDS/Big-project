@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { motion } from "framer-motion";
@@ -6,6 +7,7 @@ import { fadeIn } from "../variants";
 import { BiArrowBack } from "react-icons/bi";
 
 const Login = () => {
+  const [open, setOpen] = useState(false);
   const get = (element) => document.querySelector(element) 
   const new_cookies = new Cookies();
   const currentDate = new Date();
@@ -65,7 +67,21 @@ const Login = () => {
     })
     .catch((error)=>alert(error))
   }
+  const handleOpen = () => {
+    setOpen(!open);
+    
+  }
+  useEffect(() => {
+    if (open) {
+      get(".loginAccount").classList.add("hidden");
+      get(".resetPassword").classList.remove("hidden");
+    } else {
+      get(".loginAccount").classList.remove("hidden");
+      get(".resetPassword").classList.add("hidden");
+    }
 
+  })
+  
   return (
     <section
       className="min-h-screen sm:p-25 flex flex-col justify-center backg"
@@ -76,9 +92,9 @@ const Login = () => {
         initial="hidden"
         whileInView={"show"}
         viewport={{ once: false, amount: 0.4 }}
-        className="flex container mx-auto max-w-sm "
+        className="flex container mx-auto max-w-sm"
       >
-        <div className="flex flex-col hidden">
+        <div className="flex flex-col loginAccount">
           <form
             onSubmit={handleSubmit}
             className="flex-1 place-self-center border border-4 rounded-lg flex flex-col gap-y-6 pb-24 p-6 mt-4 "
@@ -104,9 +120,9 @@ const Login = () => {
             />
             <span className=" text-black">
               forgot password?{" "}
-              <Link className="text-accent" to="/register">
+              <a onClick={handleOpen} className="text-accent" href="#!">
                 reset password
-              </Link>
+              </a>
             </span>
             <button
               type="submit"
@@ -128,12 +144,12 @@ const Login = () => {
           initial="hidden"
           whileInView={"show"}
           viewport={{ once: false, amount: 0.4 }}
-          class="max-w-lg mx-auto my-10 bg-white p-8 rounded-xl shadow shadow-slate-300 text-black "
+          class="max-w-lg mx-auto my-10 bg-white p-8 rounded-xl shadow shadow-slate-300 text-black resetPassword hidden"
         >
           <span className=" text-black">
-            <Link className="text-accent" to="/login">
+            <a href="#!" className="text-accent" onClick={handleOpen}>
               <BiArrowBack />
-            </Link>
+            </a>
           </span>
           <h1 class="text-4xl font-medium">Reset password</h1>
           <p class="text-slate-500">Fill up the form to reset the password</p>

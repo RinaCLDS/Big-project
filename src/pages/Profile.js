@@ -14,11 +14,13 @@ const Profile = () => {
   const openDropdown = () => {
     setIsOpen((prev) => !prev);
   };
+  const formSubmit = (e) => e.preventDefault();
   const [user, setUser] = useState({});
   const new_cookies = new Cookies();
   const navigate = useNavigate();
 
-  const updateProfile = () => {
+  const updateProfile = (e) => {
+    e.preventDefault();
     const formData = new FormData();
     const appendIfValid = (formData, key, selector) => {
       const value = get(selector).value;
@@ -72,19 +74,7 @@ const Profile = () => {
             response.data.user.profile_pic;
           get("#headName").innerHTML = response.data.user.name;
           get("#profile").value = "";
-          get("#name").value = "";
-          get("#religion").value = "";
-          get("#state").value = "";
-          get("#city").value = "";
-          get("#village").value = "";
-          get("#nationality").value = "";
-          get("#gender").value = "";
-          get("#gotra").value = "";
-          get("#blood_group").value = "";
-          get("#date_of_birth").value = "";
-          get("#password").value = "";
-          get("#email").value = "";
-          get("#number").value = "";
+          get('#password').value = ''
         }
         console.log(response);
       })
@@ -108,6 +98,19 @@ const Profile = () => {
           if (!response.data.valid) {
             new_cookies.remove("token", { path: "/" });
           } else {
+            get('#name').value = response.data.user.name
+            get('#religion').value = response.data.user.religion
+            get('#state').value = response.data.user.state
+            get('#city').value = response.data.user.city
+            get('#village').value = response.data.user.village
+            get('#nationality').value = response.data.user.nationality
+            get('#gender').value = response.data.user.gender
+            get('#gotra').value = response.data.user.gotra
+            get('#blood_group').value = response.data.user.blood_group
+            get('#date_of_birth').value = response.data.user.date_of_birth
+            get('#email').value = response.data.user.email
+            get('#number').value = response.data.user.mobile_number
+
             setUser(response.data.user);
             setAvatar(
               "https://gurjar-xndl7.ondigitalocean.app" +
@@ -205,7 +208,7 @@ const Profile = () => {
 
       <div className="text-black px-5 py-4">
         <div class="min-h-screen mx-auto my-auto bg-white justify-center py-5 px-3 shadow rounded-lg xsm:px-4 sm:px-4">
-          <form className="grid grid-rows-3 grid-cols-4 gap-4" method>
+          <form onSubmit={formSubmit} className="grid grid-rows-3 grid-cols-4 gap-4">
             <div className="row-span-3 col-span-1 ">
               <img
                 id="profileImg"
