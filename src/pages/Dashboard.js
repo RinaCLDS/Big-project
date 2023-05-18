@@ -9,7 +9,9 @@ import TopNavigationBar from "../components/TopNavigationBar";
 import Loading from "./Loading";
 
 function Dashboard() {
-  const [mergedData, setMergedData] = useState([{type: "FeatureCollection", features: []}]);
+  const [mergedData, setMergedData] = useState([
+    { type: "FeatureCollection", features: [] },
+  ]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchPopulationData = async () => {
@@ -22,12 +24,14 @@ function Dashboard() {
         const population = sampleDatabase.find(
           (data) => data.ADMIN === feature.properties.ADMIN
         );
+        const users = population ? population.users : [];
 
         return {
           ...feature,
           properties: {
             ...feature.properties,
             population: population ? population.population : 0,
+            users: users
           },
         };
       });
@@ -56,9 +60,9 @@ function Dashboard() {
       {/* Content */}
       <div className="container mx-auto max-w-5xl">
         {/* MAP */}
-        <Map 
-          // mapData={mapData} 
-          mergedData={mergedData} 
+        <Map
+          // mapData={mapData}
+          mergedData={mergedData}
         />
 
         {/* User */}
@@ -66,7 +70,6 @@ function Dashboard() {
 
         {/* Map Details */}
         <TableData />
-        <button onClick={() => console.log(mergedData)} >look</button>
       </div>
     </div>
   );

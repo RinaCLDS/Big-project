@@ -10,7 +10,7 @@ export const getColorOpacity = (value) => {
     } else if (value >= 1001 && value <= 2000) {
       opacity = 0.6;
     } else {
-      opacity = 1;
+      opacity = 0.8;
     }    
   
     return opacity;

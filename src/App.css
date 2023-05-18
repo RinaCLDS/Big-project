@@ -44,5 +44,9 @@
   font-size: 12px;
 }
 
+.custom-popup .leaflet-popup-close-button {
+  display: none;
+}
+
 
 

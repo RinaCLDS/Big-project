@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import L from "leaflet";
+import L, { Control } from "leaflet";
 import "./../App.css";
 import Loading from "../pages/Loading";
 import Legend from "../pages/Legend";
@@ -15,23 +15,68 @@ import {
 } from "react-leaflet"; //import react-leaflet packages
 import { getColorOpacity } from "../functions/getColorOpacity";
 
-
-
 function Map({ mergedData }) {
-  // Legends
-  const opacity = [0, 0.2, 0.4, 0.6, 1]; // Example colors
-  const populationRanges = [0, 100, 1000, 2000, "2001+"]; // Example population ranges
-
   const maxBounds = L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180));
 
-  const [countryData, setCountryData] = useState(["Philippines"]); //country data will go here
+  const [countryData, setCountryData] = useState(false); //country data will go here
   const locationStyle = (feature) => {
     return {
-      fillColor: "maroon",
+      fillColor: "#3C6E27",
       weight: 1,
       color: "#555",
       fillOpacity: getColorOpacity(feature.properties.population),
     };
+  };
+
+  const handleCountryHover = (countryName, population, opacity) => {
+    const container = document.querySelector(".containerInfo");
+    const nameElement = document.querySelector(".country-name");
+    const populationElement = document.querySelector(".country-population");
+    container.style.opacity = opacity;
+    nameElement.innerHTML = `<b>${countryName}</b>`;
+
+    if (population === 0) {
+      populationElement.innerHTML = null;
+      populationElement.style.padding = 0;
+    } else {
+      populationElement.innerHTML = `<b>Population</b>: ${population}`;
+      populationElement.style.padding = "10px";
+    }
+  };
+  const CountryNameControl = () => {
+    const map = useMap();
+
+    const CountryName = Control.extend({
+      onAdd: function () {
+        const container = L.DomUtil.create(
+          "div",
+          "containerInfo bg-white shadow-md rounded-lg"
+        );
+        L.DomUtil.create(
+          "div",
+          "country-name text-center bg-[#863049] text-white rounded-lg shadow p-3",
+          container
+        );
+        L.DomUtil.create(
+          "div",
+          "country-population text-center text-black p-3",
+          container
+        );
+        container.style.opacity = 0;
+        return container;
+      },
+    });
+
+    map.eachLayer((layer) => {
+      if (layer instanceof CountryName) {
+        map.removeControl(layer);
+      }
+    });
+
+    const countryNameControl = new CountryName({ position: "topright" });
+    countryNameControl.addTo(map);
+
+    return null;
   };
 
   const countryMouseOver = (event) => {
@@ -40,6 +85,11 @@ function Map({ mergedData }) {
       color: "#111",
     });
     event.target.openPopup();
+    handleCountryHover(
+      event.target.feature.properties.ADMIN,
+      event.target.feature.properties.population,
+      1
+    );
   };
 
   const countryMouseOut = (event) => {
@@ -48,6 +98,7 @@ function Map({ mergedData }) {
       color: "#555",
     });
     event.target.closePopup();
+    handleCountryHover("", "", 0);
   };
 
   const movePopup = (event) => {
@@ -59,21 +110,30 @@ function Map({ mergedData }) {
     }
   };
 
-  const initialBounds = [0, -0]
+  const initialBounds = [0, -0];
   const mapRef = useRef();
 
   const featureClicked = (event) => {
     mapRef.current.fitBounds(event.target.getBounds());
   };
 
+  const lookPopulation = (population) => {
+    if (population === 0) {
+      return "";
+    } else {
+      return population;
+    }
+  };
 
   const onEachCountry = (country, layer) => {
-    const countryName = country.properties.ADMIN;
-    const population = country.properties.population; //Population Data
-    layer.bindPopup(`${countryName}: ${population}`, {
-      closeButton: false,
-      autoPan: false,
-    });
+    // const countryUser = JSON.stringify(country);
+    // console.log(countryUser);
+    // const population = country.properties.population; //Population Data
+
+    // layer.bindPopup(``, {
+    //   closeButton: false,
+    //   autoPan: false,
+    // });
     layer.on({
       mouseover: countryMouseOver,
       mouseout: countryMouseOut,
@@ -89,10 +149,6 @@ function Map({ mergedData }) {
   const handleLocationFound = () => {
     setIsEnabledLocation(false);
   };
-
-  // const map = useMapEvents(
-  //   console.log(map.locate())
-  // )
 
   const [isLocationEnabled, setIsEnabledLocation] = useState(false);
   const FindCurrentLocation = ({ isEnabled, onLocationFound }) => {
@@ -121,6 +177,9 @@ function Map({ mergedData }) {
       </Marker>
     );
   };
+  useEffect(() => {
+    setCountryData(true);
+  }, []);
 
   return (
     <div>
@@ -136,19 +195,51 @@ function Map({ mergedData }) {
           maxBoundsViscosity={1.0} // Adjust the viscosity as needed
         >
           <div>
-            {countryData.length === 0 ? (
-              <Loading />
-            ) : (
+            {countryData && (
               <div>
-
                 <TileLayer
-                  attribution='&copy; <a href="https://carto.com/">Carto</a> contributors'
-                  url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
+                  attribution='&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+                  url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   zIndex={0}
                   minZoom={2}
                 />
+                {mergedData.features.map((country) =>
+                  country.properties.users.map((user, key) => {
+                    // const [lng, lat] = country.geometry.coordinates[0][0]; // Get the first set of coordinates for the country const [lng, lat] = user.userCoordinates; // Access the coordinates correctly
+                    // const [lng, lat] = user.userCoordinates; // Access the coordinates correctly
 
-              <Legend />
+                    const { userName, userCoordinates, pictureSrc } = user; // Destructure the user object
+                   
+
+                    return (
+                      <Marker
+                        key={key}
+                        position={userCoordinates}
+                        icon={
+                          L.divIcon({
+                            className: "custom-icon",
+                            html: `<div></div><img class="rounded-full h-10 w-10 ring-white ring-2" src=${pictureSrc} />`,
+                        
+                            iconSize: [38, 95], // size of the icon
+                            shadowSize: [50, 64], // size of the shadow
+                            iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+                            shadowAnchor: [4, 62], // the same for the shadow
+                            popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+                          })
+                        }
+                      >
+                        <Popup className="custom-popup">
+                          <span>
+                            <b>{userName}</b>
+                          </span>
+                        </Popup>
+                      </Marker>
+                    );
+                  })
+                )}
+
+                <Legend />
+                <CountryNameControl />
 
                 <GeoJSON
                   style={locationStyle}
@@ -170,7 +261,7 @@ function Map({ mergedData }) {
       </div>
 
       <button
-        className="bg-blue-800 text-gray-50 rounded-lg p-2 w-full mb-10 shadow"
+        className="bg-[#863049] text-gray-50 rounded-lg p-2 w-full mb-10 shadow"
         onClick={handleFindLocation}
       >
         Find Current Location
