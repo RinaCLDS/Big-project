@@ -494,7 +494,7 @@ const Profile = () => {
               </div>
             </div>
 
-            <GurjarCard onClose={handleOnClose} visible={showGurjarCard} />
+            <GurjarCard avatar={avatar} data={user} onClose={handleOnClose} visible={showGurjarCard} />
           </form>
         </div>
       </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
 
-export default function GurjarCard({ visible, onClose }) {
+export default function GurjarCard({avatar,data, visible, onClose }) {
   if (!visible) return null;
 
   const handleOnClose = () => {
@@ -17,14 +17,14 @@ export default function GurjarCard({ visible, onClose }) {
             <AiFillCloseCircle />{" "}
           </button>
         </div>
-        <img className="w-32 h-32 mx-auto rounded-full bg-white aspect-square" />
+        <img src={avatar} alt="No Image" className="w-32 h-32 mx-auto rounded-full bg-white aspect-square" />
         <div className="w-89 h-50 space-y-4 text-center divide-y divide-gray-700">
           <div className="my-2 space-y-1">
             <h2 id="name" className=" text-xl font-semibold sm:text-2xl">
-              Name
+              Name: {data.name}
             </h2>
             <p className="px-5 text-xs sm:text-base dark:text-white-400">
-              Gurjar ID:
+              Gurjar ID: {data.gurjar_id}
             </p>
           </div>
           <div className="pt-2 space-x-4 ">
@@ -36,25 +36,25 @@ export default function GurjarCard({ visible, onClose }) {
             />
             <div className="mb-4 space-y-3 grid grid-cols-2 grid-rows-2">
               <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                State:
+                State: {data.state}
               </p>
               <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                Country:
+                Country: {data.nationality}
               </p>
               <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                City:
+                City: {data.city}
               </p>
               <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                Village:
+                Village: {data.village}
               </p>
               <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                Blood group:
+                Blood group: {data.blood_group}
               </p>
               <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                Birth date:
+                Birth date: {data.date_of_birth}
               </p>
               <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                Gotra:
+                Gotra: {data.gotra}
               </p>
             </div>
           </div>
