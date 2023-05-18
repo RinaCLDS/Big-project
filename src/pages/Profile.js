@@ -74,7 +74,7 @@ const Profile = () => {
             response.data.user.profile_pic;
           get("#headName").innerHTML = response.data.user.name;
           get("#profile").value = "";
-          get('#password').value = ''
+          get("#password").value = "";
         }
         console.log(response);
       })
@@ -98,18 +98,18 @@ const Profile = () => {
           if (!response.data.valid) {
             new_cookies.remove("token", { path: "/" });
           } else {
-            get('#name').value = response.data.user.name
-            get('#religion').value = response.data.user.religion
-            get('#state').value = response.data.user.state
-            get('#city').value = response.data.user.city
-            get('#village').value = response.data.user.village
-            get('#nationality').value = response.data.user.nationality
-            get('#gender').value = response.data.user.gender
-            get('#gotra').value = response.data.user.gotra
-            get('#blood_group').value = response.data.user.blood_group
-            get('#date_of_birth').value = response.data.user.date_of_birth
-            get('#email').value = response.data.user.email
-            get('#number').value = response.data.user.mobile_number
+            get("#name").value = response.data.user.name;
+            get("#religion").value = response.data.user.religion;
+            get("#state").value = response.data.user.state;
+            get("#city").value = response.data.user.city;
+            get("#village").value = response.data.user.village;
+            get("#nationality").value = response.data.user.nationality;
+            get("#gender").value = response.data.user.gender;
+            get("#gotra").value = response.data.user.gotra;
+            get("#blood_group").value = response.data.user.blood_group;
+            get("#date_of_birth").value = response.data.user.date_of_birth;
+            get("#email").value = response.data.user.email;
+            get("#number").value = response.data.user.mobile_number;
 
             setUser(response.data.user);
             setAvatar(
@@ -124,7 +124,7 @@ const Profile = () => {
     }
   }, [navigate]);
   return (
-    <div className="min-h-screen backg mx-auto ">
+    <div className="min-h-screen backg mx-auto">
       <div className="flex justify-between items-center px-7 py-2 bg-gray-900 text-gray-50 shadow">
         <div className="font-bold tracking-wider ">Gurjar.</div>
 
@@ -193,7 +193,6 @@ const Profile = () => {
               aria-orientation="vertical"
               aria-labelledby="options-menu"
             >
-              {/* Add your dropdown options here */}
               <button
                 onClick={logout}
                 className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-gray-100 hover:text-gray-900"
@@ -206,61 +205,55 @@ const Profile = () => {
         )}
       </div>
 
-      <div className="text-black px-5 py-4">
-        <div class="min-h-screen mx-auto my-auto bg-white justify-center py-5 px-3 shadow rounded-lg xsm:px-4 sm:px-4">
-          <form onSubmit={formSubmit} className="grid grid-rows-3 grid-cols-4 gap-4">
-            <div className="row-span-3 col-span-1 ">
+      <div className="text-black sm:px-5 sm:py-4 xsm:px-5 xsm:py-4 md:px-9 md:py-9 lg:px-9 lg:py-9">
+        <div class="min-h-screen mx-auto  justify-center py-5 px-3 shadow rounded-lg  xsm:px-4 sm:px-4">
+          <form
+            onSubmit={formSubmit}
+            className="min-h-screen mx-auto my-auto justify-center py-5 px-3 grid lg:grid-rows-3 lg:grid-cols-4 md:grid-rows-3 md:grid-cols-4 grid-rows-4 grid-cols-1  gap-4"
+          >
+            <div className=" lg:row-span-3 lg:col-span-1 md:row-span-3 md:col-span-1 row-span-4 col-span-3 ">
               <img
                 id="profileImg"
                 src={avatar}
                 class="border-4 border-indigo-500/75 w-56 h-56 rounded-full mx-auto"
               ></img>
               <tr>
-                <td class="px-2 py-2  xsm:px-0 text-gray-500 font-semibold">
-                  Profile
-                </td>
                 <td class="px-2 py-2  xsm:px-0 text-black">
-                  <input type="file" id="profile" />
+                  <input
+                    className="flex justify-center items-center "
+                    type="file"
+                    id="profile"
+                  />
                 </td>
               </tr>
             </div>
 
-            <div className="row-span-3 col-span-2">
-              <td id="headName" class="px-2 py-1 xsm:px-0 font-bold text-5xl">
-                {user.name}
-              </td>
+            <div className=" lg:row-span-3 lg:col-span-3 md:row-span-2 md:col-span-3  row-span-4 col-span-3 ">
+              <div className="lg:flex justify-between">
+                <p id="headName" class="px-2 py-1 xsm:px-0 font-bold text-5xl">
+                  {user.name}
+                </p>
+                <button class=" bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                  <svg
+                    class="fill-current w-4 h-4 mr-2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <ImProfile />
+                  </svg>
+                  <span>Gurjar Card</span>
+                </button>
+              </div>
+
               <h6 className="text-gray-500">Gurjar ID</h6>
               <h6 className="text-gray-500">Gurjar Points</h6>
             </div>
 
-            <div className="row-span-3 col-span-1 space-x-4 ">
-              <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center top-0 right-0">
-                <svg
-                  class="fill-current w-4 h-4 mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <GrDocumentUpdate />
-                </svg>
-                <span onClick={updateProfile} href="#!">
-                  Update
-                </span>
-              </button>
-              <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-                <svg
-                  class="fill-current w-4 h-4 mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <ImProfile />
-                </svg>
-                <span>Card</span>
-              </button>
-            </div>
+            <div className="flex justify-end lg:items-end md:items-end space-x-2 lg:row-span-3 lg:col-span-1 md:row-span-3 md:col-span-1 row-span-4 col-span-3  "></div>
 
-            <div className="row-span-2 col-span-1 space-x-4"></div>
+            <div className=" row-span-2 col-span-1"></div>
 
-            <div className="row-span-3 col-span-3 border-double border-4 border-black rounded-md">
+            <div className="bg-white row-span-3 col-span-3 border-double border-4 border-black rounded-md">
               <ul
                 class="mb-5 flex list-none flex-row flex-wrap border-b-0 pl-0  "
                 role="tablist"
@@ -295,31 +288,31 @@ const Profile = () => {
                 </li>
               </ul>
 
-              <div class="mb-6 ">
+              <div class="mb-2 ">
                 <div
-                  class=" hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+                  class=" lg:px-5 md:px-5 px-0 hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
                   id="tabs-home01"
                   role="tabpanel"
                   aria-labelledby="tabs-home-tab01"
                   data-te-tab-active
                 >
-                  <div class=" p-2 grid grid-rows-2 grid-cols-2 text-xl ">
-                    <table className="col-span-1 row-span-2 text-2xl ">
+                  <div class="grid lg:grid-rows-2 lg:grid-cols-2 md:grid-rows-2 md:grid-cols-2 grid-rows-1 grid-cols-1  text-xl ">
+                    <table className="lg:col-span-1 lg:row-span-2 md:col-span-1 md:row-span-2 col-span-1 row-span-2  lg:text-2xl md:text-2xl text-sm ">
                       <tbody>
                         <tr>
-                          <td class="px-7 py-7  xsm:px-0 text-gray-500 font-semibold mb-5 mr-5">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold mb-5 mr-5">
                             Name:
                           </td>
-                          <td class="px-7 py-7  xsm:px-0 text-black mb-5 ">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1  xsm:px-0 text-black mb-5 ">
                             <input id="name" type="text" placeholder="Name" />
                           </td>
                         </tr>
 
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Religion:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Catholic"
@@ -328,26 +321,26 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             State:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7  py-1 xsm:px-0 text-black">
                             <input type="text" placeholder="State" id="state" />
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             City:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input type="text" placeholder="City" id="city" />
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Village:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Village"
@@ -358,13 +351,13 @@ const Profile = () => {
                       </tbody>
                     </table>
 
-                    <table class="text-2xl  col-span-1 row-span-2">
+                    <table class="text-2xl  col-span-1 row-span-2 lg:text-2xl md:text-2xl text-sm">
                       <tbody className="">
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class=" lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Nationality:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Filipino"
@@ -373,10 +366,10 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Gender:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Gender"
@@ -385,18 +378,18 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
-                            Gotra
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
+                            Gotra:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input type="text" placeholder="Gotra" id="gotra" />
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
-                            Blood group
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
+                            Blood group:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Blood group"
@@ -405,10 +398,10 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
-                            Date of birth
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
+                            Birth date:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1  xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Birth of Date"
@@ -427,25 +420,25 @@ const Profile = () => {
                   aria-labelledby="tabs-profile-tab01"
                 >
                   <div class=" p-2 grid grid-rows-2 grid-cols-2 text-xl ">
-                    <table className="col-span-1 row-span-2 text-2xl ">
+                    <table className="col-span-1 row-span-2 text-2xl lg:text-2xl md:text-2xl text-sm">
                       <tbody>
                         <tr>
-                          <td class="px-7 py-7  xsm:px-0 text-gray-500 font-semibold mb-5 mr-5">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 px-8  xsm:px-0 text-black-500 font-semibold">
                             Username:
                           </td>
-                          <td class="px-7 py-7  xsm:px-0 text-black mb-5 ">
+                          <p class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1  xsm:px-0 text-black ">
                             <input
                               id="Username"
                               type="text"
                               placeholder="Gurjar ID"
                             />
-                          </td>
+                          </p>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Password:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="password"
@@ -454,10 +447,10 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Email:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Gurjarweb@gmail.com"
@@ -466,10 +459,10 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0  text-black-500 font-semibold">
                             Number:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="+639666972501"
@@ -479,6 +472,70 @@ const Profile = () => {
                         </tr>
                       </tbody>
                     </table>
+                  </div>
+                </div>
+
+                <div className="flex justify-end px-3">
+                  <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold lg:py-2 lg:px-4 md:py-2 md:px-4 py-1 px-2 rounded inline-flex items-center top-0 right-0">
+                    <svg
+                      class="fill-current w-4 h-4 mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <GrDocumentUpdate />
+                    </svg>
+                    <span onClick={updateProfile} href="#!">
+                      Save
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col  w-89 h-50 justify-center p-6 shadow-md rounded-xl sm:px-12  ">
+              <img
+                src={avatar}
+                className="w-32 h-32 mx-auto rounded-full bg-white aspect-square"
+              />
+              <div className="w-89 h-50 space-y-4 text-center divide-y divide-gray-700">
+                <div className="my-2 space-y-1">
+                  <h2
+                    id="name"
+                    className=" text-xl font-semibold sm:text-2xl"
+                  ></h2>
+                  <p className="px-5 text-xs sm:text-base dark:text-white-400">
+                    Gurjar ID
+                  </p>
+                </div>
+                <div className="pt-2 space-x-4 ">
+                  <a
+                    rel="noopener noreferrer"
+                    href="#"
+                    aria-label="GitHub"
+                    className="p-2 rounded-md text-white"
+                  />
+                  <div className="mb-4 space-y-3 grid grid-cols-2 grid-rows-2">
+                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
+                      State
+                    </p>
+                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
+                      Country
+                    </p>
+                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
+                      City
+                    </p>
+                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
+                      Village
+                    </p>
+                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
+                      Blood group
+                    </p>
+                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
+                      Birth date
+                    </p>
+                    <p className="px-5 text-xs sm:text-base dark:text-white-400">
+                      Gotra
+                    </p>
                   </div>
                 </div>
               </div>
