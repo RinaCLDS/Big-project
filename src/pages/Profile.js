@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Tab, initTE } from "tw-elements";
 import { GrDocumentUpdate } from "react-icons/gr";
 import { ImProfile } from "react-icons/im";
+import GurjarCard from "../modal/GurjarCard";
 
 const Profile = () => {
   const get = (element) => document.querySelector(element);
@@ -14,11 +15,13 @@ const Profile = () => {
   const openDropdown = () => {
     setIsOpen((prev) => !prev);
   };
+  const formSubmit = (e) => e.preventDefault();
   const [user, setUser] = useState({});
   const new_cookies = new Cookies();
   const navigate = useNavigate();
 
-  const updateProfile = () => {
+  const updateProfile = (e) => {
+    e.preventDefault();
     const formData = new FormData();
     const appendIfValid = (formData, key, selector) => {
       const value = get(selector).value;
@@ -46,11 +49,6 @@ const Profile = () => {
     appendIfValid(formData, "email", "#email");
     appendIfValid(formData, "mobile_number", "#number");
 
-    console.log(
-      get("#profile").files[0] === undefined,
-      "test",
-      get("#religion").value.split(" ").join("").length
-    );
     axios
       .put(
         "https://gurjar-xndl7.ondigitalocean.app/gurjar/update_profile/",
@@ -72,21 +70,9 @@ const Profile = () => {
             response.data.user.profile_pic;
           get("#headName").innerHTML = response.data.user.name;
           get("#profile").value = "";
-          get("#name").value = "";
-          get("#religion").value = "";
-          get("#state").value = "";
-          get("#city").value = "";
-          get("#village").value = "";
-          get("#nationality").value = "";
-          get("#gender").value = "";
-          get("#gotra").value = "";
-          get("#blood_group").value = "";
-          get("#date_of_birth").value = "";
           get("#password").value = "";
-          get("#email").value = "";
-          get("#number").value = "";
         }
-        console.log(response);
+        // console.log(response);
       })
       .catch((error) => console.log(error));
   };
@@ -95,7 +81,6 @@ const Profile = () => {
     navigate("/");
   };
   const token = new_cookies.get("token");
-
   useEffect(() => {
     initTE({ Tab });
     if (token) {
@@ -104,10 +89,23 @@ const Profile = () => {
           token: token,
         })
         .then((response) => {
-          console.log("response", response);
+          // console.log("response", response);
           if (!response.data.valid) {
             new_cookies.remove("token", { path: "/" });
           } else {
+            get("#name").value = response.data.user.name;
+            get("#religion").value = response.data.user.religion;
+            get("#state").value = response.data.user.state;
+            get("#city").value = response.data.user.city;
+            get("#village").value = response.data.user.village;
+            get("#nationality").value = response.data.user.nationality;
+            get("#gender").value = response.data.user.gender;
+            get("#gotra").value = response.data.user.gotra;
+            get("#blood_group").value = response.data.user.blood_group;
+            get("#date_of_birth").value = response.data.user.date_of_birth;
+            get("#email").value = response.data.user.email;
+            get("#number").value = response.data.user.mobile_number;
+
             setUser(response.data.user);
             setAvatar(
               "https://gurjar-xndl7.ondigitalocean.app" +
@@ -117,11 +115,15 @@ const Profile = () => {
         })
         .catch((error) => console.log(error));
     } else {
-      navigate("/");
+      // navigate("/");
     }
   }, [navigate]);
+
+  const [showGurjarCard, setGurjarCard] = useState(false);
+  const handleOnClose = () => setGurjarCard(false);
+
   return (
-    <div className="min-h-screen backg mx-auto ">
+    <div className="min-h-screen backg mx-auto">
       <div className="flex justify-between items-center px-7 py-2 bg-gray-900 text-gray-50 shadow">
         <div className="font-bold tracking-wider ">Gurjar.</div>
 
@@ -190,7 +192,6 @@ const Profile = () => {
               aria-orientation="vertical"
               aria-labelledby="options-menu"
             >
-              {/* Add your dropdown options here */}
               <button
                 onClick={logout}
                 className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-gray-100 hover:text-gray-900"
@@ -203,61 +204,58 @@ const Profile = () => {
         )}
       </div>
 
-      <div className="text-black px-5 py-4">
-        <div class="min-h-screen mx-auto my-auto bg-white justify-center py-5 px-3 shadow rounded-lg xsm:px-4 sm:px-4">
-          <form className="grid grid-rows-3 grid-cols-4 gap-4" method>
-            <div className="row-span-3 col-span-1 ">
+      <div className="text-black sm:px-5 sm:py-4 xsm:px-5 xsm:py-4 md:px-9 md:py-9 lg:px-9 lg:py-9">
+        <div class="min-h-screen mx-auto  justify-center py-5 px-3 shadow rounded-lg  xsm:px-4 sm:px-4">
+          <form
+            onSubmit={formSubmit}
+            className="min-h-screen mx-auto my-auto justify-center py-5 px-3 grid lg:grid-rows-3 lg:grid-cols-4 md:grid-rows-3 md:grid-cols-4 grid-rows-4 grid-cols-1  gap-4"
+          >
+            <div className=" lg:row-span-3 lg:col-span-1 md:row-span-3 md:col-span-1 row-span-4 col-span-3 ">
               <img
                 id="profileImg"
                 src={avatar}
                 class="border-4 border-indigo-500/75 w-56 h-56 rounded-full mx-auto"
               ></img>
               <tr>
-                <td class="px-2 py-2  xsm:px-0 text-gray-500 font-semibold">
-                  Profile
-                </td>
                 <td class="px-2 py-2  xsm:px-0 text-black">
-                  <input type="file" id="profile" />
+                  <input
+                    className="flex justify-center items-center "
+                    type="file"
+                    id="profile"
+                  />
                 </td>
               </tr>
             </div>
 
-            <div className="row-span-3 col-span-2">
-              <td id="headName" class="px-2 py-1 xsm:px-0 font-bold text-5xl">
-                {user.name}
-              </td>
-              <h6 className="text-gray-500">Gurjar ID</h6>
-              <h6 className="text-gray-500">Gurjar Points</h6>
+            <div className=" lg:row-span-3 lg:col-span-3 md:row-span-2 md:col-span-3  row-span-4 col-span-3 ">
+              <div className="lg:flex justify-between">
+                <p id="headName" class="px-2 py-1 xsm:px-0 font-bold text-5xl">
+                  {user.name}
+                </p>
+                <button
+                  onClick={() => setGurjarCard(true)}
+                  class=" bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+                >
+                  <svg
+                    class="fill-current w-4 h-4 mr-2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <ImProfile />
+                  </svg>
+                  <span>Gurjar Card</span>
+                </button>
+              </div>
+
+              <h6 className="text-gray-500">Gurjar ID: {user.gurjar_id}</h6>
+              <h6 className="text-gray-500">Gurjar Points: 1000</h6>
             </div>
 
-            <div className="row-span-3 col-span-1 space-x-4 ">
-              <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center top-0 right-0">
-                <svg
-                  class="fill-current w-4 h-4 mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <GrDocumentUpdate />
-                </svg>
-                <span onClick={updateProfile} href="#!">
-                  Update
-                </span>
-              </button>
-              <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-                <svg
-                  class="fill-current w-4 h-4 mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <ImProfile />
-                </svg>
-                <span>Card</span>
-              </button>
-            </div>
+            <div className="flex justify-end lg:items-end md:items-end space-x-2 lg:row-span-3 lg:col-span-1 md:row-span-3 md:col-span-1 row-span-4 col-span-3  "></div>
 
-            <div className="row-span-2 col-span-1 space-x-4"></div>
+            <div className=" row-span-2 col-span-1"></div>
 
-            <div className="row-span-3 col-span-3 border-double border-4 border-black rounded-md">
+            <div className="bg-white row-span-3 col-span-3 border-double border-4 border-black rounded-md">
               <ul
                 class="mb-5 flex list-none flex-row flex-wrap border-b-0 pl-0  "
                 role="tablist"
@@ -292,31 +290,31 @@ const Profile = () => {
                 </li>
               </ul>
 
-              <div class="mb-6 ">
+              <div class="mb-2 ">
                 <div
-                  class=" hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+                  class=" lg:px-5 md:px-5 px-0 hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
                   id="tabs-home01"
                   role="tabpanel"
                   aria-labelledby="tabs-home-tab01"
                   data-te-tab-active
                 >
-                  <div class=" p-2 grid grid-rows-2 grid-cols-2 text-xl ">
-                    <table className="col-span-1 row-span-2 text-2xl ">
+                  <div class="grid lg:grid-rows-2 lg:grid-cols-2 md:grid-rows-2 md:grid-cols-2 grid-rows-1 grid-cols-1  text-xl ">
+                    <table className="lg:col-span-1 lg:row-span-2 md:col-span-1 md:row-span-2 col-span-1 row-span-2  lg:text-2xl md:text-2xl text-sm ">
                       <tbody>
                         <tr>
-                          <td class="px-7 py-7  xsm:px-0 text-gray-500 font-semibold mb-5 mr-5">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold mb-5 mr-5">
                             Name:
                           </td>
-                          <td class="px-7 py-7  xsm:px-0 text-black mb-5 ">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1  xsm:px-0 text-black mb-5 ">
                             <input id="name" type="text" placeholder="Name" />
                           </td>
                         </tr>
 
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Religion:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Catholic"
@@ -325,26 +323,26 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             State:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7  py-1 xsm:px-0 text-black">
                             <input type="text" placeholder="State" id="state" />
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             City:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input type="text" placeholder="City" id="city" />
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Village:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Village"
@@ -355,13 +353,13 @@ const Profile = () => {
                       </tbody>
                     </table>
 
-                    <table class="text-2xl  col-span-1 row-span-2">
+                    <table class="text-2xl  col-span-1 row-span-2 lg:text-2xl md:text-2xl text-sm">
                       <tbody className="">
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class=" lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Nationality:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Filipino"
@@ -370,10 +368,10 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Gender:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Gender"
@@ -382,18 +380,18 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
-                            Gotra
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
+                            Gotra:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input type="text" placeholder="Gotra" id="gotra" />
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
-                            Blood group
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
+                            Blood group:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Blood group"
@@ -402,10 +400,10 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
-                            Date of birth
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
+                            Birth date:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1  xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Birth of Date"
@@ -424,25 +422,25 @@ const Profile = () => {
                   aria-labelledby="tabs-profile-tab01"
                 >
                   <div class=" p-2 grid grid-rows-2 grid-cols-2 text-xl ">
-                    <table className="col-span-1 row-span-2 text-2xl ">
+                    <table className="col-span-1 row-span-2 text-2xl lg:text-2xl md:text-2xl text-sm">
                       <tbody>
                         <tr>
-                          <td class="px-7 py-7  xsm:px-0 text-gray-500 font-semibold mb-5 mr-5">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 px-8  xsm:px-0 text-black-500 font-semibold">
                             Username:
                           </td>
-                          <td class="px-7 py-7  xsm:px-0 text-black mb-5 ">
+                          <p class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1  xsm:px-0 text-black ">
                             <input
                               id="Username"
                               type="text"
                               placeholder="Gurjar ID"
                             />
-                          </td>
+                          </p>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Password:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="password"
@@ -451,10 +449,10 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
                             Email:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="Gurjarweb@gmail.com"
@@ -463,10 +461,10 @@ const Profile = () => {
                           </td>
                         </tr>
                         <tr>
-                          <td class="px-7 py-7 xsm:px-0 text-gray-500 font-semibold">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0  text-black-500 font-semibold">
                             Number:
                           </td>
-                          <td class="px-7 py-7 xsm:px-0 text-black">
+                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
                             <input
                               type="text"
                               placeholder="+639666972501"
@@ -478,8 +476,30 @@ const Profile = () => {
                     </table>
                   </div>
                 </div>
+
+                <div className="flex justify-end px-3">
+                  <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold lg:py-2 lg:px-4 md:py-2 md:px-4 py-1 px-2 rounded inline-flex items-center top-0 right-0">
+                    <svg
+                      class="fill-current w-4 h-4 mr-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <GrDocumentUpdate />
+                    </svg>
+                    <span onClick={updateProfile} href="#!">
+                      Save
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
+
+            <GurjarCard
+              avatar={avatar}
+              data={user}
+              onClose={handleOnClose}
+              visible={showGurjarCard}
+            />
           </form>
         </div>
       </div>

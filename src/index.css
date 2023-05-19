@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -32,12 +34,8 @@
 }
 
 .backg {
-  background: rgb(170, 63, 251);
-  background: linear-gradient(
-    90deg,
-    rgba(170, 63, 251, 0.9444152661064426) 0%,
-    rgba(70, 199, 252, 1) 100%
-  );
+  background: #fefefe;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .active {
