@@ -570,27 +570,27 @@ const Register = () => {
                     Education
                   </label>
                   <div className="relative">
-                  <input
-                    required
-                    name="education"
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-3 mb-1 leading-tight focus:outline-none focus:bg-white"
-                    type="text"
-                    placeholder="Education"
-                    list='suggestions1'
-                    id='education'
-                  />
-                  <datalist id='suggestions1'>
-                    <option value="Under Graduate"/>
-                    <option value="Diploma"/>
-                    <option value="Graduate"/>
-                    <option value="Engineering Graduate"/>
-                    <option value="LLB"/>
-                    <option value="Post Graduate"/>
-                    <option value="PHD"/>
-                    <option value="BDS"/>
-                    <option value="MBBS"/>
-                    <option value="MS"/>
-                  </datalist>
+                    <input
+                      required
+                      name="education"
+                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-3 mb-1 leading-tight focus:outline-none focus:bg-white"
+                      type="text"
+                      placeholder="Education"
+                      list="suggestions1"
+                      id="education"
+                    />
+                    <datalist id="suggestions1">
+                      <option value="Under Graduate" />
+                      <option value="Diploma" />
+                      <option value="Graduate" />
+                      <option value="Engineering Graduate" />
+                      <option value="LLB" />
+                      <option value="Post Graduate" />
+                      <option value="PHD" />
+                      <option value="BDS" />
+                      <option value="MBBS" />
+                      <option value="MS" />
+                    </datalist>
                     {/* <select
                       name="education"
                       className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -598,9 +598,6 @@ const Register = () => {
                     >
                       <option>Choose</option>
                     </select> */}
-                    
-
-
                   </div>
                 </div>
                 <div className="w-full  md:w-2/4 px-3 mb-6 md:mb-0">
@@ -619,27 +616,27 @@ const Register = () => {
                       <option>Choose</option>
                     </select> */}
                     <input
-                    required
+                      required
                       name="profession"
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-3 mb-1 leading-tight focus:outline-none focus:bg-white"
                       type="text"
                       placeholder="Profession"
-                      list='suggestions2'
-                      id='profession'
+                      list="suggestions2"
+                      id="profession"
                     />
                     <datalist id="suggestions2">
-                    <option value="Advocate" />
-                    <option value="Sportsman" />
-                    <option value="Doctor" />
-                    <option value="Government Job" />
-                    <option value="Private Job" />
-                    <option value="Property Dealer" />
-                    <option value="Milk Man" />
-                    <option value="Driver" />
-                    <option value="Farmer" />
-                    <option value="Politician" />
-                    <option value="Business" />
-                  </datalist>
+                      <option value="Advocate" />
+                      <option value="Sportsman" />
+                      <option value="Doctor" />
+                      <option value="Government Job" />
+                      <option value="Private Job" />
+                      <option value="Property Dealer" />
+                      <option value="Milk Man" />
+                      <option value="Driver" />
+                      <option value="Farmer" />
+                      <option value="Politician" />
+                      <option value="Business" />
+                    </datalist>
                   </div>
                 </div>
               </div>

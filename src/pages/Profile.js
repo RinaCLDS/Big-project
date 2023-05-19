@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { Tab, initTE } from "tw-elements";
 import { GrDocumentUpdate } from "react-icons/gr";
 import { ImProfile } from "react-icons/im";
-import GurjarCard from "./GurjarCard";
+import GurjarCard from "../modal/GurjarCard";
+import TopNavigationBar from "../components/TopNavigationBar";
 
 const Profile = () => {
   const get = (element) => document.querySelector(element);
@@ -48,7 +49,7 @@ const Profile = () => {
     appendIfValid(formData, "password", "#password");
     appendIfValid(formData, "email", "#email");
     appendIfValid(formData, "mobile_number", "#number");
-
+    
     axios
       .put(
         "https://gurjar-xndl7.ondigitalocean.app/gurjar/update_profile/",
@@ -71,15 +72,15 @@ const Profile = () => {
           get("#headName").innerHTML = response.data.user.name;
           get("#profile").value = "";
           get("#password").value = "";
+          localStorage.setItem("data", JSON.stringify(response.data));
+          setUser(response.data.user);
+          
         }
         // console.log(response);
       })
       .catch((error) => console.log(error));
   };
-  const logout = () => {
-    new_cookies.remove("token", { path: "/" });
-    navigate("/");
-  };
+ 
   const token = new_cookies.get("token");
   useEffect(() => {
     initTE({ Tab });
@@ -105,7 +106,7 @@ const Profile = () => {
             get("#date_of_birth").value = response.data.user.date_of_birth;
             get("#email").value = response.data.user.email;
             get("#number").value = response.data.user.mobile_number;
-
+            
             setUser(response.data.user);
             setAvatar(
               "https://gurjar-xndl7.ondigitalocean.app" +
@@ -123,87 +124,11 @@ const Profile = () => {
   const handleOnClose = () => setGurjarCard(false);
 
   return (
+    <>
+    
     <div className="min-h-screen backg mx-auto">
-      <div className="flex justify-between items-center px-7 py-2 bg-gray-900 text-gray-50 shadow">
-        <div className="font-bold tracking-wider ">Gurjar.</div>
-
-        <button
-          onClick={openDropdown}
-          className="inline-block h-9 w-9 rounded-full ring-4 ring-transparent hover:ring-slate-800 cursor-pointer active:ring-transparent"
-        >
-          <img
-            id="profileImg1"
-            className="border-2 border-indigo-500/75  overflow-hidden rounded-full"
-            src={avatar}
-            alt="avatar"
-          />
-        </button>
-        {isOpen && (
-          <div className="absolute right-1 top-10 mt-2 bg-gray-700 divide-y divide-gray-500 rounded-lg shadow-lg z-20">
-            <div
-              className="py-3 flex flex-col"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="options-menu"
-            >
-              {/* Add your dropdown options here */}
-              <div
-                className="px-4 text-left text-sm text-gray-50"
-                role="menuitem"
-              >
-                Gurjar
-              </div>
-              <div
-                className="px-4 text-left text-sm text-gray-50"
-                role="menuitem"
-              >
-                Gurjar@gmail.com
-              </div>
-            </div>
-            <div
-              className="py-1 flex flex-col"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="options-menu"
-            >
-              {/* Add your dropdown options here */}
-              <button
-                className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-              >
-                Dashboard
-              </button>
-              <button
-                className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-              >
-                Profile Settings
-              </button>
-              <button
-                className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-              >
-                Points
-              </button>
-            </div>
-            <div
-              className="py-1 flex flex-col"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="options-menu"
-            >
-              <button
-                onClick={logout}
-                className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-              >
-                Sign Out
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
+      
+    
       <div className="text-black sm:px-5 sm:py-4 xsm:px-5 xsm:py-4 md:px-9 md:py-9 lg:px-9 lg:py-9">
         <div class="min-h-screen mx-auto  justify-center py-5 px-3 shadow rounded-lg  xsm:px-4 sm:px-4">
           <form
@@ -494,11 +419,18 @@ const Profile = () => {
               </div>
             </div>
 
-            <GurjarCard avatar={avatar} data={user} onClose={handleOnClose} visible={showGurjarCard} />
+            <GurjarCard
+              avatar={avatar}
+              data={user}
+              onClose={handleOnClose}
+              visible={showGurjarCard}
+            />
           </form>
         </div>
       </div>
     </div>
+    </>
+    
   );
 };
 

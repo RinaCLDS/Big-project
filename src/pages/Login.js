@@ -8,7 +8,7 @@ import { BiArrowBack } from "react-icons/bi";
 
 const Login = () => {
   const [open, setOpen] = useState(false);
-  const get = (element) => document.querySelector(element) 
+  const get = (element) => document.querySelector(element);
   const new_cookies = new Cookies();
   const currentDate = new Date();
   const expiresDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
@@ -43,6 +43,7 @@ const Login = () => {
         console.log("response", response);
         if (response.data.valid) {
           const token = response.data.token;
+          localStorage.setItem('data', JSON.stringify(response.data))
           new_cookies.set("token", token, { path: "/", expires: expiresDate });
           navigate("/dashboard");
         } else {
@@ -53,24 +54,24 @@ const Login = () => {
   };
 
   const handleReset = async (e) => {
-    e.preventDefault()
-    const email = get('#ResetEmail').value
-    await axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/change_password/', {
-      'email': email
-    })
-    .then((response)=>{
-      if(response.data.valid){
-        alert('Password has been sent to your email')
-      } else {
-        alert('Email does not exist in Gurjar')
-      }
-    })
-    .catch((error)=>alert(error))
-  }
+    e.preventDefault();
+    const email = get("#ResetEmail").value;
+    await axios
+      .post("https://gurjar-xndl7.ondigitalocean.app/gurjar/change_password/", {
+        email: email,
+      })
+      .then((response) => {
+        if (response.data.valid) {
+          alert("Password has been sent to your email");
+        } else {
+          alert("Email does not exist in Gurjar");
+        }
+      })
+      .catch((error) => alert(error));
+  };
   const handleOpen = () => {
     setOpen(!open);
-    
-  }
+  };
   useEffect(() => {
     if (open) {
       get(".loginAccount").classList.add("hidden");
@@ -79,9 +80,8 @@ const Login = () => {
       get(".loginAccount").classList.remove("hidden");
       get(".resetPassword").classList.add("hidden");
     }
+  });
 
-  })
-  
   return (
     <section
       className="min-h-screen sm:p-25 flex flex-col justify-center backg"
@@ -167,9 +167,10 @@ const Login = () => {
                 />
               </label>
 
-              <button 
-              onClick={handleReset}
-              class="w-full py-3 font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg border-indigo-500 hover:shadow inline-flex space-x-2 items-center justify-center">
+              <button
+                onClick={handleReset}
+                class="w-full py-3 font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg border-indigo-500 hover:shadow inline-flex space-x-2 items-center justify-center"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

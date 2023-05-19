@@ -1,12 +1,13 @@
-
-import './App.css';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-import Profile from './pages/Profile'
-import Cookies from 'universal-cookie';
-import axios from 'axios';
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+import Cookies from "universal-cookie";
+import axios from "axios";
+import {useEffect, useState} from 'react'
+import TopNavigationBar from "./components/TopNavigationBar";
 function App() {
   // const new_cookies = new Cookies();
   // const navigate = useNavigate();
@@ -25,17 +26,29 @@ function App() {
   //   })
   //   .catch((error)=>console.log(error))
   // }
+  const listRoute = ['/dashboard', '/profile']
+  const dataStore = localStorage.getItem('data')
+  const [new_data, setNewData] = useState({})
+  useEffect(() => {
+    if(dataStore){
+      const data = JSON.parse(dataStore)
+      setNewData(data)
+    }
+    
+  }, [setNewData])
+
   return (
-
-     <Router>
-       <Routes>
-       <Route  path='/Dashboard' element={<Dashboard/>}/>
-       <Route  path='/' element={<Login/>}/>
-       <Route  path='/Register' element={<Register/>}/>
-       <Route  path='/Profile' element={<Profile/>}/>
-     </Routes>
+    <Router>
+      {
+        listRoute.includes(window.location.pathname) ? <TopNavigationBar user={new_data} /> : null
+      }
+      <Routes>
+        <Route className="backg" path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Login />} />
+        <Route className="backg" path="/register" element={<Register />} />
+        <Route className="backg" path="/profile" element={<Profile />} />
+      </Routes>
     </Router>
-
   );
 }
 
