@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.inputField {
+  margin-top: -3px;
+}
+
 .btn {
   background: rgb(42, 238, 255);
   background: radial-gradient(
@@ -34,7 +38,7 @@
 }
 
 .backg {
-  background: #fefefe;
+  background: #f0f0f0;
   font-family: 'Quicksand', sans-serif;
 }
 

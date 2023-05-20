@@ -150,7 +150,7 @@ const Register = () => {
                   whileInView={"show"}
                   viewport={{ once: false, amount: 0.4 }}
                   onClick={gurjarChange}
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#555] hover:bg-[#222] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Yes
                 </motion.button>
@@ -163,7 +163,7 @@ const Register = () => {
                 >
                   <Link
                     to={"/"}
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#555] hover:bg-[#222] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     No
                   </Link>
@@ -177,9 +177,9 @@ const Register = () => {
             initial="hidden"
             whileInView={"show"}
             viewport={{ once: false, amount: 0.5 }}
-            class="bg-white py-5 px-3 shadow rounded-lg sm:px-4"
+            className="p-7 sm:border sm:shadow-xl sm:bg-white"
           >
-            <form onSubmit={registerForm} class="mb-0 space-y-6 ">
+            <form onSubmit={registerForm} className="mb-0 space-y-6 ">
               <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900">
                   Create gurjar account
@@ -203,7 +203,7 @@ const Register = () => {
                 </div>
                 <div className="w-full  px-3 mb-6 md:mb-0">
                   <label
-                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     for="grid-gender"
                   >
                     Gender
@@ -218,9 +218,9 @@ const Register = () => {
                       <option>Male</option>
                       <option>Female</option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                       <svg
-                        class="fill-current h-4 w-4"
+                        className="fill-current h-4 w-4"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                       >
@@ -231,7 +231,7 @@ const Register = () => {
                 </div>
                 <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                   <label
-                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     for="grid-first-name"
                   >
                     Date of Birth
@@ -248,7 +248,7 @@ const Register = () => {
               <div className="flex lg -mx-4">
                 <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                   <label
-                    class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                     for="grid-state"
                   >
                     Religion
@@ -317,7 +317,7 @@ const Register = () => {
                   <div className="relative">
                     <select
                       name="bloodgroup"
-                      class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="grid-state"
                     >
                       <option>Choose</option>
@@ -353,7 +353,7 @@ const Register = () => {
                   <div className="relative">
                     <select
                       name="nationality"
-                      class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="grid-state"
                       onChange={stateChange}
                     >
@@ -379,10 +379,10 @@ const Register = () => {
                   >
                     State
                   </label>
-                  <div class="relative">
+                  <div className="relative">
                     <select
                       name="state"
-                      class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="grid-state"
                       onChange={cityChange}
                     >
@@ -445,7 +445,7 @@ const Register = () => {
                   <div className="relative">
                     <select
                       name="village"
-                      class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="grid-state"
                     >
                       <option>Choose</option>
@@ -475,7 +475,7 @@ const Register = () => {
                       id="mobileCode"
                       required
                       name="mobileCode"
-                      class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                     >
                       <option>+63</option>
                       <option>+93</option>
@@ -514,14 +514,14 @@ const Register = () => {
                       required
                       id="mobileNumber"
                       name="mobileNumber"
-                      class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                       type="text"
                       placeholder="9666972501"
                     />
                     <a
                       href="#!"
                       onClick={send_otp}
-                      class="text-white absolute right-2.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      className="text-white absolute right-2.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >
                       OTP
                     </a>
@@ -538,7 +538,7 @@ const Register = () => {
                     required
                     id="otp"
                     name="otp"
-                    class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                     type="text"
                     placeholder="6 digit number"
                   />
@@ -557,7 +557,7 @@ const Register = () => {
                     name="email"
                     className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-3 mb-1 leading-tight focus:outline-none focus:bg-white"
                     type="text"
-                    placeholder="GurjarIndia@gmail.com"
+                    placeholder="gurjarindia@gmail.com"
                   />
                 </div>
               </div>
@@ -610,7 +610,7 @@ const Register = () => {
                   <div className="relative">
                     {/* <select
                       name="profession"
-                      class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       id="grid-state"
                     >
                       <option>Choose</option>
@@ -643,17 +643,17 @@ const Register = () => {
               <div>
                 <button
                   type="submit"
-                  class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#555] hover:bg-[#222] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Register
                 </button>
-                <p className="mt-2 text-center text-sm text-gray-600 max-w">
-                  Already registered?
+                <p className="mt-2 text-center text-xs text-gray-600 max-w">
+                  Already registered?{" "}
                   <Link
                     to="/"
-                    className="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="text-accent hover:underline"
                   >
-                    Login
+                    Login.
                   </Link>
                 </p>
               </div>

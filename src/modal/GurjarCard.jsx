@@ -27,8 +27,8 @@ export default function GurjarCard({ avatar, data, visible, onClose }) {
       id="gurjarCard"
       className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center "
     >
-      <div className="flex flex-col  w-89 h-50 justify-center p-6 shadow-md rounded-xl sm:px-12 border backg ">
-        <div id="closeCard" className="lg:flex justify-end">
+      <div className="flex flex-col  w-89 h-50 justify-center p-6 shadow-md rounded-xl border backg ">
+        <div id="closeCard" className="flex justify-end">
           <button onClick={handleOnClose}>
             <AiFillCloseCircle />{" "}
           </button>
@@ -38,52 +38,44 @@ export default function GurjarCard({ avatar, data, visible, onClose }) {
           alt="NoImage"
           className="w-32 h-32 mx-auto rounded-full bg-white aspect-square"
         />
-        <div className="w-89 h-50 space-y-4 text-center divide-y divide-gray-700">
+        <div className="w-89 h-50 text-center">
           <div className="my-2 space-y-1">
-            <h2 id="name" className=" text-xl font-semibold sm:text-2xl">
-              Name: {data.name}
+            <h2 id="name" className=" text-xl font-semibold">
+              Umesh Sharma{data.name}
             </h2>
-            <p className="px-5 text-xs sm:text-base dark:text-white-400">
-              Gurjar ID: {data.gurjar_id}
+            <p className="px-5 text-sm dark:text-white-400">
+              G-00000 {data.gurjar_id}
             </p>
           </div>
-          <div className="pt-2 space-x-4 ">
-            <a
-              rel="noopener noreferrer"
-              href="#"
-              aria-label="GitHub"
-              className="p-2 rounded-md text-white"
-            />
-            <div className="mb-4 space-y-3 grid grid-cols-2 grid-rows-2">
-              <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                State: {data.state}
+            <div className="text-center border-t border-b border-[#999] py-2 my-5 grid grid-rows-4 grid-cols-2 gap-4">
+              <p className="text-sm mb-3">
+                State: <br/><span className="text-[#999]">Karnataka</span>  {data.state}
               </p>
-              <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                Country: {data.nationality}
+              <p className="text-sm mb-3">
+                Country: <br/><span className="text-[#999]">India</span>  {data.nationality}
               </p>
-              <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                City: {data.city}
+              <p className="text-sm mb-3">
+                City: <br/><span className="text-[#999]">Bengaluru</span>  {data.city}
               </p>
-              <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                Village: {data.village}
+              <p className="text-sm mb-3">
+                Village: <br/><span className="text-[#999]">Hulimavu</span>  {data.village}
               </p>
-              <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                Blood group: {data.blood_group}
+              <p className="text-sm mb-3">
+                Blood Group: <br/><span className="text-[#999]">B+</span>  {data.blood_group}
               </p>
-              <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                Birth date: {data.date_of_birth}
+              <p className="text-sm mb-3">
+                Birth Date: <br/><span className="text-[#999]">02/14/1991</span> {data.date_of_birth}
               </p>
-              <p className="px-5 text-xs sm:text-base dark:text-white-400">
-                Gotra: {data.gotra}
+              <p className="text-sm mb-3 col-span-2">
+                Gotra: <br/><span className="text-[#999]">Bhardwaj</span> {data.gotra}
               </p>
             </div>
-          </div>
           <div
             id="downloadCard"
             onClick={downloadCard}
             className="flex justify-end"
           >
-            <button>
+            <button className="text-white bg-[#555] w-full flex justify-center p-2 rounded-lg shadow-md border hover:shadow-none hover:bg-[#222]">
               <FiDownload />
             </button>
           </div>

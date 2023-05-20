@@ -7,6 +7,7 @@ import { Tab, initTE } from "tw-elements";
 import { GrDocumentUpdate } from "react-icons/gr";
 import { ImProfile } from "react-icons/im";
 import GurjarCard from "../modal/GurjarCard";
+import TopNavigationBar from "../components/TopNavigationBar";
 
 const Profile = () => {
   const get = (element) => document.querySelector(element);
@@ -71,6 +72,7 @@ const Profile = () => {
           get("#headName").innerHTML = response.data.user.name;
           get("#profile").value = "";
           get("#password").value = "";
+          setIsPreview(false);
         }
         // console.log(response);
       })
@@ -122,149 +124,108 @@ const Profile = () => {
   const [showGurjarCard, setGurjarCard] = useState(false);
   const handleOnClose = () => setGurjarCard(false);
 
-  return (
-    <div className="min-h-screen backg mx-auto">
-      <div className="flex justify-between items-center px-7 py-2 bg-gray-900 text-gray-50 shadow">
-        <div className="font-bold tracking-wider ">Gurjar.</div>
+  const [currentAvatar, setCurrentAvatar] = useState(avatar);
+  const [isPreview, setIsPreview] = useState(false);
+  const handleChangeAvatarPreview = (e) => {
+    const reader = new FileReader();
 
-        <button
-          onClick={openDropdown}
-          className="inline-block h-9 w-9 rounded-full ring-4 ring-transparent hover:ring-slate-800 cursor-pointer active:ring-transparent"
-        >
-          <img
-            id="profileImg1"
-            className="border-2 border-indigo-500/75  overflow-hidden rounded-full"
-            src={avatar}
-            alt="avatar"
-          />
-        </button>
-        {isOpen && (
-          <div className="absolute right-1 top-10 mt-2 bg-gray-700 divide-y divide-gray-500 rounded-lg shadow-lg z-20">
-            <div
-              className="py-3 flex flex-col"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="options-menu"
-            >
-              {/* Add your dropdown options here */}
-              <div
-                className="px-4 text-left text-sm text-gray-50"
-                role="menuitem"
-              >
-                Gurjar
-              </div>
-              <div
-                className="px-4 text-left text-sm text-gray-50"
-                role="menuitem"
-              >
-                Gurjar@gmail.com
-              </div>
-            </div>
-            <div
-              className="py-1 flex flex-col"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="options-menu"
-            >
-              {/* Add your dropdown options here */}
-              <button
-                className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-              >
-                Dashboard
-              </button>
-              <button
-                className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-              >
-                Profile Settings
-              </button>
-              <button
-                className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-              >
-                Points
-              </button>
-            </div>
-            <div
-              className="py-1 flex flex-col"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="options-menu"
-            >
-              <button
-                onClick={logout}
-                className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-gray-100 hover:text-gray-900"
-                role="menuitem"
-              >
-                Sign Out
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setCurrentAvatar(reader.result);
+      }
+    };
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+      setIsPreview(true);
+    }
+    // let currentPhoto = e.target.files[0];
+  };
+
+  const handleEditProfile = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+  };
+
+  return (
+    <div className="k">
+      <TopNavigationBar />
 
       <div className="text-black sm:px-5 sm:py-4 xsm:px-5 xsm:py-4 md:px-9 md:py-9 lg:px-9 lg:py-9">
-        <div class="min-h-screen mx-auto  justify-center py-5 px-3 shadow rounded-lg  xsm:px-4 sm:px-4">
+        <div className="min-h-screen mx-auto justify-center py-5 px-3 sm:border sm:shadow-lg sm:bg-white rounded-lg ">
           <form
             onSubmit={formSubmit}
-            className="min-h-screen mx-auto my-auto justify-center py-5 px-3 grid lg:grid-rows-3 lg:grid-cols-4 md:grid-rows-3 md:grid-cols-4 grid-rows-4 grid-cols-1  gap-4"
+            className="min-h-screen justify-center p-7"
           >
-            <div className=" lg:row-span-3 lg:col-span-1 md:row-span-3 md:col-span-1 row-span-4 col-span-3 ">
-              <img
-                id="profileImg"
-                src={avatar}
-                class="border-4 border-indigo-500/75 w-56 h-56 rounded-full mx-auto"
-              ></img>
-              <tr>
-                <td class="px-2 py-2  xsm:px-0 text-black">
-                  <input
-                    className="flex justify-center items-center "
-                    type="file"
-                    id="profile"
-                  />
-                </td>
-              </tr>
-            </div>
-
-            <div className=" lg:row-span-3 lg:col-span-3 md:row-span-2 md:col-span-3  row-span-4 col-span-3 ">
-              <div className="lg:flex justify-between">
-                <p id="headName" class="px-2 py-1 xsm:px-0 font-bold text-5xl">
-                  {user.name}
-                </p>
-                <button
-                  onClick={() => setGurjarCard(true)}
-                  class=" bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+            <div className="mb-5 ">
+              <div className="rounded-full w-56 h-56 overflow-hidden mx-auto border border-[#ddd] shadow-md relative group">
+                <label
+                  htmlFor="profile"
+                  className="cursor-pointer w-56 h-56 rounded-full"
                 >
-                  <svg
-                    class="fill-current w-4 h-4 mr-2"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <ImProfile />
-                  </svg>
-                  <span>Gurjar Card</span>
-                </button>
+                  <img
+                    id="profileImg"
+                    src={currentAvatar}
+                    alt="DP"
+                    className="w-56 h-56 rounded-full"
+                  />
+                  <div className="absolute inset-0 rounded-full w-56 h-56 bg-black opacity-0 group-hover:block transition-opacity duration-300 ease-in group-hover:opacity-50"></div>
+                  <div className="absolute inset-0 rounded-full w-56 h-56 flex items-center opacity-0 group-hover:flex transition-opacity duration-300 ease-in group-hover:opacity-50 justify-center">
+                    <h2 className="text-white text-2xl font-bold">
+                      Change Photo
+                    </h2>
+                  </div>
+                </label>
               </div>
 
-              <h6 className="text-gray-500">Gurjar ID: {user.gurjar_id}</h6>
-              <h6 className="text-gray-500">Gurjar Points: 1000</h6>
+              {isPreview && (
+                <div className="text-center text-red-500 text-sm">
+                  Save to apply changes.
+                </div>
+              )}
             </div>
 
-            <div className="flex justify-end lg:items-end md:items-end space-x-2 lg:row-span-3 lg:col-span-1 md:row-span-3 md:col-span-1 row-span-4 col-span-3  "></div>
+            <div className="text-black flex justify-center hidden">
+              <input
+                className="flex justify-center items-center hidden"
+                type="file"
+                id="profile"
+                onChange={handleChangeAvatarPreview}
+                accept="image/*"
+              />
+            </div>
 
-            <div className=" row-span-2 col-span-1"></div>
-
-            <div className="bg-white row-span-3 col-span-3 border-double border-4 border-black rounded-md">
-              <ul
-                class="mb-5 flex list-none flex-row flex-wrap border-b-0 pl-0  "
-                role="tablist"
-                data-te-nav-ref
+            <div className="text-center mb-20">
+              <h6 className="text-[#555]">
+                Gurjar ID: G-00000{user.gurjar_id}
+              </h6>
+              <h6 className="text-[#555]">Gurjar Points: 1000{user.points}</h6>
+              <p
+                id="headName"
+                className="px-2 py-1 xsm:px-0 font-bold text-5xl"
               >
-                <li role="presentation" class="flex-auto text-center">
+                {user.name}
+              </p>
+              <button
+                onClick={() => setGurjarCard(true)}
+                className=" bg-[#555] hover:bg-[#222] text-white font-bold py-2 px-4 rounded inline-flex items-center"
+              >
+                <svg
+                  className="fill-current w-4 h-4 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <ImProfile />
+                </svg>
+                <span>Gurjar Card</span>
+              </button>
+            </div>
+
+            <div className="bg-white p-5 border rounded-lg border-[#ddd] shadow-md max-w-xl mx-auto">
+              <ul className="flex" role="tablist" data-te-nav-ref>
+                <li role="presentation" className="flex-auto text-center">
                   <a
                     href="#tabs-home01"
-                    class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+                    className="block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-primary data-[te-nav-active]:text-[#111] dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-[#111] dark:data-[te-nav-active]:text-primary-400"
                     data-te-toggle="pill"
                     data-te-target="#tabs-home01"
                     data-te-nav-active
@@ -275,10 +236,10 @@ const Profile = () => {
                     Information
                   </a>
                 </li>
-                <li role="presentation" class="flex-auto text-center">
+                <li role="presentation" className="flex-auto text-center">
                   <a
                     href="#tabs-profile01"
-                    class="focus:border-transparen my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+                    className="focus:border-transparent block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-primary data-[te-nav-active]:text-[#111] dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-[#111] dark:data-[te-nav-active]:text-primary-400"
                     data-te-toggle="pill"
                     data-te-target="#tabs-profile01"
                     role="tab"
@@ -290,202 +251,225 @@ const Profile = () => {
                 </li>
               </ul>
 
-              <div class="mb-2 ">
+              <div className="">
                 <div
-                  class=" lg:px-5 md:px-5 px-0 hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+                  className="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
                   id="tabs-home01"
                   role="tabpanel"
                   aria-labelledby="tabs-home-tab01"
                   data-te-tab-active
                 >
-                  <div class="grid lg:grid-rows-2 lg:grid-cols-2 md:grid-rows-2 md:grid-cols-2 grid-rows-1 grid-cols-1  text-xl ">
-                    <table className="lg:col-span-1 lg:row-span-2 md:col-span-1 md:row-span-2 col-span-1 row-span-2  lg:text-2xl md:text-2xl text-sm ">
-                      <tbody>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold mb-5 mr-5">
-                            Name:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1  xsm:px-0 text-black mb-5 ">
-                            <input id="name" type="text" placeholder="Name" />
-                          </td>
-                        </tr>
+                  <table className="w-full">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <label className="text-[#777] text-xs">Name </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            id="name"
+                            type="text"
+                            placeholder={"Umesh Sharman"} //User Information Token here
+                          />
+                        </td>
+                      </tr>
 
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
-                            Religion:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
-                            <input
-                              type="text"
-                              placeholder="Catholic"
-                              id="religion"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
-                            State:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7  py-1 xsm:px-0 text-black">
-                            <input type="text" placeholder="State" id="state" />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
-                            City:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
-                            <input type="text" placeholder="City" id="city" />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
-                            Village:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
-                            <input
-                              type="text"
-                              placeholder="Village"
-                              id="village"
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                      <tr>
+                        <td>
+                          <label className="text-[#777] text-xs">
+                            Religion{" "}
+                          </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            id="religion"
+                            placeholder={"Hindu"} //User Information Token here
+                          />
+                        </td>
+                      </tr>
 
-                    <table class="text-2xl  col-span-1 row-span-2 lg:text-2xl md:text-2xl text-sm">
-                      <tbody className="">
-                        <tr>
-                          <td class=" lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
-                            Nationality:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
-                            <input
-                              type="text"
-                              placeholder="Filipino"
-                              id="nationality"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
-                            Gender:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
-                            <input
-                              type="text"
-                              placeholder="Gender"
-                              id="gender"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
-                            Gotra:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
-                            <input type="text" placeholder="Gotra" id="gotra" />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
-                            Blood group:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
-                            <input
-                              type="text"
-                              placeholder="Blood group"
-                              id="blood_group"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
-                            Birth date:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1  xsm:px-0 text-black">
-                            <input
-                              type="text"
-                              placeholder="Birth of Date"
-                              id="date_of_birth"
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                      <tr>
+                        <td>
+                          <label className="text-[#777] text-xs">State </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            id="state"
+                            placeholder={"Karnataka"} //User Information Token here
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <label className="text-[#777] text-xs">City </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            id="city"
+                            placeholder={"Bengaluru"} //User Information Token here
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <label className="text-[#777] text-xs">
+                            Village{" "}
+                          </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            id="village"
+                            placeholder={"Hulimavu"} //User Information Token here
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <label className="text-[#777] text-xs">
+                            Nationality{" "}
+                          </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            id="nationality"
+                            placeholder={"Indian"} //User Information Token here
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <label className="text-[#777] text-xs">Gender </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            id="gender"
+                            placeholder={"Male"} //User Information Token here
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <label className="text-[#777] text-xs">Gotra </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            id="gotra"
+                            placeholder={"Bhardwaj"} //User Information Token here
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <label className="text-[#777] text-xs">
+                            Blood Group{" "}
+                          </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            id="blood_group"
+                            placeholder={"B+"} //User Information Token here
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <label className="text-[#777] text-xs">
+                            Birth Date{" "}
+                          </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            id="date_of_birth"
+                            placeholder={"02/14/1991"} //User Information Token here
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
+
                 <div
-                  class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+                  className="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
                   id="tabs-profile01"
                   role="tabpanel"
                   aria-labelledby="tabs-profile-tab01"
                 >
-                  <div class=" p-2 grid grid-rows-2 grid-cols-2 text-xl ">
-                    <table className="col-span-1 row-span-2 text-2xl lg:text-2xl md:text-2xl text-sm">
-                      <tbody>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 px-8  xsm:px-0 text-black-500 font-semibold">
-                            Username:
-                          </td>
-                          <p class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1  xsm:px-0 text-black ">
-                            <input
-                              id="Username"
-                              type="text"
-                              placeholder="Gurjar ID"
-                            />
-                          </p>
-                        </tr>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
-                            Password:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
-                            <input
-                              type="text"
-                              placeholder="password"
-                              id="password"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0 text-black-500 font-semibold">
-                            Email:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
-                            <input
-                              type="text"
-                              placeholder="Gurjarweb@gmail.com"
-                              id="email"
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 px-8 py-1 xsm:px-0  text-black-500 font-semibold">
-                            Number:
-                          </td>
-                          <td class="lg:px-7 lg:py-7 md:px-7 md:py-7 py-1 xsm:px-0 text-black">
-                            <input
-                              type="text"
-                              placeholder="+639666972501"
-                              id="number"
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                  <table className="w-full">
+                    <tbody>
+                      <tr>
+                        <td className="">
+                          <label className="text-[#777] text-xs">
+                            User Name
+                          </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            id="Username"
+                            type="text"
+                            placeholder="umesh_04"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="">
+                          <label className="text-[#777] text-xs">
+                            Password
+                          </label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            placeholder="************"
+                            id="password"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="">
+                          <label className="text-[#777] text-xs">Email</label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            placeholder="gurjarweb@gmail.com"
+                            id="email"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="">
+                          <label className="text-[#777] text-xs">Phone</label>
+                          <br />
+                          <input
+                            className="border border-[#aaa] hover:border-[#111] focus:border-[#111] text-sm p-3 rounded-lg w-full mb-5 inputField"
+                            type="text"
+                            placeholder="+639666972501"
+                            id="number"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
 
-                <div className="flex justify-end px-3">
-                  <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold lg:py-2 lg:px-4 md:py-2 md:px-4 py-1 px-2 rounded inline-flex items-center top-0 right-0">
-                    <svg
-                      class="fill-current w-4 h-4 mr-2"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                    >
-                      <GrDocumentUpdate />
-                    </svg>
+                <div className="flex justify-center">
+                  <button className="bg-[#555] justify-center w-full flex text-white p-2 rounded-lg shadow-md border hover:shadow-none hover:bg-[#222]">
                     <span onClick={updateProfile} href="#!">
                       Save
                     </span>

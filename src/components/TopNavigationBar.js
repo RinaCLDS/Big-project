@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import avatar from "../images/avatar.jpg";
 
 function TopNavigationBar() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const openDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -33,13 +35,13 @@ function TopNavigationBar() {
               className="px-4 text-left text-sm text-gray-50"
               role="menuitem"
             >
-              John Doe
+              Umesh Sharma
             </div>
             <div
               className="px-4 text-left text-sm text-gray-50"
               role="menuitem"
             >
-              johndoe@gmail.com
+              umeshsharma@gmail.com
             </div>
           </div>
           <div
@@ -52,12 +54,14 @@ function TopNavigationBar() {
             <button
               className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-[#ffffffb3] hover:text-gray-900"
               role="menuitem"
+              onClick={() => navigate('/dashboard')}
             >
               Dashboard
             </button>
             <button
               className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-[#ffffffb3] hover:text-gray-900"
               role="menuitem"
+              onClick={() => navigate('/profile')}
             >
               Profile Settings
             </button>
@@ -78,6 +82,7 @@ function TopNavigationBar() {
             <button
               className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-[#ffffffb3] hover:text-gray-900"
               role="menuitem"
+              onClick={() => navigate('/')}
             >
               Sign Out
             </button>

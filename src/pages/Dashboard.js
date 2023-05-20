@@ -38,6 +38,7 @@ import TableData from "../components/TableData";
 import Map from "../components/Map";
 import TopNavigationBar from "../components/TopNavigationBar";
 import Loading from "./Loading";
+import Welcome from "../components/Welcome";
 
 function Dashboard() {
   const [mergedData, setMergedData] = useState([
@@ -90,6 +91,8 @@ function Dashboard() {
 
       {/* Content */}
       <div className="container mx-auto max-w-5xl">
+        <Welcome />
+        
         {/* MAP */}
         <Map
           // mapData={mapData}
@@ -101,6 +104,8 @@ function Dashboard() {
 
         {/* Map Details */}
         <TableData />
+
+        <div className="h-[100px]"></div>
       </div>
     </div>
   );
