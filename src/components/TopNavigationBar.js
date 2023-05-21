@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { domain } from "../data/constant";
 import Cookies from "universal-cookie";
 import axios from "axios";
@@ -37,7 +37,7 @@ function TopNavigationBar() {
 
   return (
     <div className="flex justify-between items-center px-7 py-3 bg-[#111] text-gray-50 shadow">
-      <div className="font-bold tracking-wider ">Gurjar.</div>
+      <Link to={'/dashboard'} className="font-bold tracking-wider ">Gurjar.</Link>
 
       <button
         onClick={openDropdown}
