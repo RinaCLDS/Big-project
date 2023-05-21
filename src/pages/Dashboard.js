@@ -39,8 +39,34 @@ import Map from "../components/Map";
 import TopNavigationBar from "../components/TopNavigationBar";
 import Loading from "./Loading";
 import Welcome from "../components/Welcome";
-
+import axios from "axios";
+import Cookies from "universal-cookie";
+import { useNavigate } from "react-router-dom";
+import { domain } from "../data/constant";
 function Dashboard() {
+  const [data, setData] = useState({"valid":true,"user":{"name":"Gabryel Ardy Echavez","profile_pic":"/media_cdn/profile_images/11/profile_image_Plht2xV.png","nationality":"philippines","state":"rizal","city":"antipolo","village":"dela paz","gotra":"A","blood_group":"A","date_of_birth":"2000","email":"myfluffycy@gmail.com","password":"sample","mobile_number":"09666972501","religion":"catholic"}});
+  const navigate = useNavigate();
+  const check = async () => {
+    const new_cookies = new Cookies();
+    const token = new_cookies.get("token");
+
+    await axios
+       .post(domain+"/gurjar/get_user/", {
+         token: token,
+       })
+       .then((response) => {
+         console.log("response", response);
+         if (!response.data.valid) {
+           new_cookies.remove("token", { path: "/" });
+         } else {
+            console.log("response", response)
+            localStorage.setItem("data", JSON.stringify(response.data));
+            setData(response.data);
+           navigate("/dashboard");
+         }
+       })
+       .catch((error) => console.log(error));
+  }
   const [mergedData, setMergedData] = useState([
     { type: "FeatureCollection", features: [] },
   ]);
@@ -79,6 +105,7 @@ function Dashboard() {
     }
   };
   useEffect(() => {
+    check()
     fetchPopulationData();
   }, []);
 
@@ -91,7 +118,7 @@ function Dashboard() {
 
       {/* Content */}
       <div className="container mx-auto max-w-5xl">
-        <Welcome />
+        <Welcome data={data} />
         
         {/* MAP */}
         <Map

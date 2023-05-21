@@ -22,7 +22,7 @@ const Register = () => {
         if (!response.data.valid) {
           new_cookies.remove("token", { path: "/" });
         } else {
-          navigate("/home");
+          navigate("/dashboard");
         }
       })
       .catch((error) => console.log(error));

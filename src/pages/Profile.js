@@ -8,9 +8,12 @@ import { GrDocumentUpdate } from "react-icons/gr";
 import { ImProfile } from "react-icons/im";
 import GurjarCard from "../modal/GurjarCard";
 import TopNavigationBar from "../components/TopNavigationBar";
+import { domain } from "../data/constant";
+
 
 const Profile = () => {
   const get = (element) => document.querySelector(element);
+  
   const [isOpen, setIsOpen] = useState(false);
   const [avatar, setAvatar] = useState(avatar_path);
   const openDropdown = () => {
@@ -52,7 +55,7 @@ const Profile = () => {
 
     axios
       .put(
-        "https://gurjar-xndl7.ondigitalocean.app/gurjar/update_profile/",
+        domain+"/gurjar/update_profile/",
         formData,
         {
           headers: {
@@ -63,11 +66,12 @@ const Profile = () => {
       .then((response) => {
         if (response.data.valid) {
           alert("Profile Updated Successfully");
+          console.log(get("#headName"))
           get("#profileImg").src =
-            "https://gurjar-xndl7.ondigitalocean.app" +
+            domain+"" +
             response.data.user.profile_pic;
           get("#profileImg1").src =
-            "https://gurjar-xndl7.ondigitalocean.app" +
+            domain+
             response.data.user.profile_pic;
           get("#headName").innerHTML = response.data.user.name;
           get("#profile").value = "";
@@ -87,7 +91,7 @@ const Profile = () => {
     initTE({ Tab });
     if (token) {
       axios
-        .post("https://gurjar-xndl7.ondigitalocean.app/gurjar/get_user/", {
+        .post(domain+"/gurjar/get_user/", {
           token: token,
         })
         .then((response) => {
@@ -110,7 +114,7 @@ const Profile = () => {
 
             setUser(response.data.user);
             setAvatar(
-              "https://gurjar-xndl7.ondigitalocean.app" +
+              domain+"" +
                 response.data.user.profile_pic
             );
           }
@@ -164,7 +168,7 @@ const Profile = () => {
                 >
                   <img
                     id="profileImg"
-                    src={currentAvatar}
+                    src={domain+user.profile_pic}
                     alt="DP"
                     className="w-56 h-56 rounded-full"
                   />
@@ -468,9 +472,9 @@ const Profile = () => {
                   </table>
                 </div>
 
-                <div className="flex justify-center">
+                <div onClick={updateProfile} className="flex justify-center">
                   <button className="bg-[#555] justify-center w-full flex text-white p-2 rounded-lg shadow-md border hover:shadow-none hover:bg-[#222]">
-                    <span onClick={updateProfile} href="#!">
+                    <span  href="#!">
                       Save
                     </span>
                   </button>
