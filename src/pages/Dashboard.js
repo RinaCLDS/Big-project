@@ -13,10 +13,9 @@ import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { domain } from "../data/constant";
 function Dashboard() {
+  const [gurjarDatas, setGurjarDatas] = useState([]);
+  
   const [sortedCounts, setSortedCounts] = useState([['philippines', 0]]);
-  // const sortedCountsNationality = Object.entries(sortedCounts).sort(
-  //   ([_, countA], [__, countB]) => countB - countA
-  // );
   const getSortedCounts = () => {
     axios
     .get(domain+"/gurjar/population_search/")
@@ -27,7 +26,7 @@ function Dashboard() {
     })
     .catch((error) => console.log(error));
   }
-  
+
   const [data, setData] = useState({"valid":true,"user":{"name":"Gabryel Ardy Echavez","profile_pic":"/media_cdn/profile_images/11/profile_image_Plht2xV.png","nationality":"philippines","state":"rizal","city":"antipolo","village":"dela paz","gotra":"A","blood_group":"A","date_of_birth":"2000","email":"myfluffycy@gmail.com","password":"sample","mobile_number":"09666972501","religion":"catholic"}});
   const navigate = useNavigate();
   const check = async () => {
@@ -53,15 +52,23 @@ function Dashboard() {
     { type: "FeatureCollection", features: [] },
   ]);
   const [isLoading, setIsLoading] = useState(true);
-
   const fetchPopulationData = async () => {
     try {
       // Fetch or use axios to get the database here...
       // Code here...
 
       // Merging the data in the database with the JSON
+
+
+
+
+
+
+
+      // Dito Yung gurjarDatas
+      // pag nag ctrl+s ka tsaka lang mag rerender yung mga pic
       const mergedData = mapData.features.map((feature) => {
-        const population = sampleDatabase.find(
+        const population = gurjarDatas.find(
           (data) => data.ADMIN === feature.properties.ADMIN
         );
         const users = population ? population.users : [];
@@ -85,9 +92,19 @@ function Dashboard() {
     } catch (error) {
       console.error("Error fetching population data:", error);
     }
+    // End Dito
   };
   
   useEffect(() => {
+    
+    axios
+    .get(domain+"/gurjar/get_all_user/")
+    .then((response) => {
+      console.log(response.data.data)
+      setGurjarDatas(response.data.data)
+      
+    })
+    .catch((error) => console.log(error));
     check()
     getSortedCounts()
     fetchPopulationData();
