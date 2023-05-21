@@ -1,6 +1,44 @@
-import React from "react";
-
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { domain } from "../data/constant";
 function TableData() {
+  const [sortedCounts, setSortedCounts] = useState({valid:false, data:[]});
+  
+  const selectData = (e) => {
+    axios
+    .get(domain+"/gurjar/population_search/", {
+      params: {
+        data: e.target.value
+      }
+    })
+    .then((response) => {
+      if(response.data.valid){
+        setSortedCounts(response.data)
+      }else{
+        setSortedCounts({valid:false, data:[]})
+      }
+      
+    })
+    .catch((error) => console.log(error));
+  }
+  useEffect(() => {
+    if(!sortedCounts.valid){
+      axios
+      .get(domain+"/gurjar/population_search/", {
+        params: {
+          data: 'nationality'
+        }
+      })
+      .then((response) => {
+        if(response.data.valid){
+          setSortedCounts(response.data)
+        }else{
+          setSortedCounts({valid:false, data:[]})
+        }
+      })
+      .catch((error) => console.log(error));
+    }
+  }, []);
   return (
     <table className="table-auto w-full text-left shadow-md rounded-lg">
       <thead className="bg-[#111] text-white px-4 py-2">
@@ -10,9 +48,10 @@ function TableData() {
               <select
                 title="Category"
                 id="select-dropdown"
+                onChange={selectData}
                 class="px-4 py-2 focus:outline-none bg-[#111] rounded text-white rounded-lg"
               >
-                <option className="p-2 rounded-t-lg" value="country" selected>
+                <option className="p-2 rounded-t-lg" value="nationality" selected>
                   Country
                 </option>
                 <option className="p-2" value="state">
@@ -34,18 +73,14 @@ function TableData() {
         </tr>
       </thead>
       <tbody className="bg-white">
-        <tr>
-          <td className="pl-4 pr-2 py-1">India</td>
-          <td className="pl-4 pr-2 py-1">99,999</td>
-        </tr>
-        <tr>
-          <td className="pl-4 pr-2 py-1">Philippines</td>
-          <td className="pl-4 pr-2 py-1">78,381</td>
-        </tr>
-        <tr>
-          <td className="pl-4 pr-2 py-1">Vietnam</td>
-          <td className="pl-4 pr-2 py-1">100,101</td>
-        </tr>
+        {
+          sortedCounts.data.map(({name, count})=> (
+            <tr key={name}>
+              <td className="pl-4 pr-2 py-1">{name}</td>
+              <td className="pl-4 pr-2 py-1">{count}</td>
+          </tr>
+          ))
+        }
       </tbody>
     </table>
   );

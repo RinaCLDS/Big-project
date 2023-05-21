@@ -6,15 +6,18 @@ import data from "../data/dataset.json";
 import gotras from "../data/gotras.json";
 import { motion } from "framer-motion";
 import { fadeIn } from "../variants";
-
+import { domain } from "../data/constant";
 const Register = () => {
+  const name1 = data.map(item=>item.name)
+  console.log(name1)
+
   const get = (element) => document.querySelector(element);
   const navigate = useNavigate();
   const new_cookies = new Cookies();
   const token = new_cookies.get("token");
   if (token) {
     axios
-      .post("https://gurjar-xndl7.ondigitalocean.app/gurjar/get_user/", {
+      .post(domain+"/gurjar/get_user/", {
         token: token,
       })
       .then((response) => {
@@ -29,7 +32,7 @@ const Register = () => {
   }
   const check_otp = async (otp, mobile_number) => {
     return await axios.post(
-      "https://gurjar-xndl7.ondigitalocean.app/gurjar/check_otp/",
+      domain+"/gurjar/check_otp/",
       {
         mobile_number: mobile_number,
         otp: otp,
@@ -62,7 +65,7 @@ const Register = () => {
       return;
     }
     axios
-      .post("https://gurjar-xndl7.ondigitalocean.app/gurjar/create_user/", {
+      .post(domain+"/gurjar/create_user/", {
         nationality: nationality,
         religion: religion,
         gender: gender,
@@ -98,7 +101,7 @@ const Register = () => {
       return;
     }
     axios
-      .post("https://gurjar-xndl7.ondigitalocean.app/gurjar/gurjar_otp/", {
+      .post(domain+"/gurjar/gurjar_otp/", {
         mobile_number: mobile_number,
       })
       .then((response) => {

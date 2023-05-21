@@ -1,7 +1,6 @@
 import axios from "axios";
 import Cookies from "universal-cookie";
 function Welcome({data}) {
-  console.log(data)
   return (
     <div className="flex flex-col items-center text-3xl my-7">
       <div>Welcome Umesh Sharma!</div>

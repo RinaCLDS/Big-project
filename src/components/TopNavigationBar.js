@@ -23,7 +23,6 @@ function TopNavigationBar() {
         token: token,
       })
       .then((response) => {
-        console.log("response", response);
         if (!response.data.valid) {
           new_cookies.remove("token", { path: "/" });
           navigate("/");
