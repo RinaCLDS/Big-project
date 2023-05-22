@@ -52,46 +52,44 @@ function Dashboard() {
     { type: "FeatureCollection", features: [] },
   ]);
   const [isLoading, setIsLoading] = useState(true);
-  const fetchPopulationData = async () => {
-    try {
-      // Fetch or use axios to get the database here...
-      // Code here...
+  const fetchPopulationData = () => {
+    // try {
+    //   // Fetch or use axios to get the database here...
+    //   // Code here...
 
-      // Merging the data in the database with the JSON
-
-
+    //   // Merging the data in the database with the JSON
 
 
 
+    //   // Dito Yung gurjarDatas
+    //   // pag nag ctrl+s ka tsaka lang mag rerender yung mga pic
+    //   const mergedData = mapData.features.map((feature) => {
 
 
-      // Dito Yung gurjarDatas
-      // pag nag ctrl+s ka tsaka lang mag rerender yung mga pic
-      const mergedData = mapData.features.map((feature) => {
-        const population = gurjarDatas.find(
-          (data) => data.ADMIN === feature.properties.ADMIN
-        );
-        const users = population ? population.users : [];
+    //     const population = gurjarDatas.find(
+    //       (data) => data.ADMIN === feature.properties.ADMIN
+    //     );
+    //     const users = population ? population.users : [];
 
-        return {
-          ...feature,
-          properties: {
-            ...feature.properties,
-            population: population ? population.population : 0,
-            users: users,
-          },
-        };
-      });
+    //     return {
+    //       ...feature,
+    //       properties: {
+    //         ...feature.properties,
+    //         population: population ? population.population : 0,
+    //         users: users,
+    //       },
+    //     };
+    //   });
 
-      const updatedMergedData = {
-        type: mapData.type,
-        features: mergedData,
-      };
-      setMergedData(updatedMergedData);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching population data:", error);
-    }
+    //   const updatedMergedData = {
+    //     type: mapData.type,
+    //     features: mergedData,
+    //   };
+    //   setMergedData(updatedMergedData);
+    //   setIsLoading(false);
+    // } catch (error) {
+    //   console.error("Error fetching population data:", error);
+    // }
     // End Dito
   };
   
@@ -100,16 +98,40 @@ function Dashboard() {
     axios
     .get(domain+"/gurjar/get_all_user/")
     .then((response) => {
-      console.log(response.data.data)
-      setGurjarDatas(response.data.data)
-      
+      console.log(response.data)
+      try {
+          const mergedData = mapData.features.map((feature) => {
+    
+    
+            const population = response.data.data.find(
+              (data) => data.ADMIN === feature.properties.ADMIN
+            );
+            const users = population ? population.users : [];
+    
+            return {
+              ...feature,
+              properties: {
+                ...feature.properties,
+                population: population ? population.population : 0,
+                users: users,
+              },
+            };
+          });
+    
+          const updatedMergedData = {
+            type: mapData.type,
+            features: mergedData,
+          };
+          setMergedData(updatedMergedData);
+          setIsLoading(false);
+        } catch (error) {
+          console.error("Error fetching population data:", error);
+        }
     })
     .catch((error) => console.log(error));
     check()
     getSortedCounts()
-    fetchPopulationData();
   }, []);
-
   if (isLoading) {
     return <Loading />; // Display a loading state while data is being fetched
   }
