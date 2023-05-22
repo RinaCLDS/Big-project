@@ -52,53 +52,12 @@ function Dashboard() {
     { type: "FeatureCollection", features: [] },
   ]);
   const [isLoading, setIsLoading] = useState(true);
-  const fetchPopulationData = () => {
-    // try {
-    //   // Fetch or use axios to get the database here...
-    //   // Code here...
-
-    //   // Merging the data in the database with the JSON
-
-
-
-    //   // Dito Yung gurjarDatas
-    //   // pag nag ctrl+s ka tsaka lang mag rerender yung mga pic
-    //   const mergedData = mapData.features.map((feature) => {
-
-
-    //     const population = gurjarDatas.find(
-    //       (data) => data.ADMIN === feature.properties.ADMIN
-    //     );
-    //     const users = population ? population.users : [];
-
-    //     return {
-    //       ...feature,
-    //       properties: {
-    //         ...feature.properties,
-    //         population: population ? population.population : 0,
-    //         users: users,
-    //       },
-    //     };
-    //   });
-
-    //   const updatedMergedData = {
-    //     type: mapData.type,
-    //     features: mergedData,
-    //   };
-    //   setMergedData(updatedMergedData);
-    //   setIsLoading(false);
-    // } catch (error) {
-    //   console.error("Error fetching population data:", error);
-    // }
-    // End Dito
-  };
   
   useEffect(() => {
     
     axios
     .get(domain+"/gurjar/get_all_user/")
     .then((response) => {
-      console.log(response.data)
       try {
           const mergedData = mapData.features.map((feature) => {
     
