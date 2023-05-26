@@ -10,10 +10,9 @@ import GurjarCard from "../modal/GurjarCard";
 import TopNavigationBar from "../components/TopNavigationBar";
 import { domain } from "../data/constant";
 
-
 const Profile = () => {
   const get = (element) => document.querySelector(element);
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const [avatar, setAvatar] = useState(avatar_path);
   const openDropdown = () => {
@@ -54,25 +53,17 @@ const Profile = () => {
     appendIfValid(formData, "mobile_number", "#number");
 
     axios
-      .put(
-        domain+"/gurjar/update_profile/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      .put(domain + "/gurjar/update_profile/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         if (response.data.valid) {
           alert("Profile Updated Successfully");
-          console.log(get("#headName"))
-          get("#profileImg").src =
-            domain+"" +
-            response.data.user.profile_pic;
-          get("#profileImg1").src =
-            domain+
-            response.data.user.profile_pic;
+          console.log(get("#headName"));
+          get("#profileImg").src = domain + "" + response.data.user.profile_pic;
+          get("#profileImg1").src = domain + response.data.user.profile_pic;
           get("#headName").innerHTML = response.data.user.name;
           get("#profile").value = "";
           get("#password").value = "";
@@ -91,7 +82,7 @@ const Profile = () => {
     initTE({ Tab });
     if (token) {
       axios
-        .post(domain+"/gurjar/get_user/", {
+        .post(domain + "/gurjar/get_user/", {
           token: token,
         })
         .then((response) => {
@@ -113,10 +104,7 @@ const Profile = () => {
             get("#number").value = response.data.user.mobile_number;
 
             setUser(response.data.user);
-            setAvatar(
-              domain+"" +
-                response.data.user.profile_pic
-            );
+            setAvatar(domain + "" + response.data.user.profile_pic);
           }
         })
         .catch((error) => console.log(error));
@@ -127,6 +115,9 @@ const Profile = () => {
 
   const [showGurjarCard, setGurjarCard] = useState(false);
   const handleOnClose = () => setGurjarCard(false);
+
+  const [showEditProfile, setEditProfile] = useState(false);
+  const handleClose = () => setEditProfile(false);
 
   const [currentAvatar, setCurrentAvatar] = useState(avatar);
   const [isPreview, setIsPreview] = useState(false);
@@ -160,7 +151,7 @@ const Profile = () => {
             onSubmit={formSubmit}
             className="min-h-screen justify-center p-7"
           >
-            <div className="mb-5 ">
+            <div className="mb-5">
               <div className="rounded-full w-56 h-56 overflow-hidden mx-auto border border-[#ddd] shadow-md relative group">
                 <label
                   htmlFor="profile"
@@ -168,7 +159,7 @@ const Profile = () => {
                 >
                   <img
                     id="profileImg"
-                    src={domain+user.profile_pic}
+                    src={domain + user.profile_pic}
                     alt="DP"
                     className="w-56 h-56 rounded-full"
                   />
@@ -198,17 +189,16 @@ const Profile = () => {
               />
             </div>
 
-            <div className="text-center mb-20">
-              <h6 className="text-[#555]">
-                Gurjar ID: G-00000{user.gurjar_id}
-              </h6>
-              <h6 className="text-[#555]">Gurjar Points: 1000{user.points}</h6>
+            <div className="text-center mb-20 space-x-5">
               <p
                 id="headName"
                 className="px-2 py-1 xsm:px-0 font-bold text-5xl"
               >
                 {user.name}
               </p>
+              <h6 className="text-[#555]">Gurjar ID:{user.gurjar_id}</h6>
+              <h6 className="text-[#555]">Gurjar Points: 1000{user.points}</h6>
+
               <button
                 onClick={() => setGurjarCard(true)}
                 className=" bg-[#555] hover:bg-[#222] text-white font-bold py-2 px-4 rounded inline-flex items-center"
@@ -221,6 +211,17 @@ const Profile = () => {
                   <ImProfile />
                 </svg>
                 <span>Gurjar Card</span>
+              </button>
+
+              <button className=" bg-[#555] hover:bg-[#222] text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                <svg
+                  className="fill-current w-4 h-4 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <ImProfile />
+                </svg>
+                <span>Edit profile</span>
               </button>
             </div>
 
@@ -474,9 +475,7 @@ const Profile = () => {
 
                 <div onClick={updateProfile} className="flex justify-center">
                   <button className="bg-[#555] justify-center w-full flex text-white p-2 rounded-lg shadow-md border hover:shadow-none hover:bg-[#222]">
-                    <span  href="#!">
-                      Save
-                    </span>
+                    <span href="#!">Save</span>
                   </button>
                 </div>
               </div>

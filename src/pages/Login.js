@@ -14,14 +14,13 @@ const Login = () => {
   const expiresDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
   const navigate = useNavigate();
   const token = new_cookies.get("token");
- 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, password } = e.target.elements;
 
     axios
-      .post(domain+"/gurjar/login/", {
+      .post(domain + "/gurjar/login/", {
         gurjar_id: username.value,
         password: password.value,
       })
@@ -44,7 +43,7 @@ const Login = () => {
     e.preventDefault();
     const email = get("#ResetEmail").value;
     await axios
-      .post(domain+"/gurjar/change_password/", {
+      .post(domain + "/gurjar/change_password/", {
         email: email,
       })
       .then((response) => {
@@ -59,25 +58,25 @@ const Login = () => {
   const handleOpen = () => {
     setOpen(!open);
   };
-   const check = async () => {
-     await axios
-        .post(domain+"/gurjar/get_user/", {
-          token: token,
-        })
-        .then((response) => {
-          console.log("response", response);
-          if (!response.data.valid) {
-            new_cookies.remove("token", { path: "/" });
-          } else {
-            localStorage.setItem("data", JSON.stringify(response.data));
-            navigate("/dashboard");
-          }
-        })
-        .catch((error) => console.log(error));
-   }
+  const check = async () => {
+    await axios
+      .post(domain + "/gurjar/get_user/", {
+        token: token,
+      })
+      .then((response) => {
+        console.log("response", response);
+        if (!response.data.valid) {
+          new_cookies.remove("token", { path: "/" });
+        } else {
+          localStorage.setItem("data", JSON.stringify(response.data));
+          navigate("/dashboard");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
-    check()
+    check();
     if (open) {
       get(".loginAccount").classList.add("hidden");
       get(".resetPassword").classList.remove("hidden");
