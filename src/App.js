@@ -6,6 +6,8 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import Gurjar from "./pages/Gurjar";
+import SignUp from "./pages/SignUp";
 function App() {
   // const new_cookies = new Cookies();
   // const navigate = useNavigate();
@@ -27,8 +29,10 @@ function App() {
   return (
     <Router>
       <Routes className="main">
+        <Route path="/" element={<Gurjar />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>

@@ -14,59 +14,75 @@ import { useNavigate } from "react-router-dom";
 import { domain } from "../data/constant";
 function Dashboard() {
   const [gurjarDatas, setGurjarDatas] = useState([]);
-  
-  const [sortedCounts, setSortedCounts] = useState([['philippines', 0]]);
+
+  const [sortedCounts, setSortedCounts] = useState([["philippines", 0]]);
   const getSortedCounts = () => {
     axios
-    .get(domain+"/gurjar/population_search/")
-    .then((response) => {
-      setSortedCounts(Object.entries(response.data.nationalities_count).sort(
-        ([_, countA], [__, countB]) => countB - countA
-      ))
-    })
-    .catch((error) => console.log(error));
-  }
+      .get(domain + "/gurjar/population_search/")
+      .then((response) => {
+        setSortedCounts(
+          Object.entries(response.data.nationalities_count).sort(
+            ([_, countA], [__, countB]) => countB - countA
+          )
+        );
+      })
+      .catch((error) => console.log(error));
+  };
 
-  const [data, setData] = useState({"valid":true,"user":{"name":"Gabryel Ardy Echavez","profile_pic":"/media_cdn/profile_images/11/profile_image_Plht2xV.png","nationality":"philippines","state":"rizal","city":"antipolo","village":"dela paz","gotra":"A","blood_group":"A","date_of_birth":"2000","email":"myfluffycy@gmail.com","password":"sample","mobile_number":"09666972501","religion":"catholic"}});
+  const [data, setData] = useState({
+    valid: true,
+    user: {
+      name: "Gabryel Ardy Echavez",
+      profile_pic: "/media_cdn/profile_images/11/profile_image_Plht2xV.png",
+      nationality: "philippines",
+      state: "rizal",
+      city: "antipolo",
+      village: "dela paz",
+      gotra: "A",
+      blood_group: "A",
+      date_of_birth: "2000",
+      email: "myfluffycy@gmail.com",
+      password: "sample",
+      mobile_number: "09666972501",
+      religion: "catholic",
+    },
+  });
   const navigate = useNavigate();
   const check = async () => {
     const new_cookies = new Cookies();
     const token = new_cookies.get("token");
 
     await axios
-       .post(domain+"/gurjar/get_user/", {
-         token: token,
-       })
-       .then((response) => {
-         if (!response.data.valid) {
-           new_cookies.remove("token", { path: "/" });
-         } else {
-            localStorage.setItem("data", JSON.stringify(response.data));
-            setData(response.data);
-           navigate("/dashboard");
-         }
-       })
-       .catch((error) => console.log(error));
-  }
+      .post(domain + "/gurjar/get_user/", {
+        token: token,
+      })
+      .then((response) => {
+        if (!response.data.valid) {
+          new_cookies.remove("token", { path: "/" });
+        } else {
+          localStorage.setItem("data", JSON.stringify(response.data));
+          setData(response.data);
+          navigate("/dashboard");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
   const [mergedData, setMergedData] = useState([
     { type: "FeatureCollection", features: [] },
   ]);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   useEffect(() => {
-    
     axios
-    .get(domain+"/gurjar/get_all_user/")
-    .then((response) => {
-      try {
+      .get(domain + "/gurjar/get_all_user/")
+      .then((response) => {
+        try {
           const mergedData = mapData.features.map((feature) => {
-    
-    
             const population = response.data.data.find(
               (data) => data.ADMIN === feature.properties.ADMIN
             );
             const users = population ? population.users : [];
-    
+
             return {
               ...feature,
               properties: {
@@ -76,7 +92,7 @@ function Dashboard() {
               },
             };
           });
-    
+
           const updatedMergedData = {
             type: mapData.type,
             features: mergedData,
@@ -86,10 +102,10 @@ function Dashboard() {
         } catch (error) {
           console.error("Error fetching population data:", error);
         }
-    })
-    .catch((error) => console.log(error));
-    check()
-    getSortedCounts()
+      })
+      .catch((error) => console.log(error));
+    check();
+    getSortedCounts();
   }, []);
   if (isLoading) {
     return <Loading />; // Display a loading state while data is being fetched
@@ -101,7 +117,7 @@ function Dashboard() {
       {/* Content */}
       <div className="container mx-auto max-w-5xl">
         <Welcome data={data} />
-        
+
         {/* MAP */}
         <Map
           // mapData={mapData}
@@ -109,7 +125,7 @@ function Dashboard() {
         />
 
         {/* User */}
-        <GurjarInfo  data={data} />
+        <GurjarInfo data={data} />
 
         {/* Map Details */}
         <TableData />

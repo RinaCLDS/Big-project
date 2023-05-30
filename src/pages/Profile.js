@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import avatar_path from "../images/avatar.jpg";
+import avatar_path from "../images/avatar.png";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
@@ -128,14 +128,14 @@ const Profile = () => {
   const [showGurjarCard, setGurjarCard] = useState(false);
   const handleOnClose = () => setGurjarCard(false);
 
-  const [currentAvatar, setCurrentAvatar] = useState(avatar);
+  const [currentAvatar, setCurrentAvatar] = useState(domain+user.profile_pic);
   const [isPreview, setIsPreview] = useState(false);
   const handleChangeAvatarPreview = (e) => {
     const reader = new FileReader();
 
     reader.onload = () => {
       if (reader.readyState === 2) {
-        setCurrentAvatar(reader.result);
+        setAvatar(reader.result);
       }
     };
     if (e.target.files[0]) {
@@ -149,6 +149,7 @@ const Profile = () => {
     const name = e.target.name;
     const value = e.target.value;
   };
+
 
   return (
     <div className="k">
@@ -168,7 +169,7 @@ const Profile = () => {
                 >
                   <img
                     id="profileImg"
-                    src={domain+user.profile_pic}
+                    src={avatar}
                     alt="DP"
                     className="w-56 h-56 rounded-full"
                   />

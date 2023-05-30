@@ -216,13 +216,13 @@ function Map({ mergedData }) {
                         position={userCoordinates}
                         icon={L.divIcon({
                           className: "custom-icon",
-                          html: `<div></div><img class="rounded-full h-10 w-10 ring-white ring-2" src=${pictureSrc} />`,
+                          html: `<img class="rounded-full h-5 w-5 ring-[#333] ring-2" src=${pictureSrc} />`,
 
-                          iconSize: [38, 95], // size of the icon
-                          shadowSize: [50, 64], // size of the shadow
-                          iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-                          shadowAnchor: [4, 62], // the same for the shadow
-                          popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+                          // iconSize: [38, 95], // size of the icon
+                          // shadowSize: [50, 64], // size of the shadow
+                          // iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+                          // shadowAnchor: [4, 62], // the same for the shadow
+                          // popupAnchor: [0, 0], // point from which the popup should open relative to the iconAnchor
                         })}
                       >
                         <Popup className="custom-popup">

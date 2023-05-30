@@ -31,5 +31,22 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        '.scrollable-tbody': {
+          'tbody': {
+            display: 'block',
+            maxHeight: '30rem',
+            overflowY: 'auto',
+          },
+          'thead, tbody tr': {
+            display: 'table',
+            width: '100%',
+            tableLayout: 'fixed',
+          },
+        },
+      });
+    }
+  ],
 };

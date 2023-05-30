@@ -4,8 +4,6 @@ import image2 from "../images/image2.png";
 import image3 from "../images/image3.png";
 import image4 from "../images/image4.png";
 import image5 from "../images/image5.png";
-import avatar from "../images/avatar.jpg";
-import avatars from "../images/avatars.jpg";
 
 const sampleDatabase = [
   {
@@ -41,7 +39,7 @@ const sampleDatabase = [
       {
         userName: "Aarav Gupta",
         userCoordinates: [22.3964, 113.975],
-        pictureSrc: avatar,
+        pictureSrc: image5,
       },
     ],
   },
@@ -57,7 +55,7 @@ const sampleDatabase = [
       {
         userName: "Siddharth Verma",
         userCoordinates: [8.0859, 77.4749],
-        pictureSrc: avatars,
+        pictureSrc: image5,
       },
     ],
   },

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { fadeIn } from "../variants";
 import { BiArrowBack } from "react-icons/bi";
 import { domain } from "../data/constant";
+import bg from "../images/background.png"
 const Login = () => {
   const [open, setOpen] = useState(false);
   const get = (element) => document.querySelector(element);
@@ -14,14 +15,13 @@ const Login = () => {
   const expiresDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
   const navigate = useNavigate();
   const token = new_cookies.get("token");
- 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, password } = e.target.elements;
 
     axios
-      .post(domain+"/gurjar/login/", {
+      .post(domain + "/gurjar/login/", {
         gurjar_id: username.value,
         password: password.value,
       })
@@ -44,7 +44,7 @@ const Login = () => {
     e.preventDefault();
     const email = get("#ResetEmail").value;
     await axios
-      .post(domain+"/gurjar/change_password/", {
+      .post(domain + "/gurjar/change_password/", {
         email: email,
       })
       .then((response) => {
@@ -59,25 +59,25 @@ const Login = () => {
   const handleOpen = () => {
     setOpen(!open);
   };
-   const check = async () => {
-     await axios
-        .post(domain+"/gurjar/get_user/", {
-          token: token,
-        })
-        .then((response) => {
-          console.log("response", response);
-          if (!response.data.valid) {
-            new_cookies.remove("token", { path: "/" });
-          } else {
-            localStorage.setItem("data", JSON.stringify(response.data));
-            navigate("/dashboard");
-          }
-        })
-        .catch((error) => console.log(error));
-   }
+  const check = async () => {
+    await axios
+      .post(domain + "/gurjar/get_user/", {
+        token: token,
+      })
+      .then((response) => {
+        console.log("response", response);
+        if (!response.data.valid) {
+          new_cookies.remove("token", { path: "/" });
+        } else {
+          localStorage.setItem("data", JSON.stringify(response.data));
+          navigate("/dashboard");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
-    check()
+    check();
     if (open) {
       get(".loginAccount").classList.add("hidden");
       get(".resetPassword").classList.remove("hidden");
@@ -90,56 +90,80 @@ const Login = () => {
   return (
     <section className="sm:p-25 flex flex-col justify-center" id="contact">
       <motion.div
-        variants={fadeIn("down", 0.4)}
+        variants={fadeIn("center", 0.4)}
         initial="hidden"
         whileInView={"show"}
         viewport={{ once: false, amount: 0.4 }}
         className="flex w-full justify-center h-[70vh]"
       >
-        <div className="flex sm:items-center loginAccount">
+        <div className={`flex sm:items-center loginAccount h-screen bg-no-repeat bg-center bg-[url()] `}>
           <form
             onSubmit={handleSubmit}
-            className="max-w-md rounded-lg flex-col p-7 mt-4 sm:border sm:shadow-xl sm:bg-white"
+            className="max-w-md rounded-lg items-center flex flex-col p-7 mt-4 sm:border sm:shadow-xl sm:bg-white"
           >
-            <h1 className="mt-2 mb-7 text-center text-[#111] text-5xl font-extrabold">
-              Gurjar.
-            </h1>
-            <input
-              className="bg-transparent text-black border border-[#999] rounded-md p-3 outline-none 
+            <div className="flexGrow">
+              <div className="mt-2 mb-7 text-[#111] ">
+                <h2 className="text-4xl font-extrabold">Welcome,</h2>
+                <p className="text-md text-[#888] font-medium">
+                  Please login your details
+                </p>
+              </div>
+              <input
+                className="sm:bg-transparent text-black border border-[#999] rounded-md bg-[#f0f0f0] p-3 outline-none 
                w-full placeholder:text-gray focus:border-[#111] transition-all"
-              type="text"
-              name="username"
-              placeholder="Username"
-            />
-            <input
-              className="bg-transparent text-black border border-[#999] rounded-md p-3 mt-2 outline-none
+                type="text"
+                name="username"
+                placeholder="Username"
+              />
+              <input
+                className="sm:bg-transparent text-black border border-[#777] rounded-md bg-[#f0f0f0] p-3 mt-2 outline-none
          w-full placeholder:text-gray focus:border-[#111] transition-all"
-              type="password"
-              name="password"
-              placeholder="Password"
-            />
-            <button
-              type="submit"
-              className="w-full flex justify-center mt-5 p-3 text-xl border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#555] hover:bg-[#222] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Login
-            </button>
-
-            <div className="mt-2">
-              <span className="text-black text-xs flex justify-center">
+                type="password"
+                name="password"
+                placeholder="Password"
+              />
+              <span className="mt-2 font-medium text-sm flex justify-end">
                 <a
                   onClick={handleOpen}
-                  className="text-blue-600 hover:underline"
+                  className="text-[#888] hover:underline"
                   href="#!"
                 >
                   Forgot password?
                 </a>
               </span>
-              <span className="text-black text-xs flex justify-center">
-                <Link className="text-blue-600 hover:underline" to="/register">
-                  Sign up.
-                </Link>
-              </span>
+
+              <button
+                type="submit"
+                className="w-full justify-center mt-5 p-3 text-xl border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-[#222] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Login
+              </button>
+            </div>
+
+            <div className="flex flex-col mb-10 mt-auto w-full">
+              <span className="text-center text-[#888]">OR</span>
+              <button
+                type="submit"
+                className="w-full justify-center p-3 text-xl border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-[#222] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Login with Apple
+              </button>
+              <div className="flex justify-between mx-7 mt-5">
+                <button className="px-3 py-1">Facebook</button>
+                <button className="px-3 py-1">Google</button>
+              </div>
+
+              <div className="mt-2">
+                <span className="text-[#888] text-sm flex justify-center">
+                  I'm a new user,
+                  <Link
+                    className="text-[#555] hover:underline font-bold"
+                    to="/register"
+                  >
+                    Sign up
+                  </Link>
+                </span>
+              </div>
             </div>
           </form>
         </div>
