@@ -258,7 +258,7 @@ function Map({ mergedData }) {
       </div>
 
       <button
-        className="bg-[#555] text-white rounded-lg p-2 w-full mb-10 shadow-lg hover:bg-[#222]"
+        className="bg-[#0B77FB] text-white rounded-lg p-2 w-full mb-10 shadow-lg hover:bg-[#222]"
         onClick={handleFindLocation}
       >
         Find Current Location

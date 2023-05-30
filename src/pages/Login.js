@@ -6,7 +6,11 @@ import { motion } from "framer-motion";
 import { fadeIn } from "../variants";
 import { BiArrowBack } from "react-icons/bi";
 import { domain } from "../data/constant";
-import bg from "../images/background.png"
+import bg from "../images/background.png";
+import apple from "../images/apple.png";
+import google from "../images/google.png";
+import facebook from "../images/facebook.png";
+
 const Login = () => {
   const [open, setOpen] = useState(false);
   const get = (element) => document.querySelector(element);
@@ -90,21 +94,21 @@ const Login = () => {
   return (
     <section className="sm:p-25 flex flex-col justify-center" id="contact">
       <motion.div
-        variants={fadeIn("center", 0.4)}
+        variants={fadeIn("center", 0.1)}
         initial="hidden"
         whileInView={"show"}
         viewport={{ once: false, amount: 0.4 }}
         className="flex w-full justify-center h-[70vh]"
       >
-        <div className={`flex sm:items-center loginAccount h-screen bg-no-repeat bg-center bg-[url()] `}>
+        <div className={`flex sm:items-center loginAccount h-screen p-5`}>
           <form
             onSubmit={handleSubmit}
-            className="max-w-md rounded-lg items-center flex flex-col p-7 mt-4 sm:border sm:shadow-xl sm:bg-white"
+            className="max-w-md rounded-lg items-center flex flex-col p-2 mt-4 sm:border sm:shadow-xl sm:bg-white"
           >
-            <div className="flexGrow">
+            <div className="z-10">
               <div className="mt-2 mb-7 text-[#111] ">
                 <h2 className="text-4xl font-extrabold">Welcome,</h2>
-                <p className="text-md text-[#888] font-medium">
+                <p className="text-md text-[#888] font-semibold">
                   Please login your details
                 </p>
               </div>
@@ -122,7 +126,7 @@ const Login = () => {
                 name="password"
                 placeholder="Password"
               />
-              <span className="mt-2 font-medium text-sm flex justify-end">
+              <span className="mt-2 font-semibold text-sm flex justify-end">
                 <a
                   onClick={handleOpen}
                   className="text-[#888] hover:underline"
@@ -134,28 +138,43 @@ const Login = () => {
 
               <button
                 type="submit"
-                className="w-full justify-center mt-5 p-3 text-xl border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-[#222] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full justify-center mt-5 p-3 text-xl border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#222] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Login
               </button>
             </div>
 
-            <div className="flex flex-col mb-10 mt-auto w-full">
+            <div className="flex flex-col mb-10 mt-auto font-semibold w-full z-10">
               <span className="text-center text-[#888]">OR</span>
               <button
                 type="submit"
-                className="w-full justify-center p-3 text-xl border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-[#222] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full flex items-center justify-center p-3 text-md border border-[#888] rounded-full shadow-sm text-sm font-medium text-[#888] bg-[rgba(0,0,0,0.1)] hover:bg-[rgba(0,0,0,0.2)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
+                <img src={apple} className="w-5 h-5 mr-2" alt="Apple Logo" />
                 Login with Apple
               </button>
-              <div className="flex justify-between mx-7 mt-5">
-                <button className="px-3 py-1">Facebook</button>
-                <button className="px-3 py-1">Google</button>
+              <div className="flex justify-between mx-2 mt-5">
+                <button className="flex items-center text-sm px-3 py-1">
+                  <img
+                    src={facebook}
+                    className="w-5 h-5 mr-2"
+                    alt="Facebook Logo"
+                  />
+                  Facebook
+                </button>
+                <button className="flex items-center text-sm px-3 py-1">
+                  <img
+                    src={google}
+                    className="w-5 h-5 mr-2"
+                    alt="Google Logo"
+                  />
+                  Google
+                </button>
               </div>
 
-              <div className="mt-2">
+              <div className="mt-3">
                 <span className="text-[#888] text-sm flex justify-center">
-                  I'm a new user,
+                  I'm a new user,&nbsp;
                   <Link
                     className="text-[#555] hover:underline font-bold"
                     to="/register"
@@ -165,6 +184,7 @@ const Login = () => {
                 </span>
               </div>
             </div>
+            <img src={bg} className="absolute h-auto w-full mt-28 opacity-[0.15]" />
           </form>
         </div>
 
@@ -221,10 +241,7 @@ const Login = () => {
                   </button>
 
                   <p className="text-center text-xs mt-1">
-                    <Link
-                      className="text-blue-600 hover:underline"
-                      to="/register"
-                    >
+                    <Link className="hover:underline" to="/register">
                       Sign up.
                     </Link>
                   </p>

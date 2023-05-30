@@ -3,8 +3,26 @@ import { useNavigate, Link } from "react-router-dom";
 import { domain } from "../data/constant";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import logo from "../images/logo.png";
 function TopNavigationBar() {
-  const [data, setData] = useState({"valid":true,"user":{"name":"Gabryel Ardy Echavez","profile_pic":"/media_cdn/profile_images/11/profile_image_Plht2xV.png","nationality":"philippines","state":"rizal","city":"antipolo","village":"dela paz","gotra":"A","blood_group":"A","date_of_birth":"2000","email":"myfluffycy@gmail.com","password":"sample","mobile_number":"09666972501","religion":"catholic"}});
+  const [data, setData] = useState({
+    valid: true,
+    user: {
+      name: "Gabryel Ardy Echavez",
+      profile_pic: "/media_cdn/profile_images/11/profile_image_Plht2xV.png",
+      nationality: "philippines",
+      state: "rizal",
+      city: "antipolo",
+      village: "dela paz",
+      gotra: "A",
+      blood_group: "A",
+      date_of_birth: "2000",
+      email: "myfluffycy@gmail.com",
+      password: "sample",
+      mobile_number: "09666972501",
+      religion: "catholic",
+    },
+  });
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const openDropdown = () => {
@@ -14,12 +32,12 @@ function TopNavigationBar() {
     const new_cookies = new Cookies();
     new_cookies.remove("token", { path: "/" });
     navigate("/");
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     const new_cookies = new Cookies();
     const token = new_cookies.get("token");
     axios
-      .post(domain+"/gurjar/get_user/", {
+      .post(domain + "/gurjar/get_user/", {
         token: token,
       })
       .then((response) => {
@@ -31,21 +49,22 @@ function TopNavigationBar() {
         }
       })
       .catch((error) => console.log(error));
-
-  },[])
+  }, []);
 
   return (
     <div className="flex justify-between items-center px-7 py-3 bg-[#111] text-gray-50 shadow">
-      <Link to={'/dashboard'} className="font-bold tracking-wider ">Gurjar.</Link>
+      <Link to={"/dashboard"} className="font-bold tracking-wider ">
+        <img src={logo} className="h-10 w-10" />
+      </Link>
 
       <button
         onClick={openDropdown}
         className="inline-block h-9 w-9 rounded-full ring-2 ring-transparent hover:ring-white cursor-pointer active:ring-transparent"
       >
-        <img 
+        <img
           id="profileImg1"
           className="overflow-hidden rounded-full"
-          src={domain+data.user.profile_pic}
+          src={domain + data.user.profile_pic}
           alt="avatar"
         />
       </button>
@@ -81,14 +100,14 @@ function TopNavigationBar() {
             <button
               className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-[#ffffffb3] hover:text-gray-900"
               role="menuitem"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate("/dashboard")}
             >
               Dashboard
             </button>
             <button
               className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-[#ffffffb3] hover:text-gray-900"
               role="menuitem"
-              onClick={() => navigate('/profile')}
+              onClick={() => navigate("/profile")}
             >
               Profile Settings
             </button>
