@@ -58,6 +58,7 @@ function Dashboard() {
     axios
     .get(domain+"/gurjar/get_all_user/")
     .then((response) => {
+      console.log(response.data.data, '11') // Ito phil nasa loob ng userDetails
       try {
           const mergedData = mapData.features.map((feature) => {
     
