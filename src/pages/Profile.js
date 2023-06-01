@@ -116,9 +116,6 @@ const Profile = () => {
   const [showGurjarCard, setGurjarCard] = useState(false);
   const handleOnClose = () => setGurjarCard(false);
 
-  const [showEditProfile, setEditProfile] = useState(false);
-  const handleClose = () => setEditProfile(false);
-
   const [currentAvatar, setCurrentAvatar] = useState(avatar);
   const [isPreview, setIsPreview] = useState(false);
   const handleChangeAvatarPreview = (e) => {
@@ -136,10 +133,7 @@ const Profile = () => {
     // let currentPhoto = e.target.files[0];
   };
 
-  const handleEditProfile = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-  };
+  
 
   return (
     <div className="k">

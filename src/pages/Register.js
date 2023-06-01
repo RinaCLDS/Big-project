@@ -7,6 +7,7 @@ import gotras from "../data/gotras.json";
 import { motion } from "framer-motion";
 import { fadeIn } from "../variants";
 import { domain } from "../data/constant";
+
 const Register = () => {
   const name1 = data.map(item=>item.name)
   console.log(name1)

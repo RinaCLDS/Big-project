@@ -1,7 +1,8 @@
 import {createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { domain } from '../data/constant';
 export const api = createApi({
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://gurjar-xndl7.ondigitalocean.app',
+        baseUrl: domain,
         headers: {
             'Content-Type': 'application/json'
         }
@@ -17,11 +18,19 @@ export const api = createApi({
                 url: `gurjar/gurjar_user/${id}`,
                 method: 'DELETE'
             })
-        })
+        }),
+        updateGurjarUser: builder.mutation({
+            query: (data) => ({
+                url: `gurjar/gurjar_user/${data.id}/`,
+                method: 'PUT',
+                body: data.user
+            })
+        }),
     })
 })
 
 export const {
                 useGetGurjarUsersQuery,
-                useDeleteGurjarUserMutation
+                useDeleteGurjarUserMutation,
+                useUpdateGurjarUserMutation
             } = api;

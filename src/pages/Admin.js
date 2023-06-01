@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TopNavigationBar from "../components/TopNavigationBar";
 import { useGetGurjarUsersQuery, useDeleteGurjarUserMutation } from "../state/api";
 import { domain } from "../data/constant";
+import EditProfile from "../modal/EditProfile";
+import Cookies from "universal-cookie";
+
 function Admin() {
   const { data, error, isLoading } = useGetGurjarUsersQuery();
+  const [newUser, setNewUser] = useState({});
   const [deleteUser, { isLoading: isDeleting }] = useDeleteGurjarUserMutation();
   const get = (element)=> document.querySelector(element);
   const handleDelete = (id) => {
@@ -21,7 +25,28 @@ function Admin() {
       console.error('Error deleting user:', error);
     });
   }
-  
+  const userdata = (state, id)=>{
+    setEditProfile(state);
+    const user = data.find((user)=> user.id === id);
+    
+    setNewUser(user);
+  }
+
+  const [showEditProfile, setEditProfile] = useState(false);
+  const [newshow, setNewShow] = useState(false);
+  const onclickuser = () =>{
+    const forms = get('form')
+    forms.name.value = newUser.name;
+    console.log(newUser.value)
+  }
+  console.log(newshow)
+  useEffect(() => {
+    if (!isLoading){
+      // Save data to local storage
+      console.log(111)
+      localStorage.setItem('gurjar_users', JSON.stringify(data));
+    }
+  },[data]);
   return (
     <div class="overflow-x-auto">
       <TopNavigationBar />
@@ -40,7 +65,9 @@ function Admin() {
                   <th class="py-3 px-6 text-left">User</th>
                   <th class="py-3 px-6 text-left">Email</th>
                   <th class="py-3 px-6 text-left">mobile number</th>
-                  <th class="py-3 px-6 text-center">Users</th>
+                  <th class="py-3 px-6 text-left">State</th>
+                  <th class="py-3 px-6 text-left">Date of birth</th>
+                  <th class="py-3 px-6 text-left">religion</th>
                   <th class="py-3 px-6 text-center">Status</th>
                   <th class="py-3 px-6 text-center">Actions</th>
                 </tr>
@@ -64,7 +91,7 @@ function Admin() {
                                 src={domain+user.profile_pic}
                               />
                             </div>
-                            <span>Eshal Rosas</span>
+                            <span>{user.name}</span>
                           </div>
                         </td>
                         <td class="py-3 px-6 text-left whitespace-nowrap">
@@ -77,22 +104,22 @@ function Admin() {
                             <span class="font-medium">{user.mobile_number}</span>
                           </div>
                         </td>
-                        <td class="py-3 px-6 text-center">
-                          <div class="flex items-center justify-center">
-                            <img
-                              class="w-6 h-6 rounded-full border-gray-200 border transform hover:scale-125"
-                              src="https://randomuser.me/api/portraits/men/1.jpg"
-                            />
-                            <img
-                              class="w-6 h-6 rounded-full border-gray-200 border -m-1 transform hover:scale-125"
-                              src="https://randomuser.me/api/portraits/women/2.jpg"
-                            />
-                            <img
-                              class="w-6 h-6 rounded-full border-gray-200 border -m-1 transform hover:scale-125"
-                              src="https://randomuser.me/api/portraits/men/3.jpg"
-                            />
+                        <td class="py-3 px-6 text-left whitespace-nowrap">
+                          <div class="flex items-center">
+                            <span class="font-medium">{user.state}</span>
                           </div>
                         </td>
+                        <td class="py-3 px-6 text-left whitespace-nowrap">
+                          <div class="flex items-center">
+                            <span class="font-medium">{user.date_of_birth}</span>
+                          </div>
+                        </td>
+                        <td class="py-3 px-6 text-left whitespace-nowrap">
+                          <div class="flex items-center">
+                            <span class="font-medium">{user.religion}</span>
+                          </div>
+                        </td>
+                      
                         <td class="py-3 px-6 text-center">
                           <span class="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs">
                             Active
@@ -121,7 +148,7 @@ function Admin() {
                                 />
                               </svg>
                             </div>
-                            <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                            <div onClick={()=>userdata(true, user.id)} class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -163,6 +190,15 @@ function Admin() {
           </div>
         </div>
       </div>
+      {
+        showEditProfile && (
+          <EditProfile
+              trigger={setEditProfile}
+              newUser={newUser}
+            />
+        )
+      }
+      
     </div>
   );
 }
