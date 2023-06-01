@@ -208,8 +208,9 @@ function Map({ mergedData }) {
                     // const [lng, lat] = country.geometry.coordinates[0][0]; // Get the first set of coordinates for the country const [lng, lat] = user.userCoordinates; // Access the coordinates correctly
                     // const [lng, lat] = user.userCoordinates; // Access the coordinates correctly
 
-                    const { userName, userCoordinates, pictureSrc } = user; // Destructure the user object
+                    const { userDetails, userCoordinates, pictureSrc } = user; // Destructure the user object
 
+                    // console.log(user);
                     return (
                       <Marker
                         key={key}
@@ -227,7 +228,9 @@ function Map({ mergedData }) {
                       >
                         <Popup className="custom-popup">
                           <span>
-                            <b>{userName}</b>
+                            <b>{userDetails.name}</b>
+                            <b>{userDetails.blood_group}</b>
+                            <b>{userDetails.city}</b>
                           </span>
                         </Popup>
                       </Marker>

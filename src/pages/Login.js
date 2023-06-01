@@ -103,7 +103,7 @@ const Login = () => {
         <div className={`flex sm:items-center loginAccount h-screen p-5`}>
           <form
             onSubmit={handleSubmit}
-            className="max-w-md rounded-lg items-center flex flex-col p-2 mt-4 sm:border sm:shadow-xl sm:bg-white"
+            className="max-w-md rounded-lg items-center flex flex-col p-2 sm:p-10 mt-4 sm:border sm:shadow-xl sm:bg-white relative"
           >
             <div className="z-10">
               <div className="mt-2 mb-7 text-[#111] ">
@@ -113,14 +113,14 @@ const Login = () => {
                 </p>
               </div>
               <input
-                className="sm:bg-transparent text-black border border-[#999] rounded-md bg-[#f0f0f0] p-3 outline-none 
+                className="sm:bg-white text-black border border-[#999] rounded-md bg-[#f0f0f0] p-3 outline-none 
                w-full placeholder:text-gray focus:border-[#111] transition-all"
                 type="text"
                 name="username"
                 placeholder="Username"
               />
               <input
-                className="sm:bg-transparent text-black border border-[#777] rounded-md bg-[#f0f0f0] p-3 mt-2 outline-none
+                className="sm:bg-white text-black border border-[#777] rounded-md bg-[#f0f0f0] p-3 mt-2 outline-none
          w-full placeholder:text-gray focus:border-[#111] transition-all"
                 type="password"
                 name="password"
@@ -138,7 +138,7 @@ const Login = () => {
 
               <button
                 type="submit"
-                className="w-full justify-center mt-5 p-3 text-xl border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#222] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full justify-center mt-5 p-3 text-xl border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#0853AF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Login
               </button>
@@ -146,13 +146,7 @@ const Login = () => {
 
             <div className="flex flex-col mb-10 mt-auto font-semibold w-full z-10">
               <span className="text-center text-[#888]">OR</span>
-              <button
-                type="submit"
-                className="w-full flex items-center justify-center p-3 text-md border border-[#888] rounded-full shadow-sm text-sm font-medium text-[#888] bg-[rgba(0,0,0,0.1)] hover:bg-[rgba(0,0,0,0.2)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                <img src={apple} className="w-5 h-5 mr-2" alt="Apple Logo" />
-                Login with Apple
-              </button>
+
               <div className="flex justify-between mx-2 mt-5">
                 <button className="flex items-center text-sm px-3 py-1">
                   <img
@@ -184,7 +178,10 @@ const Login = () => {
                 </span>
               </div>
             </div>
-            <img src={bg} className="absolute h-auto w-full mt-28 opacity-[0.15]" />
+            <img
+              src={bg}
+              className="absolute h-auto w-full mt-28 sm:mt-1 opacity-[0.15]"
+            />
           </form>
         </div>
 
