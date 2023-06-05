@@ -10,10 +10,48 @@ import GurjarCard from "../modal/GurjarCard";
 import TopNavigationBar from "../components/TopNavigationBar";
 import { domain } from "../data/constant";
 
-
 const Profile = () => {
+  const check = async () => {
+    const new_cookies = new Cookies();
+    const token = new_cookies.get("token");
+
+    await axios
+      .post(domain + "/gurjar/get_user/", {
+        token: token,
+      })
+      .then((response) => {
+        if (!response.data.valid) {
+          new_cookies.remove("token", { path: "/" });
+        } else {
+          localStorage.setItem("data", JSON.stringify(response.data));
+          setData(response.data);
+          navigate("/profile");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const [data, setData] = useState({
+    valid: true,
+    user: {
+      name: "Gabryel Ardy Echavez",
+      profile_pic: "/media_cdn/profile_images/11/profile_image_Plht2xV.png",
+      nationality: "philippines",
+      state: "rizal",
+      city: "antipolo",
+      village: "dela paz",
+      gotra: "A",
+      blood_group: "A",
+      date_of_birth: "2000",
+      email: "myfluffycy@gmail.com",
+      password: "sample",
+      mobile_number: "09666972501",
+      religion: "catholic",
+    },
+  });
+
   const get = (element) => document.querySelector(element);
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const [avatar, setAvatar] = useState(avatar_path);
   const openDropdown = () => {
@@ -54,25 +92,17 @@ const Profile = () => {
     appendIfValid(formData, "mobile_number", "#number");
 
     axios
-      .put(
-        domain+"/gurjar/update_profile/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      .put(domain + "/gurjar/update_profile/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         if (response.data.valid) {
           alert("Profile Updated Successfully");
-          console.log(get("#headName"))
-          get("#profileImg").src =
-            domain+"" +
-            response.data.user.profile_pic;
-          get("#profileImg1").src =
-            domain+
-            response.data.user.profile_pic;
+          console.log(get("#headName"));
+          get("#profileImg").src = domain + "" + response.data.user.profile_pic;
+          get("#profileImg1").src = domain + response.data.user.profile_pic;
           get("#headName").innerHTML = response.data.user.name;
           get("#profile").value = "";
           get("#password").value = "";
@@ -88,10 +118,11 @@ const Profile = () => {
   };
   const token = new_cookies.get("token");
   useEffect(() => {
+    check();
     initTE({ Tab });
     if (token) {
       axios
-        .post(domain+"/gurjar/get_user/", {
+        .post(domain + "/gurjar/get_user/", {
           token: token,
         })
         .then((response) => {
@@ -113,10 +144,7 @@ const Profile = () => {
             get("#number").value = response.data.user.mobile_number;
 
             setUser(response.data.user);
-            setAvatar(
-              domain+"" +
-                response.data.user.profile_pic
-            );
+            setAvatar(domain + "" + response.data.user.profile_pic);
           }
         })
         .catch((error) => console.log(error));
@@ -128,7 +156,7 @@ const Profile = () => {
   const [showGurjarCard, setGurjarCard] = useState(false);
   const handleOnClose = () => setGurjarCard(false);
 
-  const [currentAvatar, setCurrentAvatar] = useState(domain+user.profile_pic);
+  const [currentAvatar, setCurrentAvatar] = useState(domain + user.profile_pic);
   const [isPreview, setIsPreview] = useState(false);
   const handleChangeAvatarPreview = (e) => {
     const reader = new FileReader();
@@ -150,10 +178,9 @@ const Profile = () => {
     const value = e.target.value;
   };
 
-
   return (
     <div className="k">
-      <TopNavigationBar />
+      <TopNavigationBar data={data} />
 
       <div className="text-black sm:px-5 sm:py-4 xsm:px-5 xsm:py-4 md:px-9 md:py-9 lg:px-9 lg:py-9">
         <div className="min-h-screen mx-auto justify-center py-5 px-3 sm:border sm:shadow-lg sm:bg-white rounded-lg ">
@@ -475,9 +502,7 @@ const Profile = () => {
 
                 <div onClick={updateProfile} className="flex justify-center">
                   <button className="bg-[#555] justify-center w-full flex text-white p-2 rounded-lg shadow-md border hover:shadow-none hover:bg-[#222]">
-                    <span  href="#!">
-                      Save
-                    </span>
+                    <span href="#!">Save</span>
                   </button>
                 </div>
               </div>

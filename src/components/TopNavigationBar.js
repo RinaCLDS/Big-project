@@ -4,25 +4,7 @@ import { domain } from "../data/constant";
 import Cookies from "universal-cookie";
 import axios from "axios";
 import logo from "../images/logo.png";
-function TopNavigationBar() {
-  const [data, setData] = useState({
-    valid: true,
-    user: {
-      name: "Gabryel Ardy Echavez",
-      profile_pic: "/media_cdn/profile_images/11/profile_image_Plht2xV.png",
-      nationality: "philippines",
-      state: "rizal",
-      city: "antipolo",
-      village: "dela paz",
-      gotra: "A",
-      blood_group: "A",
-      date_of_birth: "2000",
-      email: "myfluffycy@gmail.com",
-      password: "sample",
-      mobile_number: "09666972501",
-      religion: "catholic",
-    },
-  });
+function TopNavigationBar({data}) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const openDropdown = () => {
@@ -33,26 +15,9 @@ function TopNavigationBar() {
     new_cookies.remove("token", { path: "/" });
     navigate("/");
   };
-  useEffect(() => {
-    const new_cookies = new Cookies();
-    const token = new_cookies.get("token");
-    axios
-      .post(domain + "/gurjar/get_user/", {
-        token: token,
-      })
-      .then((response) => {
-        if (!response.data.valid) {
-          new_cookies.remove("token", { path: "/" });
-          navigate("/");
-        } else {
-          setData(response.data);
-        }
-      })
-      .catch((error) => console.log(error));
-  }, []);
 
   return (
-    <div className="flex justify-between items-center px-7 py-3 bg-[#111] text-gray-50 shadow">
+    <div className="fixed w-full top-0 z-10 flex justify-between items-center px-7 py-3 bg-[#111] text-gray-50 shadow">
       <Link to={"/dashboard"} className="font-bold tracking-wider ">
         <img src={logo} className="h-10 w-10" />
       </Link>

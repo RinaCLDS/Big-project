@@ -10,8 +10,11 @@ import Loading from "./Loading";
 import Welcome from "../components/Welcome";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { domain } from "../data/constant";
+import SideNavigationBar from "../components/SideNavigationBar";
+import Analytics from "../components/Analytics";
+import Users from "./Users";
 function Dashboard() {
   const [gurjarDatas, setGurjarDatas] = useState([]);
 
@@ -71,6 +74,15 @@ function Dashboard() {
     { type: "FeatureCollection", features: [] },
   ]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFocused, setisFocused] = useState(false);
+  const location = useLocation();
+  const pathName = () => {
+    if (location.pathname == "/dashboard") {
+      setisFocused(true);
+    } else {
+      setisFocused(false);
+    }
+  };
 
   useEffect(() => {
     axios
@@ -97,6 +109,7 @@ function Dashboard() {
             type: mapData.type,
             features: mergedData,
           };
+
           setMergedData(updatedMergedData);
           setIsLoading(false);
         } catch (error) {
@@ -104,36 +117,65 @@ function Dashboard() {
         }
       })
       .catch((error) => console.log(error));
+    pathName();
     check();
     getSortedCounts();
   }, []);
-  if (isLoading) {
-    return <Loading />; // Display a loading state while data is being fetched
-  }
-  return (
-    <div className="main">
-      <TopNavigationBar />
 
-      {/* Content */}
-      <div className="container mx-auto max-w-5xl">
-        <Welcome data={data} />
+  const admin = false;
 
-        {/* MAP */}
-        <Map
-          // mapData={mapData}
-          mergedData={mergedData}
-        />
+  const [currentPage, setCurrentPage] = useState(["Dashboard", "User"]);
+  const [pageIndex, setPageIndex] = useState(0);
 
-        {/* User */}
-        <GurjarInfo data={data} />
+  const handlePageChange = (index) => {
+    setPageIndex(index);
+    // Perform any additional logic when the page changes
+  };
 
-        {/* Map Details */}
-        <TableData />
+  if (admin) {
+    return (
+      <div className="main">
+        <div className="admin">
+          <SideNavigationBar
+            pageIndex={pageIndex}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
 
-        <div className="h-[100px]"></div>
+          <div className="ml-[14vw] bg-white h-[100vh] pl-5 ">
+            {pageIndex === 0 ? <Analytics /> : <Users />}
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    if (isLoading) {
+      return <Loading />; // Display a loading state while data is being fetched
+    } else {
+      return (
+        <div className="main">
+          <div className="user">
+            <TopNavigationBar data={data} />
+
+            <div className="container mx-auto max-w-5xl mt-28">
+              <Welcome data={data} />
+
+              <Map
+                // mapData={mapData}
+                mergedData={mergedData}
+              />
+
+              <GurjarInfo data={data} />
+
+              <TableData />
+
+              <div className="h-[100px]"></div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  }
 }
 
 export default Dashboard;
