@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Paging from "../components/Paging";
+import { FaArrowLeft } from "react-icons/fa";
 
 const Register = () => {
   const [page, setPage] = useState(0);
@@ -26,6 +27,7 @@ const Register = () => {
 
   const formFields = [
     { name: "name", label: "Name" },
+    { name: "country", label: "Country" },
     { name: "gender", label: "Gender" },
     { name: "date", label: "Birth Date" },
     { name: "religion", label: "Religion" },
@@ -54,10 +56,18 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    if (name === "option") {
+      // Set the value directly without wrapping it in an object
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleRegister = () => {
@@ -79,41 +89,164 @@ const Register = () => {
   return (
     <div className="flex flex-col items-center justify-center h-[100vh] h-[100svh] overflow-hidden">
       {isGurjar ? (
-        <div className="flex flex-col justify-between h-full py-10 text-[#111]">
-          <div>
-            Create Account
-            <p>Please login your details</p>
+        <div className="flex flex-col justify-between w-full max-w-[1000px] h-full py-10 text-[#111]">
+          <div className="mx-20">
+            <div
+              className="self-start flex items-center space-x-2 cursor-pointer mb-5"
+              onClick={() => navigate("/")}
+            >
+              <FaArrowLeft /> <span>Go Back</span>
+            </div>
+            <h2 className="text-4xl font-extrabold">Create Account</h2>
+            <p className="text-md text-[#888] font-semibold">
+              Please enter your details
+            </p>
           </div>
 
-          <div className="mt-[-25vh]">
+          <div className="mt-[-25vh] mx-20">
             {formFields.slice(page * 2, page * 2 + 2).map((field) => (
               <div key={field.name}>
-                <input
-                  className="p-3 my-2 border rounded-lg w-full focus:border-black"
-                  type={field.name === "password" 
-                        ? "password" 
-                        : field.name === "email" 
-                        ? "email" 
-                        : field.name === "password" 
-                        ? "password" 
-                        : field.name === "date" ? "date" 
-                        : field.name === "tel" ? "tel" 
-                        : field.name === "number" ? "number" 
-                        : "text"}
-                  placeholder={field.label}
-                  pattern={ field.name === "tel" ? "[0-9]11}" : false}
-                  value={formData[field.name]}
-                  name={field.name}
-                  onChange={handleChange}
-                />
+                {field.name === "gender" ? (
+                  <select
+                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black pr-8"
+                    value={formData.gender}
+                    name="gender"
+                    onChange={handleChange}
+                  >
+                    <option value="">Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                ) : field.name === "country" ? (
+                  <select
+                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                    value={formData.country}
+                    name="country"
+                    onChange={handleChange}
+                  >
+                    <option value="">Country</option>
+                    <option value="Country 1">Country 1</option>
+                    <option value="Country 2">Country 2</option>
+                    <option value="Country 3">Country 3</option>
+                  </select>
+                ) : field.name === "state" ? (
+                  <select
+                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                    value={formData.state}
+                    name="state"
+                    onChange={handleChange}
+                  >
+                    <option value="">State</option>
+                    <option value="State 1">State 1</option>
+                    <option value="State 2">State 2</option>
+                    <option value="State 3">State 3</option>
+                  </select>
+                ) : field.name === "city" ? (
+                  <select
+                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                    value={formData.city}
+                    name="city"
+                    onChange={handleChange}
+                  >
+                    <option value="">City</option>
+                    <option value="City 1">City 1</option>
+                    <option value="City 2">City 2</option>
+                    <option value="City 3">City 3</option>
+                  </select>
+                ) : field.name === "village" ? (
+                  <select
+                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                    value={formData.village}
+                    name="village"
+                    onChange={handleChange}
+                  >
+                    <option value="">Village</option>
+                    <option value="Village 1">Village 1</option>
+                    <option value="Village 2">Village 2</option>
+                    <option value="Village 3">Village 3</option>
+                  </select>
+                ) : field.name === "religion" ? (
+                  <select
+                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                    value={formData.religion}
+                    name="religion"
+                    onChange={handleChange}
+                  >
+                    <option value="">Religion</option>
+                    <option value="hindu">Hindu</option>
+                    <option value="muslim">Muslim</option>
+                    <option value="christian">Christian</option>
+                  </select>
+                ) : field.name === "gotra" ? (
+                  <select
+                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                    value={formData.gotra}
+                    name="gotra"
+                    onChange={handleChange}
+                  >
+                    <option value="">Gotra</option>
+                    <option value="gotra 1">Gotra 1</option>
+                    <option value="gotra 2">Gotra 2</option>
+                    <option value="gotra 3">Gotra 3</option>
+                  </select>
+                ) : field.name === "bloodGroup" ? (
+                  <select
+                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                    value={formData.bloodGroup}
+                    name="bloodGroup"
+                    onChange={handleChange}
+                  >
+                    <option value="">Blood Group</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                  </select>
+                ) : (
+                  <input
+                    className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                    type={
+                      field.name === "password"
+                        ? "password"
+                        : field.name === "email"
+                        ? "email"
+                        : field.name === "password"
+                        ? "password"
+                        : field.name === "date"
+                        ? "date"
+                        : field.name === "tel"
+                        ? "tel"
+                        : field.name === "number"
+                        ? "number"
+                        : "text"
+                    }
+                    placeholder={field.label}
+                    pattern={field.name === "tel" ? "[0-9]11}" : false}
+                    value={formData[field.name]}
+                    name={field.name}
+                    onChange={handleChange}
+                  />
+                )}
               </div>
             ))}
             <div className="flex justify-between w-full">
-              {page > 0 ? <button onClick={previousPage}>Previous</button> : <div></div>}
-              {page < Math.ceil(formFields.length / 2) - 1 ? (
-                <button className="mx-2" onClick={nextPage}>Next</button>
+              {page > 0 ? (
+                <button onClick={previousPage}>Previous</button>
               ) : (
-                <button className="mx-2" onClick={handleRegister}>Register</button>
+                <div></div>
+              )}
+              {page < Math.ceil(formFields.length / 2) - 1 ? (
+                <button className="mx-2" onClick={nextPage}>
+                  Next
+                </button>
+              ) : (
+                <button className="mx-2" onClick={handleRegister}>
+                  Register
+                </button>
               )}
             </div>
           </div>
