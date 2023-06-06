@@ -4,6 +4,8 @@ import Paging from "../components/Paging";
 import { FaArrowLeft } from "react-icons/fa";
 
 const Register = () => {
+  const get = (element)=> document.querySelectorAll(element)
+  const defaultValue = ['Country', 'Gender']
   const [page, setPage] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
@@ -47,7 +49,20 @@ const Register = () => {
   ];
 
   const nextPage = () => {
-    setPage(page + 1);
+    const validation =[]
+    const fields = get('#field')
+    console.log(fields[1].name)
+    fields.forEach((field)=>{
+      if (field.value.trim() === "" ){
+        validation.push({message: `${field.name} is required`})
+      }})
+
+    // make if validation is not empty then show the error message
+    if (validation.length <= 0){
+      setPage(page + 1);
+    } else {
+      alert(validation.map((message)=> message.message.toString()))
+    }
   };
 
   const previousPage = () => {
@@ -57,7 +72,7 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "option") {
-      // Set the value directly without wrapping it in an object
+      // Set the value directly without wrapping the object
       setFormData((prevFormData) => ({
         ...prevFormData,
         [name]: value,
@@ -72,7 +87,7 @@ const Register = () => {
 
   const handleRegister = () => {
     // Perform registration logic here
-    // You can access the form data from the formData state and submit it to your backend or perform any other actions you need.
+    // You can access the form data from the formData state and submit to your backend or perform any other actions you need.
   };
 
   const totalPages = 9; // Total number of pages
@@ -80,12 +95,12 @@ const Register = () => {
 
   const handlePageChange = (page) => {
     setPage(page);
-    // Perform any additional logic when the page changes
+    // Perform any additional logic when the page change
   };
 
   const [isGurjar, setisGurjar] = useState(false);
   const gurjarChange = () => setisGurjar(!isGurjar);
-
+  
   return (
     <div className="flex flex-col items-center justify-center h-[100vh] h-[100svh] overflow-hidden">
       {isGurjar ? (
@@ -108,6 +123,8 @@ const Register = () => {
               <div key={field.name}>
                 {field.name === "gender" ? (
                   <select
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black pr-8"
                     value={formData.gender}
                     name="gender"
@@ -119,6 +136,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "country" ? (
                   <select
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.country}
                     name="country"
@@ -128,9 +147,12 @@ const Register = () => {
                     <option value="Country 1">Country 1</option>
                     <option value="Country 2">Country 2</option>
                     <option value="Country 3">Country 3</option>
+                    <option value="Country 4">Country 4</option>
                   </select>
                 ) : field.name === "state" ? (
                   <select
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.state}
                     name="state"
@@ -143,6 +165,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "city" ? (
                   <select
+                    id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.city}
                     name="city"
@@ -155,6 +179,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "village" ? (
                   <select
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.village}
                     name="village"
@@ -167,6 +193,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "religion" ? (
                   <select
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.religion}
                     name="religion"
@@ -179,6 +207,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "gotra" ? (
                   <select
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.gotra}
                     name="gotra"
@@ -191,6 +221,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "bloodGroup" ? (
                   <select
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.bloodGroup}
                     name="bloodGroup"
@@ -209,21 +241,9 @@ const Register = () => {
                 ) : (
                   <input
                     className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                    type={
-                      field.name === "password"
-                        ? "password"
-                        : field.name === "email"
-                        ? "email"
-                        : field.name === "password"
-                        ? "password"
-                        : field.name === "date"
-                        ? "date"
-                        : field.name === "tel"
-                        ? "tel"
-                        : field.name === "number"
-                        ? "number"
-                        : "text"
-                    }
+                    type={field.name}
+                    id="field"
+required
                     placeholder={field.label}
                     pattern={field.name === "tel" ? "[0-9]11}" : false}
                     value={formData[field.name]}
