@@ -27,7 +27,7 @@ const Register = () => {
   const formFields = [
     { name: "name", label: "Name" },
     { name: "gender", label: "Gender" },
-    { name: "birthDate", label: "Birth Date" },
+    { name: "date", label: "Birth Date" },
     { name: "religion", label: "Religion" },
     { name: "gotra", label: "Gotra" },
     { name: "bloodGroup", label: "Blood Group" },
@@ -35,10 +35,10 @@ const Register = () => {
     { name: "state", label: "State" },
     { name: "city", label: "City" },
     { name: "village", label: "Village" },
-    { name: "mobile", label: "Mobile" },
+    { name: "tel", label: "Mobile" },
     { name: "education", label: "Education" },
     { name: "profession", label: "Profession" },
-    { name: "age", label: "Age" },
+    { name: "number", label: "Age" },
     { name: "email", label: "Email" },
     { name: "password", label: "Password" },
     { name: "address", label: "Address" },
@@ -89,9 +89,19 @@ const Register = () => {
             {formFields.slice(page * 2, page * 2 + 2).map((field) => (
               <div key={field.name}>
                 <input
-                  className="p-3 my-2 border rounded-lg w-full"
-                  type={field.name === "password" ? "password" : "text"}
+                  className="p-3 my-2 border rounded-lg w-full focus:border-black"
+                  type={field.name === "password" 
+                        ? "password" 
+                        : field.name === "email" 
+                        ? "email" 
+                        : field.name === "password" 
+                        ? "password" 
+                        : field.name === "date" ? "date" 
+                        : field.name === "tel" ? "tel" 
+                        : field.name === "number" ? "number" 
+                        : "text"}
                   placeholder={field.label}
+                  pattern={ field.name === "tel" ? "[0-9]11}" : false}
                   value={formData[field.name]}
                   name={field.name}
                   onChange={handleChange}
