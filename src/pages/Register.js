@@ -49,14 +49,31 @@ const Register = () => {
   ];
 
   const nextPage = () => {
-    const validation = [];
-    const fields = get("#field");
-    console.log(fields[1].name);
-    fields.forEach((field) => {
-      if (field.value.trim() === "") {
-        validation.push({ message: `${field.name} is required` });
+    const validation =[]
+    const fields = get('#field')
+    fields.forEach((field)=>{
+      if (field.value.trim() === "" ){
+        validation.push({message: `${field.name} is required`})
+      } else {
+        // pattern={field.name === "tel" ? "[0-9]11}" : false}
+        if (field.name === 'tel'){
+          // console.log('tel', /[0-9]11\}/.test(field.value.trim()))
+          if (/^[0-9]{11,}$/.test(field.value)=== false){
+            validation.push({message: `${field.name} is not valid mobile number`})
+          }
+        }
+        if(field.name === 'email'){
+          if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(field.value)=== false){
+            validation.push({message: `${field.name} is not valid email`})
+          }
+        }
+        if(field.name ==='number'){
+          if(isNaN(Number(field.value)) || Number(field.value)<=0){
+            validation.push({message: `${field.name} is not valid age`})
+          }
+        }
       }
-    });
+    })
 
     // make if validation is not empty then show the error message
     if (validation.length <= 0) {
@@ -87,6 +104,15 @@ const Register = () => {
   };
 
   const handleRegister = () => {
+    const validation =[]
+    const fields = get('#field')
+    fields.forEach((field)=>{
+      if (field.value.trim() === "" ){
+        validation.push({message: `${field.name} is required`})
+      }})
+      if (validation.length > 0){
+        alert(validation.map((message)=> message.message.toString()))
+      } 
     // Perform registration logic here
     // You can access the form data from the formData state and submit to your backend or perform any other actions you need.
   };
@@ -246,7 +272,7 @@ const Register = () => {
                     id="field"
                     required
                     placeholder={field.label}
-                    pattern={field.name === "tel" ? "[0-9]11}" : false}
+                    // pattern={field.name === "tel" ? "[0-9]11}" : false}
                     value={formData[field.name]}
                     name={field.name}
                     onChange={handleChange}
