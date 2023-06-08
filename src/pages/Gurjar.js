@@ -9,12 +9,14 @@ function Gurjar() {
     <div className="flex items-center flex-col h-screen p-5">
       <div className="sm:border sm:w-200 sm:p-5 sm:shadow-xl sm:bg-white sm:rounded-lg">
         <div className=" mt-1 items-center flex flex-col">
-          <img src={logo} className="h-28 w-28" />
+          <img src={logo} alt="Gurjar Maps logo" className="h-28 w-28" />
           <h1 className="font-extrabold text-4xl text-center">Gurjar Maps.</h1>
         </div>
         <img
           src={bg}
           className="h-auto w-full max-w-md my-5 grayscale contrast-200 drop-shadow-none"
+          loading="lazy"
+          alt="Gurjar person"
         />
         <div className="mb-5 w-full mt-auto px-2">
           <button
