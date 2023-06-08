@@ -4,8 +4,8 @@ import Paging from "../components/Paging";
 import { FaArrowLeft } from "react-icons/fa";
 
 const Register = () => {
-  const get = (element)=> document.querySelectorAll(element)
-  const defaultValue = ['Country', 'Gender']
+  const get = (element) => document.querySelectorAll(element);
+  const defaultValue = ["Country", "Gender"];
   const [page, setPage] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
@@ -49,19 +49,20 @@ const Register = () => {
   ];
 
   const nextPage = () => {
-    const validation =[]
-    const fields = get('#field')
-    console.log(fields[1].name)
-    fields.forEach((field)=>{
-      if (field.value.trim() === "" ){
-        validation.push({message: `${field.name} is required`})
-      }})
+    const validation = [];
+    const fields = get("#field");
+    console.log(fields[1].name);
+    fields.forEach((field) => {
+      if (field.value.trim() === "") {
+        validation.push({ message: `${field.name} is required` });
+      }
+    });
 
     // make if validation is not empty then show the error message
-    if (validation.length <= 0){
+    if (validation.length <= 0) {
       setPage(page + 1);
     } else {
-      alert(validation.map((message)=> message.message.toString()))
+      alert(validation.map((message) => message.message.toString()));
     }
   };
 
@@ -100,7 +101,7 @@ const Register = () => {
 
   const [isGurjar, setisGurjar] = useState(false);
   const gurjarChange = () => setisGurjar(!isGurjar);
-  
+
   return (
     <div className="flex flex-col items-center justify-center h-[100vh] h-[100svh] overflow-hidden">
       {isGurjar ? (
@@ -123,8 +124,8 @@ const Register = () => {
               <div key={field.name}>
                 {field.name === "gender" ? (
                   <select
-                  id="field"
-required
+                    id="field"
+                    required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black pr-8"
                     value={formData.gender}
                     name="gender"
@@ -136,8 +137,8 @@ required
                   </select>
                 ) : field.name === "country" ? (
                   <select
-                  id="field"
-required
+                    id="field"
+                    required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.country}
                     name="country"
@@ -151,8 +152,8 @@ required
                   </select>
                 ) : field.name === "state" ? (
                   <select
-                  id="field"
-required
+                    id="field"
+                    required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.state}
                     name="state"
@@ -166,7 +167,7 @@ required
                 ) : field.name === "city" ? (
                   <select
                     id="field"
-required
+                    required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.city}
                     name="city"
@@ -179,8 +180,8 @@ required
                   </select>
                 ) : field.name === "village" ? (
                   <select
-                  id="field"
-required
+                    id="field"
+                    required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.village}
                     name="village"
@@ -193,8 +194,8 @@ required
                   </select>
                 ) : field.name === "religion" ? (
                   <select
-                  id="field"
-required
+                    id="field"
+                    required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.religion}
                     name="religion"
@@ -207,8 +208,8 @@ required
                   </select>
                 ) : field.name === "gotra" ? (
                   <select
-                  id="field"
-required
+                    id="field"
+                    required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.gotra}
                     name="gotra"
@@ -221,8 +222,8 @@ required
                   </select>
                 ) : field.name === "bloodGroup" ? (
                   <select
-                  id="field"
-required
+                    id="field"
+                    required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.bloodGroup}
                     name="bloodGroup"
@@ -243,7 +244,7 @@ required
                     className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
                     type={field.name}
                     id="field"
-required
+                    required
                     placeholder={field.label}
                     pattern={field.name === "tel" ? "[0-9]11}" : false}
                     value={formData[field.name]}
