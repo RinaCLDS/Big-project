@@ -4,8 +4,8 @@ import Paging from "../components/Paging";
 import { FaArrowLeft } from "react-icons/fa";
 
 const Register = () => {
-  const get = (element) => document.querySelectorAll(element);
-  const defaultValue = ["Country", "Gender"];
+  const get = (element)=> document.querySelectorAll(element)
+  const defaultValue = ['Country', 'Gender']
   const [page, setPage] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
@@ -51,35 +51,17 @@ const Register = () => {
   const nextPage = () => {
     const validation =[]
     const fields = get('#field')
+    console.log(fields[1].name)
     fields.forEach((field)=>{
       if (field.value.trim() === "" ){
         validation.push({message: `${field.name} is required`})
-      } else {
-        // pattern={field.name === "tel" ? "[0-9]11}" : false}
-        if (field.name === 'tel'){
-          // console.log('tel', /[0-9]11\}/.test(field.value.trim()))
-          if (/^[0-9]{11,}$/.test(field.value)=== false){
-            validation.push({message: `${field.name} is not valid mobile number`})
-          }
-        }
-        if(field.name === 'email'){
-          if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(field.value)=== false){
-            validation.push({message: `${field.name} is not valid email`})
-          }
-        }
-        if(field.name ==='number'){
-          if(isNaN(Number(field.value)) || Number(field.value)<=0){
-            validation.push({message: `${field.name} is not valid age`})
-          }
-        }
-      }
-    })
+      }})
 
     // make if validation is not empty then show the error message
-    if (validation.length <= 0) {
+    if (validation.length <= 0){
       setPage(page + 1);
     } else {
-      alert(validation.map((message) => message.message.toString()));
+      alert(validation.map((message)=> message.message.toString()))
     }
   };
 
@@ -104,15 +86,6 @@ const Register = () => {
   };
 
   const handleRegister = () => {
-    const validation =[]
-    const fields = get('#field')
-    fields.forEach((field)=>{
-      if (field.value.trim() === "" ){
-        validation.push({message: `${field.name} is required`})
-      }})
-      if (validation.length > 0){
-        alert(validation.map((message)=> message.message.toString()))
-      } 
     // Perform registration logic here
     // You can access the form data from the formData state and submit to your backend or perform any other actions you need.
   };
@@ -127,7 +100,7 @@ const Register = () => {
 
   const [isGurjar, setisGurjar] = useState(false);
   const gurjarChange = () => setisGurjar(!isGurjar);
-
+  
   return (
     <div className="flex flex-col items-center justify-center h-[100vh] h-[100svh] overflow-hidden">
       {isGurjar ? (
@@ -150,8 +123,8 @@ const Register = () => {
               <div key={field.name}>
                 {field.name === "gender" ? (
                   <select
-                    id="field"
-                    required
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black pr-8"
                     value={formData.gender}
                     name="gender"
@@ -163,8 +136,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "country" ? (
                   <select
-                    id="field"
-                    required
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.country}
                     name="country"
@@ -178,8 +151,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "state" ? (
                   <select
-                    id="field"
-                    required
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.state}
                     name="state"
@@ -193,7 +166,7 @@ const Register = () => {
                 ) : field.name === "city" ? (
                   <select
                     id="field"
-                    required
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.city}
                     name="city"
@@ -206,8 +179,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "village" ? (
                   <select
-                    id="field"
-                    required
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.village}
                     name="village"
@@ -220,8 +193,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "religion" ? (
                   <select
-                    id="field"
-                    required
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.religion}
                     name="religion"
@@ -234,8 +207,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "gotra" ? (
                   <select
-                    id="field"
-                    required
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.gotra}
                     name="gotra"
@@ -248,8 +221,8 @@ const Register = () => {
                   </select>
                 ) : field.name === "bloodGroup" ? (
                   <select
-                    id="field"
-                    required
+                  id="field"
+required
                     className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                     value={formData.bloodGroup}
                     name="bloodGroup"
@@ -270,9 +243,9 @@ const Register = () => {
                     className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
                     type={field.name}
                     id="field"
-                    required
+required
                     placeholder={field.label}
-                    // pattern={field.name === "tel" ? "[0-9]11}" : false}
+                    pattern={field.name === "tel" ? "[0-9]11}" : false}
                     value={formData[field.name]}
                     name={field.name}
                     onChange={handleChange}
@@ -310,13 +283,13 @@ const Register = () => {
         <div className="flex flex-col justify-center mt-[-25vh]">
           <h2>Are you a Gurjar?</h2>
           <button
-            className="border border-black m-2 hover:bg-black hover:text-white"
+            className="m-2 rounded-lg bg-[#0B77FB] hover:bg-[#0853AF] hover:text-white"
             onClick={gurjarChange}
           >
             Yes
           </button>
           <button
-            className="border border-black m-2 hover:bg-black hover:text-white"
+            className="m-2"
             onClick={() => navigate("/")}
           >
             No
@@ -328,17 +301,3 @@ const Register = () => {
 };
 
 export default Register;
-
-// import React, { useState } from 'react';
-// import Paging from '../components/Paging';
-
-// const Register = () => {
-
-//   return (
-//     <div className="">
-
-//     </div>
-//   );
-// };
-
-// export default Register;
