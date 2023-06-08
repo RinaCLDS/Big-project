@@ -53,7 +53,7 @@ function TableData() {
                 >
                   <option
                     className="p-2 rounded-t-lg"
-                    value="nationality"
+                    value="country"
                     selected
                   >
                     Country

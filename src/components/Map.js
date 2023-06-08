@@ -210,7 +210,7 @@ function Map({ mergedData }) {
 
                     const { userDetails, userCoordinates, pictureSrc } = user; // Destructure the user object
 
-                    // console.log(user);
+                    console.log(user);
                     return (
                       <Marker
                         key={key}
@@ -227,11 +227,12 @@ function Map({ mergedData }) {
                         })}
                       >
                         <Popup className="custom-popup">
-                          <span>
-                            <b>{userDetails.name}</b>
-                            <b>{userDetails.blood_group}</b>
-                            <b>{userDetails.city}</b>
-                          </span>
+                          <p>Name:<b> {userDetails.name}</b></p>
+                          <p>Blood group:<b> {userDetails.blood_group}</b></p>
+                          <p>Country:<b> {userDetails.country}</b></p>
+                          <p>State:<b> {userDetails.state}</b></p>
+                          <p>City:<b> {userDetails.city}</b> </p>
+                          <p>Village:<b> {userDetails.village}</b> </p>
                         </Popup>
                       </Marker>
                     );

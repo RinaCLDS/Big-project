@@ -1,8 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import logo from "../images/logo.png";
+import Cookies from "universal-cookie";
 
 function SideNavigationBar({ pageIndex, currentPage, onPageChange }) {
+  const navigate = useNavigate();
+  
+  const signout = () => {
+    const new_cookies = new Cookies();
+    new_cookies.remove("token", { path: "/" });
+    navigate("/");
+  };
+
   return (
     <div className="fixed bg-white h-[100vh] h-[100svh] max-w-[15vw] w-full flex flex-col justify-between p-5 m-0">
       <div className="flex flex-col items-center m-2">
@@ -36,7 +45,7 @@ function SideNavigationBar({ pageIndex, currentPage, onPageChange }) {
       </div>
 
       <div>
-        <button>Sign out</button>
+        <button onClick={signout}>Sign out</button>
       </div>
     </div>
   );

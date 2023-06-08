@@ -239,7 +239,7 @@ const Profile = () => {
               </p>
               <button
                 onClick={() => setGurjarCard(true)}
-                className=" bg-[#555] hover:bg-[#222] text-white font-bold py-2 px-4 rounded inline-flex items-center"
+                className=" bg-[#555] hover:bg-[#222] text-white font-bold py-2 px-4 mt-5 rounded inline-flex items-center"
               >
                 <svg
                   className="fill-current w-4 h-4 mr-2"

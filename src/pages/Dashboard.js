@@ -15,6 +15,7 @@ import { domain } from "../data/constant";
 import SideNavigationBar from "../components/SideNavigationBar";
 import Analytics from "../components/Analytics";
 import Users from "./Users";
+import AdminTable from "./AdminTable";
 function Dashboard() {
   const [gurjarDatas, setGurjarDatas] = useState([]);
 
@@ -143,7 +144,7 @@ function Dashboard() {
           />
 
           <div className="ml-[14vw] bg-white h-[100vh] pl-5 ">
-            {pageIndex === 0 ? <Analytics /> : <Users />}
+            {pageIndex === 0 ? <Analytics /> : <AdminTable />}
           </div>
         </div>
       </div>

@@ -289,7 +289,7 @@ required
             Yes
           </button>
           <button
-            className="m-2"
+            className="m-2 rounded-lg bg-[#0B77FB] hover:bg-[#0853AF] hover:text-white"
             onClick={() => navigate("/")}
           >
             No
