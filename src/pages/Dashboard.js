@@ -16,7 +16,7 @@ import SideNavigationBar from "../components/SideNavigationBar";
 import Analytics from "../components/Analytics";
 import Users from "./Users";
 import AdminTable from "./AdminTable";
-function Dashboard() {
+function Dashboard(props) {
   const [gurjarDatas, setGurjarDatas] = useState([]);
 
   const [sortedCounts, setSortedCounts] = useState([["philippines", 0]]);
@@ -159,6 +159,7 @@ function Dashboard() {
             <TopNavigationBar data={data} />
 
             <div className="container mx-auto max-w-5xl mt-28">
+              
               <Welcome data={data} />
 
               <Map

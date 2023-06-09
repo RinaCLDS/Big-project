@@ -11,7 +11,7 @@ import apple from "../images/apple.png";
 import google from "../images/google.png";
 import facebook from "../images/facebook.png";
 
-const Login = () => {
+const Login = (props) => {
   const [open, setOpen] = useState(false);
   const get = (element) => document.querySelector(element);
   const new_cookies = new Cookies();
@@ -80,8 +80,14 @@ const Login = () => {
       .catch((error) => console.log(error));
   };
 
+  
+
   useEffect(() => {
     check();
+
+    
+    /* global google */
+
     if (open) {
       get(".loginAccount").classList.add("hidden");
       get(".resetPassword").classList.remove("hidden");
@@ -89,7 +95,7 @@ const Login = () => {
       get(".loginAccount").classList.remove("hidden");
       get(".resetPassword").classList.add("hidden");
     }
-  });
+  }, []);
 
   return (
     <section className="sm:p-25 flex flex-col h-[100vh] justify-center" id="contact">
@@ -148,6 +154,7 @@ const Login = () => {
               <span className="text-center text-[#888]">OR</span>
 
               <div className="flex justify-between mx-2 mt-5">
+                
                 <button className="flex items-center text-sm px-3 py-1">
                   <img
                     src={facebook}
@@ -156,14 +163,15 @@ const Login = () => {
                   />
                   Facebook
                 </button>
-                <button className="flex items-center text-sm px-3 py-1">
+                {props.googleLogin}
+                {/* <button className="flex items-center text-sm px-3 py-1">
                   <img
                     src={google}
                     className="w-5 h-5 mr-2"
                     alt="Google Logo"
                   />
                   Google
-                </button>
+                </button> */}
               </div>
 
               <div className="mt-3">

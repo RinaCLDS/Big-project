@@ -179,6 +179,7 @@ function Map({ mergedData }) {
   };
   useEffect(() => {
     setCountryData(true);
+    handleFindLocation();
   }, []);
 
   return (
@@ -210,7 +211,7 @@ function Map({ mergedData }) {
 
                     const { userDetails, userCoordinates, pictureSrc } = user; // Destructure the user object
 
-                    console.log(user);
+                    // console.log(user);
                     return (
                       <Marker
                         key={key}

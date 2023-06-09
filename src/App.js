@@ -9,33 +9,45 @@ import axios from "axios";
 import Gurjar from "./pages/Gurjar";
 import SignUp from "./pages/SignUp";
 import Users from "./pages/Users";
+import jwt_decode from "jwt-decode";
+import { useEffect, useState } from "react";
 function App() {
-  // const new_cookies = new Cookies();
-  // const navigate = useNavigate();
-  // const token = new_cookies.get('token');
-  // if(token){
-  //   axios.post('https://gurjar-xndl7.ondigitalocean.app/gurjar/get_user/', {
-  //     'token': token
-  //   })
-  //   .then((response)=>{
-  //     console.log('response', response)
-  //     if(!response.data.valid){
-  //       new_cookies.remove('token', {path: '/'});
-  //     } else {
-  //      navigate('/home');
-  //     }
-  //   })
-  //   .catch((error)=>console.log(error))
-  // }
+  const [user, setUser] = useState({});
+  function handleCallbackResponse(response) {
+    console.log("JWT Encoded: " + response.credential);
+    var userObject = jwt_decode(response.credential);
+    // user google's data when logon or signed up
+    console.log(userObject);
+    setUser(userObject);
+  }
+
+  function initiateGoogle() {
+    /* global google */
+    // GOOGLE API
+    google.accounts.id.initialize({
+      client_id:
+        "1009425536392-c8c0643lflumoknhn0r6ea0uakorosuq.apps.googleusercontent.com",
+      callback: handleCallbackResponse,
+    });
+    google.accounts.id.renderButton(document.getElementById("googleSignIn"), {
+      theme: "outline",
+      size: "large",
+    });
+  }
+  useEffect(() => {
+    initiateGoogle();
+  }, []);
   return (
     <Router>
       <Routes className="main">
-        <Route path="/" element={<Gurjar />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Gurjar initiateGoogle={initiateGoogle} />} />
+        <Route path="/dashboard" element={<Dashboard user={user} />} />
         <Route path="/users" element={<Users />} />
 
-        
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={<Login googleLogin={<div id="googleSignIn"></div>} />}
+        />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
