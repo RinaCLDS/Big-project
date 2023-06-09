@@ -6,17 +6,18 @@ import bg from "../images/background.png";
 function Gurjar() {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-between h-screen p-5">
-      <div className="hidden sm:block">
+    <div className="flex items-center justify-between h-screen">
+      <div className="hidden sm:flex flex-col h-full">
 
         <img
           src={bg}
-          className="absolute object-cover h-[2000px] top-[-400px] left-[-400px] opacity-[0.1] drop-shadow-none"
+          className="fixed object-cover h-[2000px] top-[-400px] left-[-400px] opacity-[0.2] drop-shadow-none"
           loading="lazy"
           alt="Gurjar person"
         />
+        <div className="flex self-end mt-auto mx-10">© Gurjar Maps 2023</div>
       </div>
-      <div className="sm:border sm:w-200 sm:p-5 sm:shadow-xl md:w-[50vw] flex flex-col justify-center h-full sm:bg-white sm:rounded-lg">
+      <div className="sm:border sm:w-200 sm:p-5 sm:w-[50vw] flex flex-col sm:mx-0 mx-auto justify-center h-full sm:bg-white sm:rounded-lg">
         <div className=" mt-1 items-center flex flex-col">
           <img src={logo} alt="Gurjar Maps logo" className="h-28 w-28" />
           <h1 className="font-extrabold text-4xl text-center">Gurjar Maps.</h1>

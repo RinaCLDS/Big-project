@@ -92,7 +92,7 @@ const Login = () => {
   });
 
   return (
-    <section className="sm:p-25 flex flex-col justify-center" id="contact">
+    <section className="sm:p-25 flex flex-col h-[100vh] justify-center" id="contact">
       <motion.div
         variants={fadeIn("center", 0.1)}
         initial="hidden"
@@ -100,7 +100,7 @@ const Login = () => {
         viewport={{ once: false, amount: 0.4 }}
         className="flex w-full justify-center h-[70vh]"
       >
-        <div className={`flex sm:items-center loginAccount h-screen p-5`}>
+        <div className="flex sm:items-center loginAccount h-screen p-5">
           <form
             onSubmit={handleSubmit}
             className="max-w-md rounded-lg items-center flex flex-col p-2 sm:p-10 mt-4 sm:border sm:shadow-xl sm:bg-white relative"
@@ -185,6 +185,7 @@ const Login = () => {
           </form>
         </div>
 
+
         <motion.div
           variants={fadeIn("top", 0.4)}
           initial="hidden"
@@ -244,10 +245,13 @@ const Login = () => {
                   </p>
                 </div>
               </form>
-            </div>
+            </div>  
           </div>
         </motion.div>
       </motion.div>
+      <div className="flex self-center mt-auto">© Gurjar Maps 2023</div>
+
+
     </section>
   );
 };
