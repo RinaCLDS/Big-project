@@ -13,6 +13,16 @@ export const api = createApi({
         getGurjarUsers: builder.query({
             query: ()=>'gurjar/users'
         }),
+        // Get gurjar user using token
+        getGurjarUser: builder.mutation({
+            query: (token) => ({
+                url: 'gurjar/get_user/',
+                method: 'POST',
+                body: {
+                    token: token
+                }
+            })
+        }),
         deleteGurjarUser: builder.mutation({
             query: (id) => ({
                 url: `gurjar/gurjar_user/${id}`,
@@ -26,11 +36,13 @@ export const api = createApi({
                 body: data.user
             })
         }),
+        
     })
 })
 
 export const {
                 useGetGurjarUsersQuery,
                 useDeleteGurjarUserMutation,
-                useUpdateGurjarUserMutation
+                useUpdateGurjarUserMutation,
+                useGetGurjarUserMutaion
             } = api;

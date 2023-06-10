@@ -19,7 +19,7 @@ function TopNavigationBar({data}) {
   return (
     <div className="fixed w-full top-0 z-10 flex justify-between items-center px-7 py-3 bg-[#111] text-gray-50 shadow">
       <Link to={"/dashboard"} className="font-bold tracking-wider ">
-        <img src={logo} className="h-10 w-10" />
+        <img src={logo} className="h-10 w-10" alt='waiting'/>
       </Link>
 
       <button

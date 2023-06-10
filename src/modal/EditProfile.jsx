@@ -32,10 +32,11 @@ export default function EditProfile({ newUser, trigger }) {
       user: formDataObject
     }).unwrap()
     .then((res)=>{
+      userUpdate1()
       trigger(false)
     })
   }
-  useEffect(() => {
+  const userUpdate1 = ()=>{
     const form = get('form')
     form.name.value = newUser.name;
     form.gender.value = newUser.gender
@@ -43,6 +44,9 @@ export default function EditProfile({ newUser, trigger }) {
     form.education.value = newUser.education
     form.profession.value = newUser.profession
     console.log(newUser.email)
+  }
+  useEffect(() => {
+    userUpdate1()
     
     console.log(newUser.gender === 'Male', typeof newUser.gender)
   }, [newUser]);

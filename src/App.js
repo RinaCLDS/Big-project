@@ -11,6 +11,7 @@ import SignUp from "./pages/SignUp";
 import Users from "./pages/Users";
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
+import Admin from "./pages/Admin";
 function App() {
   const [user, setUser] = useState({});
   function handleCallbackResponse(response) {
@@ -43,6 +44,7 @@ function App() {
         <Route path="/" element={<Gurjar initiateGoogle={initiateGoogle} />} />
         <Route path="/dashboard" element={<Dashboard user={user} />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/admin" element={<Admin />} />
 
         <Route
           path="/login"

@@ -4,12 +4,33 @@ import { useGetGurjarUsersQuery, useDeleteGurjarUserMutation } from "../state/ap
 import { domain } from "../data/constant";
 import EditProfile from "../modal/EditProfile";
 import Cookies from "universal-cookie";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Admin() {
   const { data, error, isLoading } = useGetGurjarUsersQuery();
   const [newUser, setNewUser] = useState({});
   const [deleteUser, { isLoading: isDeleting }] = useDeleteGurjarUserMutation();
   const get = (element)=> document.querySelector(element);
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({
+    valid: true,
+    user: {
+      name: "Gabryel Ardy Echavez",
+      profile_pic: "/media_cdn/profile_images/profile/avatar1.png",
+      nationality: "philippines",
+      state: "rizal",
+      city: "antipolo",
+      village: "dela paz",
+      gotra: "A",
+      blood_group: "A",
+      date_of_birth: "2000",
+      email: "myfluffycy@gmail.com",
+      password: "sample",
+      mobile_number: "09666972501",
+      religion: "catholic",
+    },
+  });
   const handleDelete = (id) => {
     deleteUser(id)
     .unwrap() // Assuming you have configured unwrap() in your API setup
@@ -40,7 +61,28 @@ function Admin() {
     console.log(newUser.value)
   }
   console.log(newshow)
+  const check = async () => {
+    const new_cookies = new Cookies();
+    const token = new_cookies.get("token");
+
+    await axios
+      .post(domain + "/gurjar/get_user/", {
+        token: token,
+      })
+      .then((response) => {
+        if (!response.data.valid) {
+          new_cookies.remove("token", { path: "/" });
+          navigate("/");
+        } else {
+          localStorage.setItem("data", JSON.stringify(response.data));
+          setUserData(response.data);
+          
+        }
+      })
+      .catch((error) => console.log(error));
+  };
   useEffect(() => {
+    check();
     if (!isLoading){
       // Save data to local storage
       console.log(111)
@@ -49,7 +91,7 @@ function Admin() {
   },[data]);
   return (
     <div class="overflow-x-auto">
-      <TopNavigationBar />
+      <TopNavigationBar data={userData} />
       {
         isDeleting && (
           <h1 style={{textAlign:'center', fontSize:'4rem', padding: '5rem 5rem'}}>W8 while deleting</h1>
