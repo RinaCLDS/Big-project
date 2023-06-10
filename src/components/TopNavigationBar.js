@@ -69,13 +69,25 @@ function TopNavigationBar({data}) {
             >
               Dashboard
             </button>
-            <button
-              className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-[#ffffffb3] hover:text-gray-900"
-              role="menuitem"
-              onClick={() => navigate("/profile")}
-            >
+              <button
+                className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-[#ffffffb3] hover:text-gray-900"
+                role="menuitem"
+                onClick={() => navigate("/profile")}
+              >
               Profile Settings
             </button>
+            {
+              data.user.user_type &&(
+                <button
+              className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-[#ffffffb3] hover:text-gray-900"
+              role="menuitem"
+              onClick={() => navigate("/admin")}
+            >
+              Admin
+            </button>
+              )
+            }
+            
             <button
               className="px-4 text-left py-2 text-sm text-gray-50 hover:bg-[#ffffffb3] hover:text-gray-900"
               role="menuitem"
