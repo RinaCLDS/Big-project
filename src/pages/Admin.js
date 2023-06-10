@@ -3,9 +3,11 @@ import TopNavigationBar from "../components/TopNavigationBar";
 import { useGetGurjarUsersQuery, useDeleteGurjarUserMutation } from "../state/api";
 import { domain } from "../data/constant";
 import EditProfile from "../modal/EditProfile";
+import Cookies from "universal-cookie";
 
 function Admin() {
   const { data, error, isLoading } = useGetGurjarUsersQuery();
+  const [newUser, setNewUser] = useState({});
   const [deleteUser, { isLoading: isDeleting }] = useDeleteGurjarUserMutation();
   const get = (element)=> document.querySelector(element);
   const handleDelete = (id) => {
@@ -23,10 +25,28 @@ function Admin() {
       console.error('Error deleting user:', error);
     });
   }
+  const userdata = (state, id)=>{
+    setEditProfile(state);
+    const user = data.find((user)=> user.id === id);
+    
+    setNewUser(user);
+  }
 
   const [showEditProfile, setEditProfile] = useState(false);
-  const handleOnClose = () => setEditProfile(false);
-  
+  const [newshow, setNewShow] = useState(false);
+  const onclickuser = () =>{
+    const forms = get('form')
+    forms.name.value = newUser.name;
+    console.log(newUser.value)
+  }
+  console.log(newshow)
+  useEffect(() => {
+    if (!isLoading){
+      // Save data to local storage
+      console.log(111)
+      localStorage.setItem('gurjar_users', JSON.stringify(data));
+    }
+  },[data]);
   return (
     <div class="overflow-x-auto">
       <TopNavigationBar />
@@ -128,7 +148,7 @@ function Admin() {
                                 />
                               </svg>
                             </div>
-                            <div onClick={() => setEditProfile(true)} class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                            <div onClick={()=>userdata(true, user.id)} class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -170,11 +190,15 @@ function Admin() {
           </div>
         </div>
       </div>
-      <EditProfile
-
-              onClose={handleOnClose}
-              visible={showEditProfile}
+      {
+        showEditProfile && (
+          <EditProfile
+              trigger={setEditProfile}
+              newUser={newUser}
             />
+        )
+      }
+      
     </div>
   );
 }
