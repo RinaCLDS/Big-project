@@ -4,6 +4,8 @@ import { useUpdateGurjarUserMutation } from "../state/api";
 
 
 export default function EditProfile({ newUser, trigger }) {
+  const [state, setState] = useState(newUser);
+
   const [updateGurjarUser, { isLoading, isError, error, data }] = useUpdateGurjarUserMutation();
   const get = (element)=>document.querySelector(element);
   const formSubmit = (e) => {
@@ -32,24 +34,22 @@ export default function EditProfile({ newUser, trigger }) {
       user: formDataObject
     }).unwrap()
     .then((res)=>{
-      userUpdate1()
+      setState(res)
+      // console.log(res)
       trigger(false)
     })
   }
-  const userUpdate1 = ()=>{
-    const form = get('form')
-    form.name.value = newUser.name;
-    form.gender.value = newUser.gender
-    form.email.value = newUser.email
-    form.education.value = newUser.education
-    form.profession.value = newUser.profession
-    console.log(newUser.email)
-  }
+  console.log(state)
   useEffect(() => {
-    userUpdate1()
+    const form = get('form')
+    form.name.value = state.name;
+    form.gender.value = state.gender
+    form.email.value = state.email
+    form.education.value = state.education
+    form.profession.value = state.profession
     
     console.log(newUser.gender === 'Male', typeof newUser.gender)
-  }, [newUser]);
+  }, [state]);
 
   return (
     <div
