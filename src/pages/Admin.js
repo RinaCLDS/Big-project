@@ -5,6 +5,7 @@ import { domain } from "../data/constant";
 import EditProfile from "../modal/EditProfile";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import GurjarCard from "../modal/GurjarCard";
 import { useNavigate } from "react-router-dom";
 
 function Admin() {
@@ -52,6 +53,9 @@ function Admin() {
     
     setNewUser(user);
   }
+  
+  const [showGurjarCard, setGurjarCard] = useState(false);
+  const handleOnClose = () => setGurjarCard(false);
 
   const [showEditProfile, setEditProfile] = useState(false);
   const [newshow, setNewShow] = useState(false);
@@ -238,8 +242,19 @@ function Admin() {
               trigger={setEditProfile}
               newUser={newUser}
             />
+
+            
         )
+
+        
       }
+
+              <GurjarCard
+              avatar={avatar}
+              data={user}
+              onClose={handleOnClose}
+              visible={showGurjarCard}
+            />
       
     </div>
   );
