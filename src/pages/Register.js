@@ -86,13 +86,7 @@ const Register = () => {
     setPage(page - 1);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+
 
   const handleRegister = () => {
     // Perform registration logic here
@@ -109,20 +103,27 @@ const Register = () => {
 
 
   const [isFormComplete, setIsFormComplete] = useState(false);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
 
-  useEffect(() => {
-    setIsFormComplete(
-      !!formData.country &&
-      !!formData.state &&
-      !!formData.city &&
-      !!formData.village &&
-      !!formData.bloodGroup &&
-      !!formData.gender &&
-      !!formData.education &&
-      !!formData.profession
-    );
-  }, [formData]);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value
+    }));
 
+    // Check if all fields are filled out
+    const isFormComplete =
+      formData.country !== "" &&
+      formData.state !== "" &&
+      formData.city !== "" &&
+      formData.village !== "" &&
+      formData.bloodGroup !== "" &&
+      formData.gender !== "" &&
+      formData.education !== "" &&
+      formData.profession !== "";
+
+    setIsFormComplete(isFormComplete);
+  };
 
   const isCurrentPageFilled = () => {
     const currentPageFields = formFields.slice(page * 2, page * 2 + 2);
@@ -288,7 +289,6 @@ const Register = () => {
                         : 'hover:bg-[#0853AF]'
                         }`}
                       onClick={nextPage}
-
                       disabled={!isCurrentPageFilled()}
                     >
                       Next
@@ -313,7 +313,10 @@ const Register = () => {
                       className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                       value={formData.country}
                       name="country"
-                      onChange={stateChange}
+                      onChange={(event) => {
+                        stateChange(event);
+                        handleChange(event);
+                      }}
 
                     >
                       {data.map((item, index) => (
@@ -325,7 +328,10 @@ const Register = () => {
                       className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                       value={formData.state}
                       name="state"
-                      onChange={cityChange}
+                      onChange={(event) => {
+                        cityChange(event);
+                        handleChange(event);
+                      }}
                     >
                       {Object.keys(state).length === 0
                         ? data[0].states.map((item, index) => (
@@ -340,7 +346,7 @@ const Register = () => {
                       className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                       value={formData.city}
                       name="city"
-
+                      onChange={handleChange}
                     >
                       {Object.keys(state).length === 0
                         ? ""
@@ -351,7 +357,6 @@ const Register = () => {
                     <input
                       className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
                       type="text"
-
                       required
                       placeholder="Village"
                       value={formData.village}
@@ -414,7 +419,7 @@ const Register = () => {
                       onChange={handleChange}
                     >
                       <option value="">profession</option>
-                      <option value="Advocate" >Advocate</option >
+                      <option value="formData.Advocate" >Advocate</option >
                       <option value="Sportsman" >Sportsman</option >
                       <option value="Doctor" >Doctor</option >
                       <option value="Government Job" >Government Job</option >
@@ -435,10 +440,19 @@ const Register = () => {
                       Back
                     </button>
                     <button
-                      className={`w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${!isFormComplete ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#0853AF]'
-                        }`}
+                      className={`w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
                       onClick={nextPage}
-                      disabled={!isFormComplete}
+                      disabled={(
+                        !formData.country &&
+                        !formData.state &&
+                        !formData.city &&
+                        !formData.village &&
+                        !formData.bloodGroup &&
+                        !formData.gender &&
+                        !formData.education &&
+                        !formData.profession
+                      )
+                      }
                     >
                       Next
                     </button>
