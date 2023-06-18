@@ -5,8 +5,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import bg from "../images/background.png";
 import { FaCheck } from "react-icons/fa";
 import { GiCancel } from "react-icons/gi";
-import PhoneInput from "react-phone-input-2";
+import data from "../data/dataset.json";
 import "react-phone-input-2/lib/style.css";
+import gotras from "../data/gotras.json";
 
 const Register = () => {
   const get = (element) => document.querySelectorAll(element)
@@ -168,7 +169,24 @@ const Register = () => {
   const handleNextClick = () => {
     // Handle the next button click action
   };
+  const name1 = data.map(item => item.name)
+  console.log(name1)
 
+
+  const [state, setState] = useState([]);
+  const [city, setCity] = useState([]);
+  useEffect(() => {
+    if (Object.keys(state).length === 0) {
+      setState(data[0]);
+      setCity(data[0].states[0]);
+    }
+  }, [state]);
+  const stateChange = (e) => {
+    setState(data[e.target.selectedIndex]);
+  };
+  const cityChange = (e) => {
+    setCity(state.states[e.target.selectedIndex]);
+  };
 
   return (
     <div className="flex items-center justify-between h-screen ">
@@ -221,10 +239,10 @@ const Register = () => {
                       name="gotra"
                       onChange={handleChange}
                     >
-                      <option value="">Gotra</option>
-                      <option value="gotra 1">Gotra 1</option>
-                      <option value="gotra 2">Gotra 2</option>
-                      <option value="gotra 3">Gotra 3</option>
+                      <option value="">Gotra group</option>
+                      {gotras.map((item, index) => (
+                        <option key={index}>{item.name}</option>
+                      ))}
                     </select>
                     <input
                       className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
@@ -295,37 +313,40 @@ const Register = () => {
                       className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                       value={formData.country}
                       name="country"
-                      onChange={handleChange}
+                      onChange={stateChange}
+
                     >
-                      <option value="">Country</option>
-                      <option value="Country 1">Country 1</option>
-                      <option value="Country 2">Country 2</option>
-                      <option value="Country 3">Country 3</option>
-                      <option value="Country 4">Country 4</option>
+                      {data.map((item, index) => (
+                        <option key={index}>{item.name}</option>
+                      ))}
                     </select>
                     <select
 
                       className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                       value={formData.state}
                       name="state"
-                      onChange={handleChange}
+                      onChange={cityChange}
                     >
-                      <option value="">State</option>
-                      <option value="State 1">State 1</option>
-                      <option value="State 2">State 2</option>
-                      <option value="State 3">State 3</option>
+                      {Object.keys(state).length === 0
+                        ? data[0].states.map((item, index) => (
+                          <option key={index}>{item.name}</option>
+                        ))
+                        : state.states.map((item, index) => (
+                          <option key={index}>{item.name}</option>
+                        ))}
                     </select>
                     <select
 
                       className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                       value={formData.city}
                       name="city"
-                      onChange={handleChange}
+
                     >
-                      <option value="">City</option>
-                      <option value="City 1">City 1</option>
-                      <option value="City 2">City 2</option>
-                      <option value="City 3">City 3</option>
+                      {Object.keys(state).length === 0
+                        ? ""
+                        : city.cities.map((item, index) => (
+                          <option key={index}>{item.name}</option>
+                        ))}
                     </select>
                     <input
                       className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
@@ -366,27 +387,46 @@ const Register = () => {
                       <option value="male">Male</option>
                       <option value="female">Female</option>
                     </select>
-                    <input
-                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                      type="text"
+                    <select
 
-                      required
-                      placeholder="Education"
+                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                       value={formData.education}
                       name="education"
                       onChange={handleChange}
-                    />
-                    <input
-                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                      type="text"
+                    >
+                      <option value="">Education</option>
+                      <option value="Under Graduate" >Under Graduate </option>
+                      <option value="Diploma" > Diploma</option>
+                      <option value="Graduate" >Graduate</option>
+                      <option value="Engineering Graduate" >Engineering Graduate</option>
+                      <option value="LLB" >LLB</option>
+                      <option value="Post Graduate" >Post Graduate</option>
+                      <option value="PHD" >PHD</option>
+                      <option value="BDS" >BDS</option >
+                      <option value="MBBS" >MBBS</option >
+                      <option value="MS" >MS</option >
+                    </select >
+                    <select
 
-                      required
-                      placeholder="Profession"
+                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
                       value={formData.profession}
                       name="profession"
                       onChange={handleChange}
-                    />
-                  </div>
+                    >
+                      <option value="">profession</option>
+                      <option value="Advocate" >Advocate</option >
+                      <option value="Sportsman" >Sportsman</option >
+                      <option value="Doctor" >Doctor</option >
+                      <option value="Government Job" >Government Job</option >
+                      <option value="Private Job" >Private Job</option >
+                      <option value="Property Dealer" >Property Dealer</option >
+                      <option value="Milk Man" >Milk Man</option >
+                      <option value="Driver" >Driver</option >
+                      <option value="Farmer" >Farmer</option >
+                      <option value="Politician" >Politician</option >
+                      <option value="Business" >Business</option >
+                    </select >
+                  </div >
                   <div className="grid grid-cols-2 gap-4 ">
                     <button
                       onClick={previousPage}
@@ -406,77 +446,79 @@ const Register = () => {
                 </>
               )}
 
-              {page === 2 && (
-                <>
-                  <h2 className="text-4xl font-extrabold ">Create Account</h2>
-                  <p className="text-md text-[#888] font-semibold mb-20">
-                    Building Gurjar community
-                  </p>
+              {
+                page === 2 && (
+                  <>
+                    <h2 className="text-4xl font-extrabold ">Create Account</h2>
+                    <p className="text-md text-[#888] font-semibold mb-20">
+                      Building Gurjar community
+                    </p>
 
-                  <div className="grid grid-cols-2 gap-4 mb-10">
-                    <input
-                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                      type="password"
+                    <div className="grid grid-cols-2 gap-4 mb-10">
+                      <input
+                        className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                        type="password"
 
-                      required
-                      placeholder="Password"
-                      value={formData.password}
-                      name="password"
-                      onChange={handleChange}
-                    />
-
-                    <input
-                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                      type="password"
-
-                      required
-                      placeholder="Confirm Password"
-                      value={formData.confirmPassword}
-                      name="confirmPassword"
-                      onChange={handleChange}
-                    />
-
-                    <div >
+                        required
+                        placeholder="Password"
+                        value={formData.password}
+                        name="password"
+                        onChange={handleChange}
+                      />
 
                       <input
                         className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                        type="text"
+                        type="password"
 
                         required
-                        placeholder="Enter Verification Code"
-                        value={formData.verCode}
-                        name="verCode"
+                        placeholder="Confirm Password"
+                        value={formData.confirmPassword}
+                        name="confirmPassword"
                         onChange={handleChange}
                       />
-                      <span className="mt-2 font-semibold text-sm flex ">
-                        <a className="text-[#0B77FB] hover:underline" href="#!">
-                          Didn't receive verification code? Resend again
-                        </a>
-                      </span>
+
+                      <div >
+
+                        <input
+                          className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                          type="text"
+
+                          required
+                          placeholder="Enter Verification Code"
+                          value={formData.verCode}
+                          name="verCode"
+                          onChange={handleChange}
+                        />
+                        <span className="mt-2 font-semibold text-sm flex ">
+                          <a className="text-[#0B77FB] hover:underline" href="#!">
+                            Didn't receive verification code? Resend again
+                          </a>
+                        </span>
+                      </div>
+
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 ">
+
+                      <button className="w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#0853AF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        onClick={previousPage}>Back</button>
+
+
+                      <button
+                        className="w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#0853AF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        onClick={handleRegister}
+                        disabled={!isCurrentPageFilled()}
+                      >
+                        Register
+                      </button>
+
                     </div>
 
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 ">
+                  </>
 
-                    <button className="w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#0853AF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      onClick={previousPage}>Back</button>
+                )
+              }
 
-
-                    <button
-                      className="w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#0853AF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      onClick={handleRegister}
-                      disabled={!isCurrentPageFilled()}
-                    >
-                      Register
-                    </button>
-
-                  </div>
-
-                </>
-
-              )}
-
-            </div>
+            </div >
 
             <div >
               <Paging
@@ -485,7 +527,7 @@ const Register = () => {
                 handlePageChange={handlePageChange}
               />
             </div>
-          </div>
+          </div >
         ) : (
           <div className="flex flex-col justify-center mt-[-25vh] px-10">
 
@@ -550,9 +592,10 @@ const Register = () => {
               </div>
             </div>
           </div>
-        )}
-      </div>
-    </div>
+        )
+        }
+      </div >
+    </div >
   );
 };
 
