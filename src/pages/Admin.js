@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import TopNavigationBar from "../components/TopNavigationBar";
-import {useGetGurjarUsersQuery,useDeleteGurjarUserMutation,} from "../state/api";
+import { useGetGurjarUsersQuery, useDeleteGurjarUserMutation, } from "../state/api";
 import { domain } from "../data/constant";
 import EditProfile from "../modal/EditProfile";
 import Cookies from "universal-cookie";
 import axios from "axios";
-import GurjarCard from "../modal/GurjarCard";
+import SendMessage from "../modal/SendMessage";
 import { useNavigate } from "react-router-dom";
 
 function Admin() {
   const { data, error, isLoading } = useGetGurjarUsersQuery();
-  console.log(data)
   const [newUser, setNewUser] = useState({});
   const [deleteUser, { isLoading: isDeleting }] = useDeleteGurjarUserMutation();
   const get = (element) => document.querySelector(element);
@@ -49,15 +48,15 @@ function Admin() {
       });
   };
   const userdata = (state, id) => {
-    setGurjarCard(true);
+    setEditProfile(state);
     const user = data.find((user) => user.id === id);
-    console.log(user);
 
     setNewUser(user);
   };
 
-  const [showGurjarCard, setGurjarCard] = useState(false);
-  const handleOnClose = () => setGurjarCard(false);
+
+  const [showSendMessage, setSendMessage] = useState(false);
+  const handleOnClosed = () => setSendMessage(false);
 
   const [showEditProfile, setEditProfile] = useState(false);
   const [newshow, setNewShow] = useState(false);
@@ -94,7 +93,7 @@ function Admin() {
       localStorage.setItem("gurjar_users", JSON.stringify(data));
     }
   }, [data]);
-  
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (event) => {
@@ -103,9 +102,9 @@ function Admin() {
 
   const filteredData = data ? data.filter(user =>
     user && (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.mobile_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.state.toLowerCase().includes(searchTerm.toLowerCase()))
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.mobile_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.state.toLowerCase().includes(searchTerm.toLowerCase()))
   ) : [];
 
   const rowsPerPage = 15;
@@ -121,13 +120,14 @@ function Admin() {
     setCurrentPage(page);
   };
 
+
   return (
     <div class="overflow-x-auto py-5">
-    <TopNavigationBar data={userData} />
-    {
-      isDeleting && (
-        <h1 style={{textAlign:'center', fontSize:'4rem', padding: '5rem 5rem'}}>W8 while deleting</h1>
-      )
+      <TopNavigationBar data={userData} />
+      {
+        isDeleting && (
+          <h1 style={{ textAlign: 'center', fontSize: '4rem', padding: '5rem 5rem' }}>W8 while deleting</h1>
+        )
       }
       <div className="min-w-screen min-h-screen bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden py-7 px-3">
         <div className="w-full lg:w-5/6">
@@ -223,27 +223,7 @@ function Admin() {
                         </td>
                         <td className="py-3 px-6 text-center">
                           <div className="flex item-center justify-center">
-                            <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                />
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                />
-                              </svg>
-                            </div>
+
                             <div
                               onClick={() => userdata(true, user.id)}
                               className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
@@ -262,7 +242,7 @@ function Admin() {
                                 />
                               </svg>
                             </div>
-                            <div onClick={()=>handleDelete(user.id)} class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                            <div onClick={() => handleDelete(user.id)} className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -270,14 +250,14 @@ function Admin() {
                                 stroke="currentColor"
                               >
                                 <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
                                   d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                                 />
                               </svg>
                             </div>
-                            <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                            <div onClick={() => setSendMessage(true)} className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -285,9 +265,9 @@ function Admin() {
                                 stroke="currentColor"
                               >
                                 <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
                                   d="M20 6V18C20 19.1 19.1 20 18 20H6C4.9 20 4 19.1 4 18V6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6ZM8 9L12 12.5L16 9M16 14H8"
                                 />
                               </svg>
@@ -299,40 +279,39 @@ function Admin() {
                 </tbody>
               </table>
             </div>
-           
-      </div>
 
-      <div className="flex items-center justify-center m-4">
-        <nav className="flex items-center">
-          <button
-            className="px-3 py-1 border border-gray-300 rounded-md mr-1"
-            disabled={currentPage === 1}
-            onClick={() => handlePageChange(currentPage - 1)}
-          >
-            Previous
-          </button>
-          {Array.from({ length: totalPages }, (_, index) => (
-            <button
-              key={index}
-              className={`px-3 py-1 border border-gray-300 rounded-md mx-1 ${
-                currentPage === index + 1 ? "bg-gray-200" : ""
-              }`}
-              onClick={() => handlePageChange(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ))}
-          <button
-            className="px-3 py-1 border border-gray-300 rounded-md ml-1"
-            disabled={currentPage === totalPages}
-            onClick={() => handlePageChange(currentPage + 1)}
-          >
-            Next
-          </button>
-        </nav>
-      
-      </div>
-      </div>
+          </div>
+
+          <div className="flex items-center justify-center m-4">
+            <nav className="flex items-center">
+              <button
+                className="px-3 py-1 border border-gray-300 rounded-md mr-1"
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
+                Previous
+              </button>
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index}
+                  className={`px-3 py-1 border border-gray-300 rounded-md mx-1 ${currentPage === index + 1 ? "bg-gray-200" : ""
+                    }`}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              <button
+                className="px-3 py-1 border border-gray-300 rounded-md ml-1"
+                disabled={currentPage === totalPages}
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                Next
+              </button>
+            </nav>
+
+          </div>
+        </div>
       </div>
       {showEditProfile && (
         <EditProfile
@@ -340,11 +319,12 @@ function Admin() {
           user={newUser}
         />
       )}
-      {showGurjarCard && <GurjarCard onClose={handleOnClose} />}
+
+      <SendMessage onClosed={handleOnClosed} visible={showSendMessage} />
+
     </div>
   );
 }
 
 export default Admin;
-   
-      
+
