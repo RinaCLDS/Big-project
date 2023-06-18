@@ -2,11 +2,22 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../images/logo.png";
 import bg from "../images/background.png";
+import gp from "../images/Gurjar_person.png";
+import { motion } from "framer-motion";
+import { fadeIn } from "../variants";
+
 
 function Gurjar({ initiateGoogle }) {
   const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-between h-screen">
+    <motion.div
+      variants={fadeIn("bottom", 0.7)}
+      initial="hidden"
+      whileInView={"show"}
+      viewport={{ once: false, amount: 0.7 }
+      }
+
+      className="flex items-center justify-between h-screen">
       <div className="hidden sm:flex flex-col h-full w-1/2 bg-[#e7eff1]">
         <div className="flex items-center justify-center h-full">
           <img
@@ -22,13 +33,11 @@ function Gurjar({ initiateGoogle }) {
           <img src={logo} alt="Gurjar Maps logo" className="h-28 w-28" />
           <h1 className="font-extrabold text-4xl text-center">Gurjar Maps.</h1>
         </div>
-        <img
-          src={bg}
-          className="sm:hidden h-auto w-full max-w-md my-5 grayscale contrast-200 drop-shadow-none"
-          loading="lazy"
-          alt="Gurjar person"
-        />
-        <div className="mb-5 w-full px-2 sm:mt-20 flex flex-col items-center">
+
+        <div className="mb-5 w-full px-2 sm:mt-20 flex flex-col mt-20 items-center">
+
+
+
           <button
             onClick={() => { navigate("/login"); initiateGoogle() }}
             type="submit"
@@ -46,7 +55,11 @@ function Gurjar({ initiateGoogle }) {
           </button>
         </div>
       </div>
-    </div>
+      <img
+        src={gp}
+        className="lg:hidden absolute h-[300px] w-full bottom-4 sm:mt-1 opacity-[0.15]"
+      />
+    </motion.div>
   );
 }
 
