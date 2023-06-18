@@ -182,14 +182,14 @@ const Register = () => {
           />
         </div>
       </div>
-      <div className="sm:border sm:w-200 sm:p-5 sm:w-[50vw] flex flex-col sm:mx-0 mx-auto justify-center h-full sm:bg-white sm:rounded-lg z-10 ">
+      <div className="sm:border sm:w-200 sm:p-5 sm:w-[50vw] flex flex-col sm:mx-0 mx-auto justify-center h-full sm:bg-white sm:rounded-lg z-10">
         {isGurjar ? (
           <div className="flex flex-col justify-between w-full max-w-[1000px] h-full py-10 text-[#111] px-10">
-            <div className="relative mb-10">
-              <div className="progress-bar  h-5 bg-[#47fb86] w-0"></div>
+            <div className="w-full  sm:fixed bottom-0  ">
+              <div className="progress-bar  h-5 bg-[#47fb86] w-0 "></div>
             </div>
 
-            <div className="mx-auto my-20 w-full mb-20">
+            <div className="mx-auto w-full mb-20 ">
               {page === 0 && (
                 <>
                   <h2 className="text-4xl font-extrabold">Create Account</h2>
@@ -478,7 +478,7 @@ const Register = () => {
 
             </div>
 
-            <div>
+            <div >
               <Paging
                 currentPage={page + 1}
                 totalPages={totalPages}
