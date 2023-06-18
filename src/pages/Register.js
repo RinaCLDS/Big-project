@@ -1,327 +1,557 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Paging from "../components/Paging";
 import { FaArrowLeft } from "react-icons/fa";
-import { useCreateUserMutation } from "../state/api";
+import bg from "../images/background.png";
+import { FaCheck } from "react-icons/fa";
+import { GiCancel } from "react-icons/gi";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const Register = () => {
-  const [userData, setUserData] = useState({})
-  const nextButton = ()=>{
-    
-  }
-  const get = (element)=> document.querySelectorAll(element)
+  const get = (element) => document.querySelectorAll(element)
   const defaultValue = ['Country', 'Gender']
   const [page, setPage] = useState(0);
   const [formData, setFormData] = useState({
-    name: "",
-    gender: "",
-    birthDate: "",
-    age: "",
-    religion: "",
+    firstName: "",
+    lastName: "",
     gotra: "",
-    blood_group: "",
-    nationality: "",
+    birthDate: "",
+    mobile: "",
+    email: "",
+
+    country: "",
     state: "",
     city: "",
     village: "",
-    mobile: "",
-    email: "",
-    password: "",
+    bloodGroup: "",
+    gender: "",
+    religion: "",
     education: "",
     profession: "",
-    address: "",
+
+    password: "",
+    confirmPassword: "",
+    verCode: "",
   });
 
   const formFields = [
-    { name: "name", label: "Name" },
-    { name: "country", label: "Country" },
-    { name: "gender", label: "Gender" },
-    { name: "date", label: "Birth Date" },
-    { name: "religion", label: "Religion" },
+    { name: "firstName", label: "First Name" },
+    { name: "lastName", label: "Last Name" },
     { name: "gotra", label: "Gotra" },
-    { name: "blood_group", label: "Blood Group" },
-    { name: "nationality", label: "Nationality" },
+    { name: "birthDate", label: "Birth Date" },
+    { name: "mobile", label: "Mobile" },
+    { name: "email", label: "Email" },
+
+
+    { name: "country", label: "Country" },
     { name: "state", label: "State" },
     { name: "city", label: "City" },
     { name: "village", label: "Village" },
-    { name: "mobile_number", label: "Mobile" },
+    { name: "bloodGroup", label: "Blood Group" },
+    { name: "gender", label: "Gender" },
+    { name: "religion", label: "Religion" },
     { name: "education", label: "Education" },
     { name: "profession", label: "Profession" },
-    { name: "number", label: "Age" },
-    { name: "email", label: "Email" },
+
     { name: "password", label: "Password" },
-    { name: "address", label: "Address" },
+    { name: "confirmPassword", label: "Confirm Password" },
+    { name: "verCode", label: "Verification Code" },
   ];
 
-  const [createUser, { isLoading, error, data }] = useCreateUserMutation();
-
-  const submitRegister = ()=>{
-    
-  }
-
   const nextPage = () => {
-    const na = ['country', 'date', 'number']
-    const validation =[]
-    const fields = get('#field')
-    console.log(fields[1].name)
-    fields.forEach((field)=>{
-      if (field.value.trim() === "" ){
-        validation.push({message: `${field.name} is required`})
-      }})
+    const nextPageIndex = page + 1;
+    const nextField1 = formFields[nextPageIndex * 2];
+    const nextField2 = formFields[nextPageIndex * 2 + 1];
 
-    
-
-    // make if validation is not empty then show the error message
-    if (validation.length <= 0){
-      fields.forEach((field)=>{
-        if(!na.includes(field.name)){
-          setUserData((prev=>({...prev, [field.name]: field.value.trim() })))
-        }
-
-        
-      })
-      
-      setPage(page + 1);
-      
-    } else {
-      alert(validation.map((message)=> message.message.toString()))
+    if (nextField1 && nextField1.name) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [nextField1.name]: prevData[nextField1.name] || "",
+      }));
     }
+
+    if (nextField2 && nextField2.name) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [nextField2.name]: prevData[nextField2.name] || "",
+      }));
+    }
+
+    setPage(nextPageIndex);
   };
 
-  console.log(userData)
   const previousPage = () => {
     setPage(page - 1);
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "option") {
-      // Set the value directly without wrapping the object
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }));
-    } else {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }));
-    }
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   const handleRegister = () => {
-    createUser(userData)
-    alert('User Created, please check your email for the account.')
     // Perform registration logic here
     // You can access the form data from the formData state and submit to your backend or perform any other actions you need.
   };
 
-  const totalPages = 9; // Total number of pages
+  const totalPages = 3; // Total number of pages
   const navigate = useNavigate();
 
   const handlePageChange = (page) => {
     setPage(page);
-    // Perform any additional logic when the page change
+    // Perform any additional logic when the page changes
   };
+
+
+  const [isFormComplete, setIsFormComplete] = useState(false);
+
+  useEffect(() => {
+    setIsFormComplete(
+      !!formData.country &&
+      !!formData.state &&
+      !!formData.city &&
+      !!formData.village &&
+      !!formData.bloodGroup &&
+      !!formData.gender &&
+      !!formData.education &&
+      !!formData.profession
+    );
+  }, [formData]);
+
+
+  const isCurrentPageFilled = () => {
+    const currentPageFields = formFields.slice(page * 2, page * 2 + 2);
+    return currentPageFields.every((field) => {
+      const fieldValue = formData[field.name];
+      return fieldValue && fieldValue.trim() !== '';
+    });
+  };
+
+  useEffect(() => {
+    const progressValue = ((page * 1) / totalPages) * 100;
+    get(".progress-bar").forEach((el) => {
+      el.style.width = `${progressValue}%`;
+    });
+  }, [page, totalPages]);
+
 
   const [isGurjar, setisGurjar] = useState(false);
   const gurjarChange = () => setisGurjar(!isGurjar);
-  
-  return (
-    <div className="flex flex-col items-center justify-center h-[100vh] h-[100svh] overflow-hidden">
-      {isGurjar ? (
-        <div className="flex flex-col justify-between w-full max-w-[1000px] h-full py-10 text-[#111]">
-          <div className="mx-20">
-            <div
-              className="self-start flex items-center space-x-2 cursor-pointer mb-5"
-              onClick={() => navigate("/")}
-            >
-              <FaArrowLeft /> <span>Go Back</span>
-            </div>
-            <h2 className="text-4xl font-extrabold">Create Account</h2>
-            <p className="text-md text-[#888] font-semibold">
-              Please enter your details
-            </p>
-          </div>
 
-          <div className="mt-[-25vh] mx-20">
-            {formFields.slice(page * 2, page * 2 + 2).map((field) => (
-              <div key={field.name}>
-                {field.name === "gender" ? (
-                  <select
-                  id="field"
-required
-                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black pr-8"
-                    value={formData.gender}
-                    name="gender"
-                    onChange={handleChange}
-                  >
-                    <option value="">Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
-                ) : field.name === "country" ? (
-                  <select
-                  id="field"
-required
-                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                    value={formData.country}
-                    name="country"
-                    onChange={handleChange}
-                  >
-                    <option value="">Country</option>
-                    <option value="Country 1">Country 1</option>
-                    <option value="Country 2">Country 2</option>
-                    <option value="Country 3">Country 3</option>
-                    <option value="Country 4">Country 4</option>
-                  </select>
-                ) : field.name === "state" ? (
-                  <select
-                  id="field"
-required
-                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                    value={formData.state}
-                    name="state"
-                    onChange={handleChange}
-                  >
-                    <option value="">State</option>
-                    <option value="State 1">State 1</option>
-                    <option value="State 2">State 2</option>
-                    <option value="State 3">State 3</option>
-                  </select>
-                ) : field.name === "city" ? (
-                  <select
-                    id="field"
-required
-                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                    value={formData.city}
-                    name="city"
-                    onChange={handleChange}
-                  >
-                    <option value="">City</option>
-                    <option value="City 1">City 1</option>
-                    <option value="City 2">City 2</option>
-                    <option value="City 3">City 3</option>
-                  </select>
-                ) : field.name === "village" ? (
-                  <select
-                  id="field"
-required
-                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                    value={formData.village}
-                    name="village"
-                    onChange={handleChange}
-                  >
-                    <option value="">Village</option>
-                    <option value="Village 1">Village 1</option>
-                    <option value="Village 2">Village 2</option>
-                    <option value="Village 3">Village 3</option>
-                  </select>
-                ) : field.name === "religion" ? (
-                  <select
-                  id="field"
-required
-                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                    value={formData.religion}
-                    name="religion"
-                    onChange={handleChange}
-                  >
-                    <option value="">Religion</option>
-                    <option value="hindu">Hindu</option>
-                    <option value="muslim">Muslim</option>
-                    <option value="christian">Christian</option>
-                  </select>
-                ) : field.name === "gotra" ? (
-                  <select
-                  id="field"
-required
-                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                    value={formData.gotra}
-                    name="gotra"
-                    onChange={handleChange}
-                  >
-                    <option value="">Gotra</option>
-                    <option value="gotra 1">Gotra 1</option>
-                    <option value="gotra 2">Gotra 2</option>
-                    <option value="gotra 3">Gotra 3</option>
-                  </select>
-                ) : field.name === "blood_group" ? (
-                  <select
-                  id="field"
-required
-                    className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                    value={formData.blood_group}
-                    name="blood_group"
-                    onChange={handleChange}
-                  >
-                    <option value="">Blood Group</option>
-                    <option value="A+">A+</option>
-                    <option value="A-">A-</option>
-                    <option value="B+">B+</option>
-                    <option value="B-">B-</option>
-                    <option value="O+">O+</option>
-                    <option value="O-">O-</option>
-                    <option value="AB+">AB+</option>
-                    <option value="AB-">AB-</option>
-                  </select>
-                ) : (
-                  <input
-                    className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                    type={field.name}
-                    id="field"
-required
-                    placeholder={field.label}
-                    pattern={field.name === "mobile_number" ? "[0-9]11}" : false}
-                    value={formData[field.name]}
-                    name={field.name}
-                    onChange={handleChange}
-                  />
-                )}
-              </div>
-            ))}
-            <div className="flex justify-between w-full">
-              {page > 0 ? (
-                <button onClick={previousPage}>Previous</button>
-              ) : (
-                <div></div>
+
+
+  const [isHovered, setIsHovered] = useState(false);
+  const handleMouseEnter = () => setIsHovered(true);
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  }
+
+
+  const [isHover, setIsHover] = useState(false);
+  const handleMouseEntered = () => setIsHover(true);
+
+  const handleMouseLeaved = () => {
+    setIsHover(false);
+  }
+
+  const [isYesClicked, setIsYesClicked] = useState(false);
+
+  const handleYesClicked = () => {
+    setIsYesClicked(true);
+  };
+
+  const handleNextClick = () => {
+    // Handle the next button click action
+  };
+
+
+  return (
+    <div className="flex items-center justify-between h-screen ">
+      <div className="hidden sm:flex flex-col h-full w-1/2 bg-[#e7eff1]">
+        <div className="flex items-center justify-center h-full">
+          <img
+            src={bg}
+            className="object-contain h-full w-full"
+            loading="lazy"
+            alt="Gurjar person"
+          />
+        </div>
+      </div>
+      <div className="sm:border sm:w-200 sm:p-5 sm:w-[50vw] flex flex-col sm:mx-0 mx-auto justify-center h-full sm:bg-white sm:rounded-lg z-10 ">
+        {isGurjar ? (
+          <div className="flex flex-col justify-between w-full max-w-[1000px] h-full py-10 text-[#111] px-10">
+            <div className="relative mb-10">
+              <div className="progress-bar  h-5 bg-[#47fb86] w-0"></div>
+            </div>
+
+            <div className="mx-auto my-20 w-full mb-20">
+              {page === 0 && (
+                <>
+                  <h2 className="text-4xl font-extrabold">Create Account</h2>
+                  <p className="text-md text-[#888] font-semibold mb-20">
+                    Building Gurjar community
+                  </p>
+                  <div className="grid grid-cols-2 gap-4 ">
+                    <input
+                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                      type="text"
+                      required
+                      placeholder="First Name"
+                      value={formData.firstName}
+                      name="firstName"
+                      onChange={handleChange}
+                    />
+                    <input
+                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                      type="text"
+                      required
+                      placeholder="Last Name"
+                      value={formData.lastName}
+                      name="lastName"
+                      onChange={handleChange}
+                    />
+                    <select
+                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                      value={formData.gotra}
+                      name="gotra"
+                      onChange={handleChange}
+                    >
+                      <option value="">Gotra</option>
+                      <option value="gotra 1">Gotra 1</option>
+                      <option value="gotra 2">Gotra 2</option>
+                      <option value="gotra 3">Gotra 3</option>
+                    </select>
+                    <input
+                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                      type="date"
+                      required
+                      placeholder="Date of Birth"
+                      value={formData.birthDate}
+                      name="birthDate"
+                      onChange={handleChange}
+                    />
+
+                    <input
+                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                      type="tel"
+                      required
+                      placeholder="Phone Number"
+                      pattern="[0-9]{11}"
+                      value={formData.mobile}
+                      name="mobile"
+                      onChange={handleChange}
+                    />
+                    <input
+                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                      type="email"
+                      required
+                      placeholder="Email"
+                      value={formData.email}
+                      name="email"
+                      onChange={handleChange}
+                    />
+
+                    <button
+                      className="w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#0853AF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      onClick={() => navigate("/")}
+                    >
+                      Back
+                    </button>
+
+
+                    <button
+                      className={`w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${!isCurrentPageFilled()
+                        ? 'opacity-50 cursor-not-allowed'
+                        : 'hover:bg-[#0853AF]'
+                        }`}
+                      onClick={nextPage}
+
+                      disabled={!isCurrentPageFilled()}
+                    >
+                      Next
+                    </button>
+
+                  </div>
+                </>
               )}
-              {page < Math.ceil(formFields.length / 2) - 1 ? (
-                <button className="mx-2" onClick={nextPage}>
+
+
+
+
+              {page === 1 && (
+                <>
+                  <h2 className="text-4xl font-extrabold ">Create Account</h2>
+                  <p className="text-md text-[#888] font-semibold mb-20">
+                    Building Gurjar community
+                  </p>
+                  <div className="grid grid-cols-2 gap-4 mb-10">
+
+                    <select
+                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                      value={formData.country}
+                      name="country"
+                      onChange={handleChange}
+                    >
+                      <option value="">Country</option>
+                      <option value="Country 1">Country 1</option>
+                      <option value="Country 2">Country 2</option>
+                      <option value="Country 3">Country 3</option>
+                      <option value="Country 4">Country 4</option>
+                    </select>
+                    <select
+
+                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                      value={formData.state}
+                      name="state"
+                      onChange={handleChange}
+                    >
+                      <option value="">State</option>
+                      <option value="State 1">State 1</option>
+                      <option value="State 2">State 2</option>
+                      <option value="State 3">State 3</option>
+                    </select>
+                    <select
+
+                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                      value={formData.city}
+                      name="city"
+                      onChange={handleChange}
+                    >
+                      <option value="">City</option>
+                      <option value="City 1">City 1</option>
+                      <option value="City 2">City 2</option>
+                      <option value="City 3">City 3</option>
+                    </select>
+                    <input
+                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                      type="text"
+
+                      required
+                      placeholder="Village"
+                      value={formData.village}
+                      name="village"
+                      onChange={handleChange}
+                    />
+
+                    <select
+
+                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                      value={formData.bloodGroup}
+                      name="bloodGroup"
+                      onChange={handleChange}
+                    >
+                      <option value="">Blood Group</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                    </select>
+                    <select
+
+                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                      value={formData.gender}
+                      name="gender"
+                      onChange={handleChange}
+                    >
+                      <option value="">Gender</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                    <input
+                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                      type="text"
+
+                      required
+                      placeholder="Education"
+                      value={formData.education}
+                      name="education"
+                      onChange={handleChange}
+                    />
+                    <input
+                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                      type="text"
+
+                      required
+                      placeholder="Profession"
+                      value={formData.profession}
+                      name="profession"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 ">
+                    <button
+                      onClick={previousPage}
+                      className="w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#0853AF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Back
+                    </button>
+                    <button
+                      className={`w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${!isFormComplete ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#0853AF]'
+                        }`}
+                      onClick={nextPage}
+                      disabled={!isFormComplete}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {page === 2 && (
+                <>
+                  <h2 className="text-4xl font-extrabold ">Create Account</h2>
+                  <p className="text-md text-[#888] font-semibold mb-20">
+                    Building Gurjar community
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-4 mb-10">
+                    <input
+                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                      type="password"
+
+                      required
+                      placeholder="Password"
+                      value={formData.password}
+                      name="password"
+                      onChange={handleChange}
+                    />
+
+                    <input
+                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                      type="password"
+
+                      required
+                      placeholder="Confirm Password"
+                      value={formData.confirmPassword}
+                      name="confirmPassword"
+                      onChange={handleChange}
+                    />
+
+                    <div >
+
+                      <input
+                        className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                        type="text"
+
+                        required
+                        placeholder="Enter Verification Code"
+                        value={formData.verCode}
+                        name="verCode"
+                        onChange={handleChange}
+                      />
+                      <span className="mt-2 font-semibold text-sm flex ">
+                        <a className="text-[#0B77FB] hover:underline" href="#!">
+                          Didn't receive verification code? Resend again
+                        </a>
+                      </span>
+                    </div>
+
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 ">
+
+                    <button className="w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#0853AF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      onClick={previousPage}>Back</button>
+
+
+                    <button
+                      className="w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#0853AF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      onClick={handleRegister}
+                      disabled={!isCurrentPageFilled()}
+                    >
+                      Register
+                    </button>
+
+                  </div>
+
+                </>
+
+              )}
+
+            </div>
+
+            <div>
+              <Paging
+                currentPage={page + 1}
+                totalPages={totalPages}
+                handlePageChange={handlePageChange}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center mt-[-25vh] px-10">
+
+            <div className="mb-20">
+              <h2 className="text-4xl font-extrabold">Create Account</h2>
+              <p className="text-md text-[#888] font-semibold">
+                Building Gurjar community
+              </p>
+            </div>
+            <h2 className="text-4xl font-extrabold">Are you a Gurjar?</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                className={`flex w-full m-2 p-2 border border-black rounded-lg hover:bg-[#47fb86] hover:text-black relative ${isYesClicked ? "bg-[#47fb86]" : ""
+                  }`}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={handleYesClicked}
+              >
+                {isHovered && (
+                  <span className="absolute right-2 text-white">
+                    <FaCheck size={30} />
+                  </span>
+                )}
+                {isYesClicked && (
+                  <span className="absolute right-2 text-white">
+                    <FaCheck size={30} />
+                  </span>
+                )}
+                Yes
+              </button>
+
+              <button
+                className="flex w-full m-2 p-2 border border-black rounded-lg hover:bg-red-500 hover:text-black relative"
+                onClick={() => navigate("/")}
+                onMouseEnter={handleMouseEntered}
+                onMouseLeave={handleMouseLeaved}
+              >
+                {isHover && (
+                  <span className="absolute right-2  text-white">
+                    <GiCancel size={30} />
+                  </span>
+                )}
+                No
+              </button>
+
+              <button
+                className={`w-full max-w-md justify-center}`}
+
+              >
+
+              </button>
+              <div className="mt-20">
+                <button
+                  className={`w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${!isYesClicked ? "opacity-50 cursor-not-allowed" : "hover:bg-[#0853AF]"
+                    }`}
+                  onClick={gurjarChange}
+                  disabled={!isYesClicked}
+                >
                   Next
                 </button>
-              ) : (
-                <button className="mx-2" onClick={handleRegister}>
-                  Register
-                </button>
-              )}
+
+              </div>
             </div>
           </div>
-
-          <div>
-            <Paging
-              currentPage={page + 1}
-              totalPages={totalPages}
-              handlePageChange={handlePageChange}
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-col justify-center mt-[-25vh]">
-          <h2>Are you a Gurjar?</h2>
-          <button
-            className="m-2 rounded-lg bg-[#0B77FB] hover:bg-[#0853AF] hover:text-white"
-            onClick={gurjarChange}
-          >
-            Yes
-          </button>
-          <button
-            className="m-2 rounded-lg bg-[#0B77FB] hover:bg-[#0853AF] hover:text-white"
-            onClick={() => navigate("/")}
-          >
-            No
-          </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
