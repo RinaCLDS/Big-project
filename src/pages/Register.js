@@ -8,8 +8,10 @@ import { GiCancel } from "react-icons/gi";
 import data from "../data/dataset.json";
 import "react-phone-input-2/lib/style.css";
 import gotras from "../data/gotras.json";
-
+import { useCreateUserMutation } from "../state/api";
 const Register = () => {
+  const [createUser, { isLoading, isSuccess, isError, error }] = useCreateUserMutation();
+  
   const get = (element) => document.querySelectorAll(element)
   const defaultValue = ['Country', 'Gender']
   const [page, setPage] = useState(0);
@@ -86,9 +88,31 @@ const Register = () => {
     setPage(page - 1);
   };
 
-
+console.log(formData)
 
   const handleRegister = () => {
+    const userRegisterData = {
+      name: formData.firstName + " " + formData.lastName,
+      religion: formData.religion,
+      gender: formData.gender,
+      state: formData.state,
+      city: formData.city,
+      village: formData.village,
+      gotra: formData.gotra,
+      blood_group: formData.bloodGroup,
+      date_of_birth: formData.birthDate,
+      mobile_number: formData.mobile,
+      email: formData.email,
+      education: formData.education,
+      profession: formData.profession,
+      password: formData.password,
+      
+
+    }
+    console.log(userRegisterData)
+    createUser(userRegisterData)
+    // console.log(isSuccess, isError, error)
+    alert('User Registered Successfully. Please check your email for your username and password.')
     // Perform registration logic here
     // You can access the form data from the formData state and submit to your backend or perform any other actions you need.
   };
