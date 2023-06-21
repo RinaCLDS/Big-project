@@ -98,6 +98,40 @@ const Login = (props) => {
     }
   }, []);
 
+  function handleGoogleLogin(response) {
+
+    if (response.credential) {
+
+      const { id_token } = response.credential;
+
+    } else {
+
+      console.log('Google login failed');
+    }
+  }
+
+  function initializeGoogleSignIn() {
+
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+
+      window.google.accounts.id.initialize({
+        client_id: 'YOUR_GOOGLE_CLIENT_ID',
+        callback: handleGoogleLogin,
+      });
+    };
+  }
+
+
+  initializeGoogleSignIn();
+
+
+
+
   return (
     <div className="flex items-center justify-between h-screen ">
       <div className="hidden sm:flex flex-col h-full w-1/2 bg-[#e7eff1]">
@@ -168,7 +202,7 @@ const Login = (props) => {
                   <img
                     src={apple}
                     className=" w-8 h-8 mx-2"
-                    alt="Facebook Logo"
+                    alt="apple"
                   />
                   Apple sign in
                 </button>
@@ -178,19 +212,22 @@ const Login = (props) => {
                     <img
                       src={facebook}
                       className="w-5 h-5 mr-2"
-                      alt="Facebook Logo"
+                      alt="Facebook "
                     />
                     Facebook
                   </button>
-                  <button className="flex items-center text-sm px-3 py-1">
+                  <button
+                    className="flex items-center text-sm px-3 py-1"
+                    onClick={() => window.google.accounts.id.prompt()}
+                  >
                     <img
                       src={google}
                       className="w-5 h-5 mr-2"
-                      alt="Facebook Logo"
+                      alt="Google Logo"
                     />
-                    Facebook
+                    Google
                   </button>
-                  {props.googleLogin}
+
                 </div>
 
                 <div className="mt-3">
