@@ -11,7 +11,7 @@ import gotras from "../data/gotras.json";
 import { useCreateUserMutation } from "../state/api";
 const Register = () => {
   const [createUser, { isLoading, isSuccess, isError, error }] = useCreateUserMutation();
-  
+
   const get = (element) => document.querySelectorAll(element)
   const defaultValue = ['Country', 'Gender']
   const [page, setPage] = useState(0);
@@ -88,7 +88,7 @@ const Register = () => {
     setPage(page - 1);
   };
 
-console.log(formData)
+  console.log(formData)
 
   const handleRegister = () => {
     const userRegisterData = {
@@ -106,7 +106,7 @@ console.log(formData)
       education: formData.education,
       profession: formData.profession,
       password: formData.password,
-      
+
 
     }
     console.log(userRegisterData)
@@ -134,28 +134,33 @@ console.log(formData)
       ...prevFormData,
       [name]: value
     }));
-
-    // Check if all fields are filled out
-    const isFormComplete =
-      formData.country !== "" &&
-      formData.state !== "" &&
-      formData.city !== "" &&
-      formData.village !== "" &&
-      formData.bloodGroup !== "" &&
-      formData.gender !== "" &&
-      formData.education !== "" &&
-      formData.profession !== "";
-
-    setIsFormComplete(isFormComplete);
   };
 
-  const isCurrentPageFilled = () => {
-    const currentPageFields = formFields.slice(page * 2, page * 2 + 2);
-    return currentPageFields.every((field) => {
-      const fieldValue = formData[field.name];
-      return fieldValue && fieldValue.trim() !== '';
-    });
+  const isCurrentSecondPageFilled = () => {
+    const { country, state, city, village, bloodGroup, gender, education, profession } = formData;
+
+    // Check if the required fields are filled
+    return (
+      country &&
+      (state || city) && // At least one of state or city should be filled
+      village &&
+      bloodGroup &&
+      gender &&
+      education &&
+      profession
+    );
   };
+
+  function isCurrentPageFilled() {
+    const { firstName, lastName, gotra, birthDate, mobile, email } = formData;
+
+    // Check if any of the required fields are empty
+    if (!firstName || !lastName || !gotra || !birthDate || !mobile || !email) {
+      return false;
+    }
+
+    return true;
+  }
 
   useEffect(() => {
     const progressValue = ((page * 1) / totalPages) * 100;
@@ -240,65 +245,81 @@ console.log(formData)
                     Building Gurjar community
                   </p>
                   <div className="grid grid-cols-2 gap-4 ">
-                    <input
-                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                      type="text"
-                      required
-                      placeholder="First Name"
-                      value={formData.firstName}
-                      name="firstName"
-                      onChange={handleChange}
-                    />
-                    <input
-                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                      type="text"
-                      required
-                      placeholder="Last Name"
-                      value={formData.lastName}
-                      name="lastName"
-                      onChange={handleChange}
-                    />
-                    <select
-                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                      value={formData.gotra}
-                      name="gotra"
-                      onChange={handleChange}
-                    >
-                      <option value="">Gotra group</option>
-                      {gotras.map((item, index) => (
-                        <option key={index}>{item.name}</option>
-                      ))}
-                    </select>
-                    <input
-                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                      type="date"
-                      required
-                      placeholder="Date of Birth"
-                      value={formData.birthDate}
-                      name="birthDate"
-                      onChange={handleChange}
-                    />
-
-                    <input
-                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                      type="tel"
-                      required
-                      placeholder="Phone Number"
-                      pattern="[0-9]{11}"
-                      value={formData.mobile}
-                      name="mobile"
-                      onChange={handleChange}
-                    />
-                    <input
-                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                      type="email"
-                      required
-                      placeholder="Email"
-                      value={formData.email}
-                      name="email"
-                      onChange={handleChange}
-                    />
-
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">First Name</span>
+                      <input
+                        className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                        type="text"
+                        required
+                        placeholder="First Name"
+                        value={formData.firstName}
+                        name="firstName"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">Last Name</span>
+                      <input
+                        className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                        type="text"
+                        required
+                        placeholder="Last Name"
+                        value={formData.lastName}
+                        name="lastName"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">Gotra group</span>
+                      <select
+                        className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                        value={formData.gotra}
+                        name="gotra"
+                        onChange={handleChange}
+                      >
+                        <option value="">Gotra group</option>
+                        {gotras.map((item, index) => (
+                          <option key={index}>{item.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">Date of Birth</span>
+                      <input
+                        className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                        type="date"
+                        required
+                        placeholder="Date of Birth"
+                        value={formData.birthDate}
+                        name="birthDate"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">Phone Number</span>
+                      <input
+                        className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                        type="tel"
+                        required
+                        placeholder="Phone Number"
+                        pattern="[0-9]{11}"
+                        value={formData.mobile}
+                        name="mobile"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">Email</span>
+                      <input
+                        className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                        type="email"
+                        required
+                        placeholder="Email"
+                        value={formData.email}
+                        name="email"
+                        onChange={handleChange}
+                      />
+                    </div>
                     <button
                       className="w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] hover:bg-[#0853AF] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                       onClick={() => navigate("/")}
@@ -332,130 +353,145 @@ console.log(formData)
                     Building Gurjar community
                   </p>
                   <div className="grid grid-cols-2 gap-4 mb-10">
-
-                    <select
-                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                      value={formData.country}
-                      name="country"
-                      onChange={(event) => {
-                        stateChange(event);
-                        handleChange(event);
-                      }}
-
-                    >
-                      {data.map((item, index) => (
-                        <option key={index}>{item.name}</option>
-                      ))}
-                    </select>
-                    <select
-
-                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                      value={formData.state}
-                      name="state"
-                      onChange={(event) => {
-                        cityChange(event);
-                        handleChange(event);
-                      }}
-                    >
-                      {Object.keys(state).length === 0
-                        ? data[0].states.map((item, index) => (
-                          <option key={index}>{item.name}</option>
-                        ))
-                        : state.states.map((item, index) => (
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">Country</span>
+                      <select
+                        className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                        value={formData.country}
+                        name="country"
+                        onChange={(event) => {
+                          stateChange(event);
+                          handleChange(event);
+                        }}
+                      >
+                        {data.map((item, index) => (
                           <option key={index}>{item.name}</option>
                         ))}
-                    </select>
-                    <select
-
-                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                      value={formData.city}
-                      name="city"
-                      onChange={handleChange}
-                    >
-                      {Object.keys(state).length === 0
-                        ? ""
-                        : city.cities.map((item, index) => (
-                          <option key={index}>{item.name}</option>
-                        ))}
-                    </select>
-                    <input
-                      className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                      type="text"
-                      required
-                      placeholder="Village"
-                      value={formData.village}
-                      name="village"
-                      onChange={handleChange}
-                    />
-
-                    <select
-
-                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                      value={formData.bloodGroup}
-                      name="bloodGroup"
-                      onChange={handleChange}
-                    >
-                      <option value="">Blood Group</option>
-                      <option value="A+">A+</option>
-                      <option value="A-">A-</option>
-                      <option value="B+">B+</option>
-                      <option value="B-">B-</option>
-                      <option value="O+">O+</option>
-                      <option value="O-">O-</option>
-                      <option value="AB+">AB+</option>
-                      <option value="AB-">AB-</option>
-                    </select>
-                    <select
-
-                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                      value={formData.gender}
-                      name="gender"
-                      onChange={handleChange}
-                    >
-                      <option value="">Gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                    </select>
-                    <select
-
-                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                      value={formData.education}
-                      name="education"
-                      onChange={handleChange}
-                    >
-                      <option value="">Education</option>
-                      <option value="Under Graduate" >Under Graduate </option>
-                      <option value="Diploma" > Diploma</option>
-                      <option value="Graduate" >Graduate</option>
-                      <option value="Engineering Graduate" >Engineering Graduate</option>
-                      <option value="LLB" >LLB</option>
-                      <option value="Post Graduate" >Post Graduate</option>
-                      <option value="PHD" >PHD</option>
-                      <option value="BDS" >BDS</option >
-                      <option value="MBBS" >MBBS</option >
-                      <option value="MS" >MS</option >
-                    </select >
-                    <select
-
-                      className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
-                      value={formData.profession}
-                      name="profession"
-                      onChange={handleChange}
-                    >
-                      <option value="">profession</option>
-                      <option value="formData.Advocate" >Advocate</option >
-                      <option value="Sportsman" >Sportsman</option >
-                      <option value="Doctor" >Doctor</option >
-                      <option value="Government Job" >Government Job</option >
-                      <option value="Private Job" >Private Job</option >
-                      <option value="Property Dealer" >Property Dealer</option >
-                      <option value="Milk Man" >Milk Man</option >
-                      <option value="Driver" >Driver</option >
-                      <option value="Farmer" >Farmer</option >
-                      <option value="Politician" >Politician</option >
-                      <option value="Business" >Business</option >
-                    </select >
-                  </div >
+                      </select>
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">State</span>
+                      <select
+                        className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                        value={formData.state}
+                        name="state"
+                        onChange={(event) => {
+                          cityChange(event);
+                          handleChange(event);
+                        }}
+                      >
+                        {Object.keys(state).length === 0
+                          ? data[0].states.map((item, index) => (
+                            <option key={index}>{item.name}</option>
+                          ))
+                          : state.states.map((item, index) => (
+                            <option key={index}>{item.name}</option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">City</span>
+                      <select
+                        className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                        value={formData.city}
+                        name="city"
+                        onChange={handleChange}
+                      >
+                        {Object.keys(state).length === 0
+                          ? ""
+                          : city.cities.map((item, index) => (
+                            <option key={index}>{item.name}</option>
+                          ))}
+                      </select>
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">Village</span>
+                      <input
+                        className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                        type="text"
+                        required
+                        placeholder="Village"
+                        value={formData.village}
+                        name="village"
+                        onChange={handleChange}
+                      />
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">Blood Group</span>
+                      <select
+                        className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                        value={formData.bloodGroup}
+                        name="bloodGroup"
+                        onChange={handleChange}
+                      >
+                        <option value="">Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                      </select>
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">Gender</span>
+                      <select
+                        className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                        value={formData.gender}
+                        name="gender"
+                        onChange={handleChange}
+                      >
+                        <option value="">Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                      </select>
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">Education</span>
+                      <select
+                        className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                        value={formData.education}
+                        name="education"
+                        onChange={handleChange}
+                      >
+                        <option value="">Education</option>
+                        <option value="Under Graduate">Under Graduate</option>
+                        <option value="Diploma">Diploma</option>
+                        <option value="Graduate">Graduate</option>
+                        <option value="Engineering Graduate">Engineering Graduate</option>
+                        <option value="LLB">LLB</option>
+                        <option value="Post Graduate">Post Graduate</option>
+                        <option value="PHD">PHD</option>
+                        <option value="BDS">BDS</option>
+                        <option value="MBBS">MBBS</option>
+                        <option value="MS">MS</option>
+                      </select>
+                    </div>
+                    <div className="relative">
+                      <span className="text-sm text-[black] absolute -top-3 left-2">Profession</span>
+                      <select
+                        className="form-select p-3 my-2 border rounded-lg w-full focus:border-black"
+                        value={formData.profession}
+                        name="profession"
+                        onChange={handleChange}
+                      >
+                        <option value="">Profession</option>
+                        <option value="Advocate">Advocate</option>
+                        <option value="Sportsman">Sportsman</option>
+                        <option value="Doctor">Doctor</option>
+                        <option value="Government Job">Government Job</option>
+                        <option value="Private Job">Private Job</option>
+                        <option value="Property Dealer">Property Dealer</option>
+                        <option value="Milk Man">Milk Man</option>
+                        <option value="Driver">Driver</option>
+                        <option value="Farmer">Farmer</option>
+                        <option value="Politician">Politician</option>
+                        <option value="Business">Business</option>
+                      </select>
+                    </div>
+                  </div>
                   <div className="grid grid-cols-2 gap-4 ">
                     <button
                       onClick={previousPage}
@@ -464,22 +500,16 @@ console.log(formData)
                       Back
                     </button>
                     <button
-                      className={`w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+                      className={`w-full max-w-md justify-center mt-5 p-3 text-xl border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#0B77FB] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${!isCurrentSecondPageFilled()
+                        ? 'opacity-50 cursor-not-allowed'
+                        : 'hover:bg-[#0853AF]'
+                        }`}
                       onClick={nextPage}
-                      disabled={(
-                        !formData.country &&
-                        !formData.state &&
-                        !formData.city &&
-                        !formData.village &&
-                        !formData.bloodGroup &&
-                        !formData.gender &&
-                        !formData.education &&
-                        !formData.profession
-                      )
-                      }
+                      disabled={!isCurrentSecondPageFilled()}
                     >
                       Next
                     </button>
+
                   </div>
                 </>
               )}
@@ -493,34 +523,35 @@ console.log(formData)
                     </p>
 
                     <div className="grid grid-cols-2 gap-4 mb-10">
-                      <input
-                        className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                        type="password"
-
-                        required
-                        placeholder="Password"
-                        value={formData.password}
-                        name="password"
-                        onChange={handleChange}
-                      />
-
-                      <input
-                        className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
-                        type="password"
-
-                        required
-                        placeholder="Confirm Password"
-                        value={formData.confirmPassword}
-                        name="confirmPassword"
-                        onChange={handleChange}
-                      />
-
-                      <div >
-
+                      <div className="relative">
+                        <span className="text-sm text-[black] absolute -top-3 left-2">Password</span>
+                        <input
+                          className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                          type="password"
+                          required
+                          placeholder="Password"
+                          value={formData.password}
+                          name="password"
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="relative">
+                        <span className="text-sm text-[black] absolute -top-3 left-2">Confirm Password</span>
+                        <input
+                          className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
+                          type="password"
+                          required
+                          placeholder="Confirm Password"
+                          value={formData.confirmPassword}
+                          name="confirmPassword"
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="relative">
+                        <span className="text-sm text-[black] absolute -top-3 left-2">Verification Code</span>
                         <input
                           className="form-input p-3 my-2 border rounded-lg w-full focus:border-black caret-[#111]"
                           type="text"
-
                           required
                           placeholder="Enter Verification Code"
                           value={formData.verCode}
