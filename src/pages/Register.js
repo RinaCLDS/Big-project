@@ -6,7 +6,6 @@ import bg from "../images/background.png";
 import { FaCheck } from "react-icons/fa";
 import { GiCancel } from "react-icons/gi";
 import data from "../data/dataset.json";
-import "react-phone-input-2/lib/style.css";
 import gotras from "../data/gotras.json";
 import { useCreateUserMutation } from "../state/api";
 const Register = () => {
