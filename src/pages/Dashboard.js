@@ -4,7 +4,7 @@ import sampleDatabase from "../data/SampleDatabase";
 import "./../App.css";
 import GurjarInfo from "../components/GurjarInfo";
 import TableData from "../components/TableData";
-import Map from "../components/Map";
+// import Map from "../components/Map";
 import TopNavigationBar from "../components/TopNavigationBar";
 import Loading from "./Loading";
 import Welcome from "../components/Welcome";
@@ -16,6 +16,8 @@ import SideNavigationBar from "../components/SideNavigationBar";
 import Analytics from "../components/Analytics";
 import Users from "./Users";
 import AdminTable from "./AdminTable";
+import Gmap from "../components/MapContainer";
+import MapContainer from "../components/MapContainer";
 function Dashboard(props) {
   const [gurjarDatas, setGurjarDatas] = useState([]);
 
@@ -159,12 +161,12 @@ function Dashboard(props) {
             <TopNavigationBar data={data} />
 
             <div className="container mx-auto max-w-5xl mt-28">
-              
+
               <Welcome data={data} />
 
-              <Map
+              <MapContainer
                 // mapData={mapData}
-                mergedData={mergedData}
+                GoogleApiWrapper={MapContainer}
               />
 
               <GurjarInfo data={data} />
