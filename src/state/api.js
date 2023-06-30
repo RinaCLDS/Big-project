@@ -42,7 +42,14 @@ export const api = createApi({
                 method: 'POST',
                 body: data
             })
-        })
+        }),
+        sendEmailOtp: builder.mutation({
+            query: (data) => ({
+                url: 'gurjar/email_otp/',
+                method: 'POST',
+                body: data
+            }),
+        }),
         
     })
 })
@@ -52,5 +59,6 @@ export const {
                 useDeleteGurjarUserMutation,
                 useUpdateGurjarUserMutation,
                 useGetGurjarUserMutaion,
-                useCreateUserMutation
+                useCreateUserMutation,
+                useSendEmailOtpMutation
             } = api;

@@ -7,9 +7,10 @@ import { FaCheck } from "react-icons/fa";
 import { GiCancel } from "react-icons/gi";
 import data from "../data/dataset.json";
 import gotras from "../data/gotras.json";
-import { useCreateUserMutation } from "../state/api";
+import { useCreateUserMutation, useSendEmailOtpMutation } from "../state/api";
 const Register = () => {
-  const [createUser, { isLoading, isSuccess, isError, error }] = useCreateUserMutation();
+  const [createUser, { isLoading, isSuccess, isError, error, data1 }] = useCreateUserMutation();
+  const [sendEmailOtp, { isLoading1, isSuccess1, isError1, error1 }] = useSendEmailOtpMutation();
 
   const get = (element) => document.querySelectorAll(element)
   const defaultValue = ['Country', 'Gender']
@@ -87,7 +88,7 @@ const Register = () => {
     setPage(page - 1);
   };
 
-  console.log(formData)
+  // console.log(formData)
 
   const handleRegister = () => {
     const userRegisterData = {
@@ -105,13 +106,20 @@ const Register = () => {
       education: formData.education,
       profession: formData.profession,
       password: formData.password,
-
-
+      otp: formData.verCode,
     }
-    console.log(userRegisterData)
-    createUser(userRegisterData)
+    // console.log(userRegisterData)
+    createUser(userRegisterData).unwrap().then((res) => {
+      console.log(res)
+      if(res.valid === false){
+        alert(res.error)
+      } else if (res.valid === true){
+        alert('User Registered Successfully. Please check your email for your username and password.')
+        navigate('/login')
+      }
+    })
+    
     // console.log(isSuccess, isError, error)
-    alert('User Registered Successfully. Please check your email for your username and password.')
     // Perform registration logic here
     // You can access the form data from the formData state and submit to your backend or perform any other actions you need.
   };
@@ -199,9 +207,14 @@ const Register = () => {
     // Handle the next button click action
   };
   const name1 = data.map(item => item.name)
-  console.log(name1)
+  // console.log(name1)
 
+  const sendOTP = () => {
+   
+    sendEmailOtp({"email":formData.email})
+    alert('OTP sent to your email address. Please check your email.')
 
+  }
   const [state, setState] = useState([]);
   const [city, setCity] = useState([]);
   useEffect(() => {
@@ -216,6 +229,7 @@ const Register = () => {
   const cityChange = (e) => {
     setCity(state.states[e.target.selectedIndex]);
   };
+
 
   return (
     <div className="flex items-center justify-between h-screen ">
@@ -558,10 +572,18 @@ const Register = () => {
                           onChange={handleChange}
                         />
                         <span className="mt-2 font-semibold text-sm flex ">
-                          <a className="text-[#0B77FB] hover:underline" href="#!">
+                        
+                        <a className="text-[#0B77FB] hover:underline" href="#!" onClick={sendOTP}>
+                          Send OTP
+                        </a>
+                      </span>
+                        <span className="mt-2 font-semibold text-sm flex ">
+                        
+                          <a className="text-[#0B77FB] hover:underline" href="#!" onClick={sendOTP}>
                             Didn't receive verification code? Resend again
                           </a>
                         </span>
+
                       </div>
 
                     </div>
