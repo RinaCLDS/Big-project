@@ -26,7 +26,7 @@ const Login = (props) => {
     const { username, password } = e.target.elements;
 
     axios
-      .post(domain + "/gurjar/login/", {
+      .post(domain + "gurjar/login/", {
         gurjar_id: username.value,
         password: password.value,
       })
