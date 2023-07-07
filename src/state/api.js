@@ -50,6 +50,13 @@ export const api = createApi({
                 body: data
             }),
         }),
+        sendUserEmail: builder.mutation({
+            query: (data) => ({
+                url: 'gurjar/bulk_send/',
+                method: 'POST',
+                body: data
+            })
+        })
         
     })
 })
@@ -60,5 +67,6 @@ export const {
                 useUpdateGurjarUserMutation,
                 useGetGurjarUserMutaion,
                 useCreateUserMutation,
-                useSendEmailOtpMutation
+                useSendEmailOtpMutation,
+                useSendUserEmailMutation
             } = api;

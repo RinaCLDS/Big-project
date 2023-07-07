@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TopNavigationBar from "../components/TopNavigationBar";
-import { useGetGurjarUsersQuery, useDeleteGurjarUserMutation, } from "../state/api";
+import { useGetGurjarUsersQuery, useDeleteGurjarUserMutation,useSendUserEmailMutation } from "../state/api";
 import { domain } from "../data/constant";
 import EditProfile from "../modal/EditProfile";
 import Cookies from "universal-cookie";
@@ -9,9 +9,11 @@ import SendMessage from "../modal/SendMessage";
 import { useNavigate } from "react-router-dom";
 
 function Admin() {
+  const [showSendMessage1, setSendMessage1] = useState('');
   const { data, error, isLoading } = useGetGurjarUsersQuery();
   const [newUser, setNewUser] = useState({});
   const [deleteUser, { isLoading: isDeleting }] = useDeleteGurjarUserMutation();
+  const [sendUserEmail, { isLoading: isSending }] = useSendUserEmailMutation();
   const get = (element) => document.querySelector(element);
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
@@ -85,7 +87,13 @@ function Admin() {
       })
       .catch((error) => console.log(error));
   };
+  const sendEmailnew = (e)=>{
+    setSendMessage1(`${e}`)
+    setSendMessage(true)
+  }
+  console.log(showSendMessage1,'12')
   useEffect(() => {
+    console.log(showSendMessage1,1213)
     check();
     if (!isLoading) {
       // Save data to local storage
@@ -257,7 +265,7 @@ function Admin() {
                                 />
                               </svg>
                             </div>
-                            <div onClick={() => setSendMessage(true)} className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                            <div onClick={() => sendEmailnew(user.email)} className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -320,7 +328,7 @@ function Admin() {
         />
       )}
 
-      <SendMessage onClosed={handleOnClosed} visible={showSendMessage} />
+      <SendMessage emailUser={showSendMessage1}  onClosed={handleOnClosed} visible={showSendMessage} />
 
     </div>
   );

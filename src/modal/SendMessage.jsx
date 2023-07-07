@@ -3,8 +3,11 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
 import html2canvas from "html2canvas";
 import { saveAs } from "file-saver";
+import { useSendUserEmailMutation } from "../state/api";
 
-export default function SendMessage({ visible, onClosed }) {
+export default function SendMessage({ visible, onClosed,EmailUser }) {
+    console.log(EmailUser)
+    const [sendUserEmail, { isLoading: isSending }] = useSendUserEmailMutation();
     const [subject, setSubject] = useState("");
     const [message, setMessage] = useState("");
 
@@ -18,6 +21,14 @@ export default function SendMessage({ visible, onClosed }) {
 
     const handleSend = () => {
         // Perform send operation here
+        if(!EmailUser===''||!undefined){
+            sendUserEmail({"email":[EmailUser], "subject":subject, "message":message})
+        }else{
+            alert('Cannot get email from frontend try again later.')
+        }
+        sendUserEmail({"email":[EmailUser], "subject":subject, "message":message})
+
+        console.log('email',EmailUser)
         console.log("Subject:", subject);
         console.log("Message:", message);
     };
