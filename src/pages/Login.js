@@ -26,7 +26,7 @@ const Login = (props) => {
     const { username, password } = e.target.elements;
 
     axios
-      .post(domain + "gurjar/login/", {
+      .post(domain + "/gurjar/login/", {
         gurjar_id: username.value,
         password: password.value,
       })
@@ -37,9 +37,9 @@ const Login = (props) => {
           new_cookies.set("token", token, { path: "/", expires: expiresDate });
           navigate("/dashboard");
         } else {
-          // alert("Invalid Credentials");
+          alert("Invalid Credentials");
 
-          navigate("/dashboard"); //REMOVE AFTER DEVELOPMENT
+          // navigate("/dashboard"); //REMOVE AFTER DEVELOPMENT
         }
       })
       .catch((error) => alert(error));
