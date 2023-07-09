@@ -15,209 +15,27 @@ const MapContainer = (props) => {
     setActiveMarker(marker);
     setSelectedPlace(props);
   };
-  // const places = [
-  //   {
-  //     id: 1,
-  //     lat: 37.7749,
-  //     lng: -122.4194,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
+  const places = isLoading? [
+    {
+      id: 1,
+      latitude: 37.7749,
+      longitude: -122.4194,
+      name: 'Name',
+      country: 'Country',
+      state: 'State',
+      city: 'City',
+      village: 'Village',
+      bloodGroup: 'BloodGroup',
 
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: 39.7749,
-  //     lng: -110.4194,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: 17.607789,
-  //     lng: 8.081666,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: -69.9,
-  //     lng: 18.46666667,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: -61.75,
-  //     lng: 12.05,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: 17.607789,
-  //     lng: 8.081666,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: -21.95,
-  //     lng: 64.15,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: 16.7,
-  //     lng: 29.36666667,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: -62.216667,
-  //     lng: 16.7,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: 10.75,
-  //     lng: 59.91666667,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: -3.683333,
-  //     lng: 40.4,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: 28.283333,
-  //     lng: -15.41666667,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: 100.516667,
-  //     lng: 13.75,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: 18.05,
-  //     lng: 59.33333333,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   {
-  //     id: 2,
-  //     lat: 38.7,
-  //     lng: 9.033333333,
-  //     name: 'Name',
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Name',
-  //     lat: -70.666667,
-  //     lng: -33.45,
-  //     country: 'Country',
-  //     state: 'State',
-  //     city: 'City',
-  //     village: 'Village',
-  //     bloodGroup: 'BloodGroup',
-
-  //   },
-  //   // Add more places as needed
-  // ];
-
+    },
+    // Add more places as needed
+  ]:data
+  console.log(isLoading, '111')
 
   const renderMarkers = () => {
-    return data.map((place) => (
+    return places.map((place, index) => (
       <Marker
-        key={place.index}
+        key={index}
         title={place.name}
         position={{ lat: place.latitude, lng: place.longitude }}
         onClick={onMarkerClick}
@@ -279,7 +97,7 @@ const MapContainer = (props) => {
           onReady={onMapReady}
         >
           <SearchBar onSearch={onSearch} />
-          {data.map((place, index) => (
+          {places.map((place, index) => (
             <Marker key={index} position={`${place.latitude}, ${place.longitude}`} title={place.name} />
           ))}
           {renderMarkers()}
