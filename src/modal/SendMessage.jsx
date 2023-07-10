@@ -3,11 +3,8 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
 import html2canvas from "html2canvas";
 import { saveAs } from "file-saver";
-import { useSendUserEmailMutation } from "../state/api";
 
-export default function SendMessage({ visible, onClosed,EmailUser }) {
-    console.log(EmailUser)
-    const [sendUserEmail, { isLoading: isSending }] = useSendUserEmailMutation();
+export default function SendMessage({ visible, onClosed, selectedEmails }) {
     const [subject, setSubject] = useState("");
     const [message, setMessage] = useState("");
 
@@ -21,16 +18,9 @@ export default function SendMessage({ visible, onClosed,EmailUser }) {
 
     const handleSend = () => {
         // Perform send operation here
-        if(!EmailUser===''||!undefined){
-            sendUserEmail({"email":[EmailUser], "subject":subject, "message":message})
-        }else{
-            alert('Cannot get email from frontend try again later.')
-        }
-        sendUserEmail({"email":[EmailUser], "subject":subject, "message":message})
-
-        console.log('email',EmailUser)
         console.log("Subject:", subject);
         console.log("Message:", message);
+        console.log("Selected Emails:", selectedEmails);
     };
 
     if (!visible) return null;
@@ -82,6 +72,12 @@ export default function SendMessage({ visible, onClosed,EmailUser }) {
                                     required
                                 />
                             </div>
+                            <div className="mb-4">
+                                <label className="block mb-1 font-medium">Selected Emails:</label>
+                                {selectedEmails.map((email, index) => (
+                                    <p key={index}>{email}</p>
+                                ))}
+                            </div>
                             <div className="flex justify-end">
                                 <button
                                     type="button"
@@ -90,7 +86,6 @@ export default function SendMessage({ visible, onClosed,EmailUser }) {
                                 >
                                     Send
                                 </button>
-
                             </div>
                         </form>
                     </div>
