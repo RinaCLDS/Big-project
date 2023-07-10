@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TopNavigationBar from "../components/TopNavigationBar";
-import { useGetGurjarUsersQuery, useDeleteGurjarUserMutation,useSendUserEmailMutation } from "../state/api";
+import { useGetGurjarUsersQuery, useDeleteGurjarUserMutation } from "../state/api";
 import { domain } from "../data/constant";
 import EditProfile from "../modal/EditProfile";
 import Cookies from "universal-cookie";
@@ -9,11 +9,9 @@ import SendMessage from "../modal/SendMessage";
 import { useNavigate } from "react-router-dom";
 
 function Admin() {
-  const [showSendMessage1, setSendMessage1] = useState('');
   const { data, error, isLoading } = useGetGurjarUsersQuery();
   const [newUser, setNewUser] = useState({});
   const [deleteUser, { isLoading: isDeleting }] = useDeleteGurjarUserMutation();
-  const [sendUserEmail, { isLoading: isSending }] = useSendUserEmailMutation();
   const get = (element) => document.querySelector(element);
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
@@ -56,6 +54,8 @@ function Admin() {
     setNewUser(user);
   };
 
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
 
   const [showSendMessage, setSendMessage] = useState(false);
   const handleOnClosed = () => setSendMessage(false);
@@ -87,13 +87,7 @@ function Admin() {
       })
       .catch((error) => console.log(error));
   };
-  const sendEmailnew = (e)=>{
-    setSendMessage1(`${e}`)
-    setSendMessage(true)
-  }
-  console.log(showSendMessage1,'12')
   useEffect(() => {
-    console.log(showSendMessage1,1213)
     check();
     if (!isLoading) {
       // Save data to local storage
@@ -108,54 +102,87 @@ function Admin() {
     setSearchTerm(event.target.value);
   };
 
-  const filteredData = data ? data.filter(user =>
-    user && (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.mobile_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.state.toLowerCase().includes(searchTerm.toLowerCase()))
-  ) : [];
+  const filteredData = data
+    ? data.filter(
+      (user) =>
+        user &&
+        (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.mobile_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.state.toLowerCase().includes(searchTerm.toLowerCase()))
+    )
+    : [];
 
   const rowsPerPage = 15;
   const [currentPage, setCurrentPage] = useState(1);
 
   // Calculate total number of pages
-  const totalPages = Math.ceil((data?.length || 0) / rowsPerPage);
+  const totalPages = Math.ceil((filteredData?.length || 0) / rowsPerPage);
 
   // Get the current page's data
-  const currentData = (data || []).slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+  const currentData = filteredData.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
+  const handleMultipleSend = () => {
+    // Perform send operation to selected users here
+    console.log("Subject:", subject);
+    console.log("Message:", message);
+    console.log("Selected Users:", selectedUsers);
+
+    const selectedEmails = selectedUsers.map((userId) => {
+      const user = data.find((user) => user.id === userId);
+      return user.email;
+    });
+
+    const emailsString = selectedEmails.join(", ");
+    console.log("Selected Emails:", emailsString);
+
+    // Update the state or perform any other logic with the selected emails
+  };
+
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
+  const handleUserSelect = (userId) => {
+    const isSelected = selectedUsers.includes(userId);
+
+    if (isSelected) {
+      setSelectedUsers(selectedUsers.filter((id) => id !== userId));
+    } else {
+      setSelectedUsers([...selectedUsers, userId]);
+    }
+  };
 
   return (
-    <div class="overflow-x-auto py-5">
+    <div className="overflow-x-auto py-5">
       <TopNavigationBar data={userData} />
-      {
-        isDeleting && (
-          <h1 style={{ textAlign: 'center', fontSize: '4rem', padding: '5rem 5rem' }}>W8 while deleting</h1>
-        )
-      }
+      {isDeleting && (
+        <h1 style={{ textAlign: "center", fontSize: "4rem", padding: "5rem 5rem" }}>
+          W8 while deleting
+        </h1>
+      )}
       <div className="min-w-screen min-h-screen bg-gray-100 flex items-center justify-center bg-gray-100 font-sans overflow-hidden py-7 px-3">
         <div className="w-full lg:w-5/6">
           <div className="bg-white shadow-md rounded my-6">
-            <div className="flex items-center justify-between px-6 py-4">
-              <div className="w-1/3">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none"
-                  value={searchTerm}
-                  onChange={handleSearch}
-                />
-              </div>
-              <div className="w-1/3 text-right">
+            <div className="flex items-center justify-end px-6 py-4">
+              <div className="w-1/3 text-right sm:py-3 md:py-3 ">
                 <button
-                  className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ml-2"
                   onClick={() => setNewShow(true)}
                 >
                   Add User
+                </button>
+                <button
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ml-2 "
+                  onClick={() => setSendMessage(true)}
+                  disabled={selectedUsers.length === 0}
+                >
+                  Send Message to multiple
                 </button>
               </div>
             </div>
@@ -166,17 +193,19 @@ function Admin() {
                     <th className="py-3 px-6 text-left">Gurjar ID</th>
                     <th className="py-3 px-6 text-left">User</th>
                     <th className="py-3 px-6 text-left">Email</th>
-                    <th className="py-3 px-6 text-left">mobile number</th>
+
+                    <th className="py-3 px-6 text-left">Mobile Number</th>
                     <th className="py-3 px-6 text-left">State</th>
-                    <th className="py-3 px-6 text-left">Date of birth</th>
-                    <th className="py-3 px-6 text-left">religion</th>
+                    <th className="py-3 px-6 text-left">Date of Birth</th>
+                    <th className="py-3 px-6 text-left">Religion</th>
                     <th className="py-3 px-6 text-center">Status</th>
                     <th className="py-3 px-6 text-center">Actions</th>
+                    <th className="py-3 px-6 text-center">Select</th>
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
                   {!isLoading &&
-                    filteredData.map((user) => (
+                    currentData.map((user) => (
                       <tr
                         id={`gurjar_user_${user.id}`}
                         className="border-b border-gray-200 hover:bg-gray-100"
@@ -231,7 +260,6 @@ function Admin() {
                         </td>
                         <td className="py-3 px-6 text-center">
                           <div className="flex item-center justify-center">
-
                             <div
                               onClick={() => userdata(true, user.id)}
                               className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
@@ -250,7 +278,10 @@ function Admin() {
                                 />
                               </svg>
                             </div>
-                            <div onClick={() => handleDelete(user.id)} className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                            <div
+                              onClick={() => handleDelete(user.id)}
+                              className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
+                            >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -265,7 +296,10 @@ function Admin() {
                                 />
                               </svg>
                             </div>
-                            <div onClick={() => sendEmailnew(user.email)} className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                            <div
+                              onClick={() => setSendMessage(true)}
+                              className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
+                            >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -276,9 +310,21 @@ function Admin() {
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
                                   strokeWidth="2"
-                                  d="M20 6V18C20 19.1 19.1 20 18 20H6C4.9 20 4 19.1 4 18V6C4 4.9 4.9 4 6 4H18C19.1 4 20 4.9 20 6ZM8 9L12 12.5L16 9M16 14H8"
+                                  d="M20 6V18C20 19.1 19.1 20 18 20H6C4.9 20 4 19.1 4 18V6C4 4.9 4.9 4 6 4H18ZM8 9L12 12.5L16 9M16 14H8"
                                 />
                               </svg>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-3 px-6 text-center">
+                          <div className="flex item-center justify-center">
+                            <div className="flex items-center justify-center">
+                              <input
+                                type="checkbox"
+                                checked={selectedUsers.includes(user.id)}
+                                onChange={() => handleUserSelect(user.id)}
+                                className="form-checkbox text-blue-500 h-4 w-4"
+                              />
                             </div>
                           </div>
                         </td>
@@ -287,13 +333,10 @@ function Admin() {
                 </tbody>
               </table>
             </div>
-
           </div>
-
           <div className="flex items-center justify-center m-4">
             <nav className="flex items-center">
-              <button
-                className="px-3 py-1 border border-gray-300 rounded-md mr-1"
+              <button className="px-3 py-1 border border-gray-300 rounded-md mr-1"
                 disabled={currentPage === 1}
                 onClick={() => handlePageChange(currentPage - 1)}
               >
@@ -302,8 +345,7 @@ function Admin() {
               {Array.from({ length: totalPages }, (_, index) => (
                 <button
                   key={index}
-                  className={`px-3 py-1 border border-gray-300 rounded-md mx-1 ${currentPage === index + 1 ? "bg-gray-200" : ""
-                    }`}
+                  className={`px-3 py-1 border border-gray-300 rounded-md mx-1 ${currentPage === index + 1 ? "bg-gray-200" : ""}`}
                   onClick={() => handlePageChange(index + 1)}
                 >
                   {index + 1}
@@ -317,22 +359,25 @@ function Admin() {
                 Next
               </button>
             </nav>
-
           </div>
         </div>
-      </div>
-      {showEditProfile && (
-        <EditProfile
-          onClose={() => setEditProfile(false)}
-          user={newUser}
-        />
-      )}
+      </div >
+      {
+        showEditProfile && (
+          <EditProfile onClose={() => setEditProfile(false)} user={newUser} />
+        )
+      }
 
-      <SendMessage emailUser={showSendMessage1}  onClosed={handleOnClosed} visible={showSendMessage} />
-
-    </div>
+      <SendMessage
+        onClosed={handleOnClosed}
+        visible={showSendMessage}
+        selectedEmails={selectedUsers.map((userId) => {
+          const user = data.find((user) => user.id === userId);
+          return user.email;
+        })}
+      />
+    </div >
   );
 }
 
 export default Admin;
-
